@@ -355,6 +355,10 @@ export default {
     this.getList();
   },
   methods: {
+    test(){
+      console.log("test")
+      console.log(this.deptOptions);
+    },
     /** 查询角色列表 */
     getList() {
       this.loading = true;
@@ -391,9 +395,10 @@ export default {
     getDeptAllCheckedKeys() {
       // 目前被选中的部门节点
       let checkedKeys = this.$refs.dept.getCheckedKeys();
+      // 业务需要注释掉半选节点
       // 半选中的部门节点
-      let halfCheckedKeys = this.$refs.dept.getHalfCheckedKeys();
-      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+      // let halfCheckedKeys = this.$refs.dept.getHalfCheckedKeys();
+      // checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
       return checkedKeys;
     },
     /** 根据角色ID查询菜单树结构 */

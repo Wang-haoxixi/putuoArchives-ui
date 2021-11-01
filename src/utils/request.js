@@ -8,7 +8,6 @@ import errorCode from '@/utils/errorCode'
 const sm2 = sm.sm2
 //sm2公钥
 const publicKey= '04306729e5a66ae5e2eb477d84fed2d8114fc99241953c7ef67ae19b94bffde1d1139c3e5f95e843db646237237d8c72e7a78f6cc2e89940543e3504b66452b0c8'
-console.error(publicKey)
 // const privateKey= '00ce45a9993809e89921f3970d4ce0bbafbb415b192551c2e8b9b28f4caefe2f'
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
@@ -16,7 +15,7 @@ const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
   baseURL: process.env.VUE_APP_BASE_API,
   //加密方式 plaintext 为不加密 ciphertext 为sm2加密
-  encryption: 'ciphertext',
+  encryption: 'plaintext',
   // 超时
   timeout: 10000
 })
@@ -62,7 +61,6 @@ service.interceptors.request.use(config => {
     config.params = {};
     config.url = url + urlParams;
   }
-  console.warn(config)
   return config
 }, error => {
     console.log(error)

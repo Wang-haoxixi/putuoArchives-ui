@@ -92,7 +92,7 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: 'role/:userId(\\d+)',
+        path: 'role',
         component: (resolve) => require(['@/views/system/user/authRole'], resolve),
         name: 'AuthRole',
         meta: { title: '分配角色', activeMenu: '/system/user'}

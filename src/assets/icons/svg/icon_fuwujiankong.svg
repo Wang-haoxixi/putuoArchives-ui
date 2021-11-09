@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2 {
+        stroke: #333;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.3px;
+      }
+    </style>
+  </defs>
+  <g id="icon_fuwujiankong" transform="translate(-16 -94)">
+    <rect id="矩形_42" data-name="矩形 42" class="cls-1" width="20" height="20" transform="translate(16 94)"/>
+    <g id="组_247" data-name="组 247" transform="translate(0.066 0.13)">
+      <path id="路径_81" data-name="路径 81" class="cls-2" d="M23.661,29.808l-.235.236-.235-.237a2.351,2.351,0,0,0-3.327-.008l-.008.008a2.373,2.373,0,0,0,0,3.348l3.19,3.253a.534.534,0,0,0,.754.007l.007-.007L27,33.155A2.363,2.363,0,0,0,23.671,29.8Z" transform="translate(2.573 71.713)"/>
+      <path id="路径_82" data-name="路径 82" class="cls-2" d="M18.3,99.459V96.725h2.869" transform="translate(-0.297)"/>
+      <path id="路径_85" data-name="路径 85" class="cls-2" d="M18.3,96.725v2.734h2.869" transform="translate(-0.297 11.555)"/>
+      <path id="路径_83" data-name="路径 83" class="cls-2" d="M21.166,99.459V96.725H18.3" transform="translate(12.703)"/>
+      <path id="路径_84" data-name="路径 84" class="cls-2" d="M21.166,96.725v2.734H18.3" transform="translate(12.703 11.555)"/>
+    </g>
+  </g>
+</svg>

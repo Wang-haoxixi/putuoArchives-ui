@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2 {
+        stroke: #ccc;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.3px;
+      }
+    </style>
+  </defs>
+  <g id="icon_jiantou_shang" transform="translate(-172 -94)">
+    <rect id="矩形_15" data-name="矩形 15" class="cls-1" width="20" height="20" transform="translate(172 94)"/>
+    <path id="路径_29" data-name="路径 29" class="cls-2" d="M0,8.761,4.38,4.38,0,0" transform="translate(177.62 106.19) rotate(-90)"/>
+  </g>
+</svg>

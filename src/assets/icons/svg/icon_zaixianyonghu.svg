@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2 {
+        fill: #333;
+        stroke-width: 0.2px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #333;
+      }
+
+      .cls-3 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.3px;
+      }
+    </style>
+  </defs>
+  <g id="icon_zaixianyonghu" transform="translate(-16 -94)">
+    <rect id="矩形_42" data-name="矩形 42" class="cls-1" width="20" height="20" transform="translate(16 94)"/>
+    <g id="组_246" data-name="组 246" transform="translate(-4.101 83.039)">
+      <path id="路径_71" data-name="路径 71" class="cls-2" d="M55.95,13.766a3.555,3.555,0,1,1-2.514,1.041,3.532,3.532,0,0,1,2.514-1.041m0-1.223a4.778,4.778,0,1,0,4.778,4.778A4.778,4.778,0,0,0,55.95,12.543Z" transform="translate(-26.033 0)"/>
+      <path id="路径_72" data-name="路径 72" class="cls-2" d="M30.663,98.263a.557.557,0,0,0-.554-.558H30.1a7.2,7.2,0,0,0-3.055.677,7.771,7.771,0,0,0-2.479,1.834,8.562,8.562,0,0,0-1.659,2.7,9.07,9.07,0,0,0-.587,2.7.558.558,0,0,0,.557.592h.109a.559.559,0,0,0,.557-.525c.244-3.77,3.092-6.754,6.558-6.754H30.1a.559.559,0,0,0,.561-.558v-.108Z" transform="translate(0 -76.828)"/>
+      <path id="路径_79" data-name="路径 79" class="cls-3" d="M31.146,25.846l2.474,2.728,4.872-4.464" transform="translate(-1)"/>
+    </g>
+  </g>
+</svg>

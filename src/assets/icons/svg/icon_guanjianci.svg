@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke: #333;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+        stroke-width: 1.2px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3, .cls-4 {
+        stroke-linecap: round;
+        stroke-width: 1.3px;
+      }
+    </style>
+  </defs>
+  <g id="icon_guanjianci" transform="translate(-16 -94)">
+    <rect id="矩形_14" data-name="矩形 14" class="cls-1" width="20" height="20" transform="translate(16 94)"/>
+    <g id="组_42" data-name="组 42" transform="translate(67.422 302.716)">
+      <path id="路径_25" data-name="路径 25" class="cls-2" d="M-2.639-209.266l-2.58,2.165-.318,2.373,2.417.127,2.58-2.165-2.5-.057Z" transform="translate(-22.092 2.238) rotate(-3)"/>
+      <g id="组_44" data-name="组 44" transform="translate(-19.944 -26.042)">
+        <path id="路径_26" data-name="路径 26" class="cls-3" d="M-13.911-175.089a8.544,8.544,0,0,1,.485,2.847,8.567,8.567,0,0,1-8.567,8.566,8.567,8.567,0,0,1-8.567-8.566,8.567,8.567,0,0,1,8.567-8.567,8.552,8.552,0,0,1,2.488.367"/>
+        <path id="路径_27" data-name="路径 27" class="cls-3" d="M-17.968-173.66a4.265,4.265,0,0,1,.241,1.418,4.266,4.266,0,0,1-4.266,4.266,4.266,4.266,0,0,1-4.266-4.266,4.265,4.265,0,0,1,4.266-4.266,4.258,4.258,0,0,1,1.239.182"/>
+      </g>
+    </g>
+    <line id="直线_10" data-name="直线 10" class="cls-4" y1="4" x2="4" transform="translate(25.5 100.5)"/>
+  </g>
+</svg>

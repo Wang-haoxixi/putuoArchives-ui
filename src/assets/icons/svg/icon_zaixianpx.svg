@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20.15" viewBox="0 0 20 20.15">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-5 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #333;
+        stroke-width: 1.3px;
+      }
+
+      .cls-3 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="icon_zaixianpx" transform="translate(-16 -93.85)">
+    <rect id="矩形_14" data-name="矩形 14" class="cls-1" width="20" height="20" transform="translate(16 94)"/>
+    <g id="组_48" data-name="组 48" transform="translate(-0.5 -0.361)">
+      <g id="矩形_40" data-name="矩形 40" class="cls-2" transform="translate(19 97)">
+        <rect class="cls-4" width="15" height="12" rx="1"/>
+        <rect class="cls-5" x="0.65" y="0.65" width="13.7" height="10.7" rx="0.35"/>
+      </g>
+      <line id="直线_12" data-name="直线 12" class="cls-3" x2="5.964" transform="translate(23.518 100.837)"/>
+      <line id="直线_16" data-name="直线 16" class="cls-3" y2="2.723" transform="translate(26.59 94.861)"/>
+      <line id="直线_13" data-name="直线 13" class="cls-3" x2="4.608" transform="translate(23.608 104.632)"/>
+      <line id="直线_14" data-name="直线 14" class="cls-3" y1="3.253" x2="2.711" transform="translate(20.084 108.97)"/>
+      <line id="直线_15" data-name="直线 15" class="cls-3" x1="2.711" y1="3.253" transform="translate(30.114 109)"/>
+    </g>
+  </g>
+</svg>

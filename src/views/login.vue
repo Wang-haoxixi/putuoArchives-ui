@@ -93,6 +93,7 @@
 <script>
 import { getCodeImg, qrcodeLogin } from "@/api/login";
 import Cookies from "js-cookie";
+import dd from 'gdt-jsapi';
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 
 export default {
@@ -134,6 +135,17 @@ export default {
     },
   },
   created() {
+    dd.ready(function () {
+      console.log("created")
+    dd.getAuthCode({
+      corpId: "50352393",
+    })
+      .then((res) => {
+        console.log(res);
+        that.autoLogin(res.auth_code);
+      })
+      .catch((err) => {});
+    });
     this.getCode();
     this.getCookie();
     let that = this;
@@ -165,14 +177,21 @@ export default {
         rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
       };
     },
+    autoLogin(code) {
+      this.$store
+        .dispatch("autoLogin", code)
+        .then(() => {
+          this.$router.push({ path: this.redirect || "/" }).catch(() => {});
+        })
+        .catch(() => {});
+    },
     handleQrCodeLogin(code) {
       this.$store
         .dispatch("QrCodeLogin", code)
         .then(() => {
           this.$router.push({ path: this.redirect || "/" }).catch(() => {});
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {

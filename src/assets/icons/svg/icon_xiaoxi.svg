@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.201;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="icon_xiaoxi" transform="translate(-1252 -25)">
+    <rect id="矩形_13" data-name="矩形 13" class="cls-1" width="24" height="24" transform="translate(1252 25)"/>
+    <path id="路径_21" data-name="路径 21" class="cls-2" d="M51.446,37.781a2.331,2.331,0,0,1-1.074-1.969V31.19a7.124,7.124,0,0,0-5.72-6.908v-.165a1.558,1.558,0,0,0-3.117,0v.165a7.122,7.122,0,0,0-5.72,6.908v4.622a2.337,2.337,0,0,1-1.074,1.969c.181-.117-.485.314-.485.89A1.037,1.037,0,0,0,35.3,39.71h5.2a2.6,2.6,0,0,0,5.2,0h5.192a1.037,1.037,0,0,0,1.039-1.039C51.931,38.1,51.268,37.664,51.446,37.781Z" transform="translate(1220.907 4.566)"/>
+  </g>
+</svg>

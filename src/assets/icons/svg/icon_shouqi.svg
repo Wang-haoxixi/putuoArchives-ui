@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2 {
+        stroke: #ccc;
+        stroke-linecap: round;
+        stroke-width: 1.3px;
+      }
+
+      .cls-3 {
+        fill: #ccc;
+      }
+    </style>
+  </defs>
+  <g id="icon_shouqi" transform="translate(-64 -852)">
+    <g id="组_15" data-name="组 15" transform="translate(18)">
+      <g id="icon_shouqi-2" data-name="icon_shouqi">
+        <rect id="矩形_18" data-name="矩形 18" class="cls-1" width="24" height="24" transform="translate(46 852)"/>
+        <g id="组_58" data-name="组 58" transform="translate(-18.393)">
+          <line id="直线_23" data-name="直线 23" class="cls-2" x2="15.561" transform="translate(68.939 858)"/>
+          <line id="直线_24" data-name="直线 24" class="cls-2" x2="10.374" transform="translate(74.126 861.89)"/>
+          <line id="直线_25" data-name="直线 25" class="cls-2" x2="10.374" transform="translate(74.126 866.429)"/>
+          <line id="直线_26" data-name="直线 26" class="cls-2" x2="15.561" transform="translate(68.939 870.967)"/>
+          <path id="路径_33" data-name="路径 33" class="cls-3" d="M25.052,77.536,27.644,79.8a.148.148,0,0,0,.245-.111V75.156a.148.148,0,0,0-.245-.111l-2.592,2.267a.148.148,0,0,0-.013.209l.013.013Z" transform="translate(43.284 786.53)"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

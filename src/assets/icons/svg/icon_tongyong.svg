@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-4 {
+        fill: none;
+      }
+
+      .cls-1 {
+        opacity: 0.204;
+      }
+
+      .cls-2 {
+        stroke: #333;
+        stroke-width: 1.3px;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="icon_tongyong" transform="translate(-16 -94)">
+    <rect id="矩形_14" data-name="矩形 14" class="cls-1" width="20" height="20" transform="translate(16 94)"/>
+    <g id="组_55" data-name="组 55">
+      <g id="矩形_43" data-name="矩形 43" class="cls-2" transform="translate(17.692 95.639)">
+        <rect class="cls-3" width="15.808" height="7" rx="1"/>
+        <rect class="cls-4" x="0.65" y="0.65" width="14.508" height="5.7" rx="0.35"/>
+      </g>
+      <g id="矩形_44" data-name="矩形 44" class="cls-2" transform="translate(17.692 105)">
+        <rect class="cls-3" width="15.808" height="7" rx="1"/>
+        <rect class="cls-4" x="0.65" y="0.65" width="14.508" height="5.7" rx="0.35"/>
+      </g>
+    </g>
+  </g>
+</svg>

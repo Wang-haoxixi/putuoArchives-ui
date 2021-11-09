@@ -78,6 +78,24 @@ const user = {
         })
       })
     },
+    // 自动登录
+    autoLogin({
+      commit
+    }, code) {
+      return new Promise((resolve, reject) => {
+        const codeObj = {
+          loginType: "DD_PASSWORD_FREE_LOGIN",
+          code: code
+        };
+        login(codeObj).then(res => {
+          setToken(res.token)
+          commit('SET_TOKEN', res.token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
 
     // 获取用户信息
     GetInfo({

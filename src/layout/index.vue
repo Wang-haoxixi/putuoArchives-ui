@@ -8,7 +8,7 @@
       <!-- <div :class="{'fixed-header':fixedHeader}"> -->
         <!-- <navbar /> -->
         <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/> -->
-        <!-- <tags-view v-if="needTagsView" /> -->
+        <tags-view v-if="needTagsView" />
       <!-- </div> -->
       <app-main />
       <right-panel>

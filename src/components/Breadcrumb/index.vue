@@ -2,6 +2,7 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
+        <span v-if="index==0" class="no-redirect">当前位置：</span>
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
@@ -35,7 +36,7 @@ export default {
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/index', meta: { title: '首页' }}].concat(matched)
+        matched = [{ path: '/index', meta: { title: '工作台' }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
@@ -63,11 +64,11 @@ export default {
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
   font-size: 14px;
-  line-height: 50px;
-  margin-left: 8px;
+  line-height: 52px;
+  margin-left: 20px;
 
   .no-redirect {
-    color: #97a8be;
+    color: #999999;
     cursor: text;
   }
 }

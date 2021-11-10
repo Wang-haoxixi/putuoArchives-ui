@@ -1,14 +1,15 @@
 <template>
   <div class="navbar">
-    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
-
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
-
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
+    <!-- <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/> -->
+    <div class="left-menu">
+      <img src="@/assets/logo/logo.png"  class="left-menu-logo"/>
+      <div class="left-menu-title">普陀区档案归集智能监管服务平台</div>
+    </div>
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
-        
+      <!-- <template v-if="device !== 'mobile'"> -->
+        <!-- <search id="header-search" class="right-menu-item" /> -->
+
         <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip> -->
@@ -17,18 +18,21 @@
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip> -->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
 
-        <el-tooltip content="布局大小" effect="dark" placement="bottom">
+        <!-- <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
+      </template> -->
 
-      </template>
-
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+      >
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <img :src="avatar" class="user-avatar" />
+          <div class="user-name">欢迎您，{{name}}</div>
+          <!-- <i class="el-icon-caret-bottom" /> -->
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/user/profile">
@@ -47,15 +51,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import TopNav from '@/components/TopNav'
-import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+import { mapGetters } from "vuex";
+import Breadcrumb from "@/components/Breadcrumb";
+import TopNav from "@/components/TopNav";
+import Hamburger from "@/components/Hamburger";
+import Screenfull from "@/components/Screenfull";
+import SizeSelect from "@/components/SizeSelect";
+import Search from "@/components/HeaderSearch";
+import RuoYiGit from "@/components/RuoYi/Git";
+import RuoYiDoc from "@/components/RuoYi/Doc";
 
 export default {
   components: {
@@ -66,48 +70,46 @@ export default {
     SizeSelect,
     Search,
     RuoYiGit,
-    RuoYiDoc
+    RuoYiDoc,
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar',
-      'device'
-    ]),
+    ...mapGetters(["sidebar", "avatar", "device", "name"]),
     setting: {
       get() {
-        return this.$store.state.settings.showSettings
+        return this.$store.state.settings.showSettings;
       },
       set(val) {
-        this.$store.dispatch('settings/changeSetting', {
-          key: 'showSettings',
-          value: val
-        })
-      }
+        this.$store.dispatch("settings/changeSetting", {
+          key: "showSettings",
+          value: val,
+        });
+      },
     },
     topNav: {
       get() {
-        return this.$store.state.settings.topNav
-      }
-    }
+        return this.$store.state.settings.topNav;
+      },
+    },
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
+      this.$store.dispatch("app/toggleSideBar");
     },
     async logout() {
-      this.$confirm('确定注销并退出系统吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$store.dispatch('LogOut').then(() => {
-          location.href = '/index';
+      this.$confirm("确定注销并退出系统吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$store.dispatch("LogOut").then(() => {
+            location.href = "/index";
+          });
         })
-      }).catch(() => {});
-    }
-  }
-}
+        .catch(() => {});
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -119,20 +121,23 @@ export default {
   z-index: 99;
   // overflow: hidden;
   // position: relative;
-  background: #1492FF;
+  background: #1492ff;
   padding: 0 20px;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -150,10 +155,27 @@ export default {
     vertical-align: top;
   }
 
+  .left-menu {
+    display: flex;
+    align-items: center;
+    .left-menu-logo {
+      width: 28px;
+      height: 28px;
+    }
+    .left-menu-title {
+      padding-left: 12px;
+      font-size: 24px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      line-height: 33px;
+      color: #ffffff;
+    }
+  }
+
   .right-menu {
-    float: right;
+    padding-right: 20px;
     height: 100%;
-    line-height: 50px;
+    line-height: 72px;
 
     &:focus {
       outline: none;
@@ -161,34 +183,38 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
       height: 100%;
       font-size: 18px;
-      color: #5a5e66;
       vertical-align: text-bottom;
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }
 
     .avatar-container {
-      margin-right: 30px;
+      // margin-right: 30px;
 
       .avatar-wrapper {
-        margin-top: 5px;
+        display:flex;
+        align-items: center;
         position: relative;
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+        }
+        .user-name {
+          padding-left: 12px;
+          font-size: 16px;
+          color: #ffffff;
         }
 
         .el-icon-caret-bottom {

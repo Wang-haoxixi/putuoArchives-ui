@@ -1,16 +1,15 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
     <navbar />
-    <!-- <div style="height:72px;background: #1492FF;">
-      容器测试部分
-      </div> -->
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar class="sidebar-container"/>
     <div :class="{hasTagsView:needTagsView}" class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+      <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+      <!-- <div :class="{'fixed-header':fixedHeader}"> -->
         <!-- <navbar /> -->
-        <tags-view v-if="needTagsView" />
-      </div>
+        <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/> -->
+        <!-- <tags-view v-if="needTagsView" /> -->
+      <!-- </div> -->
       <app-main />
       <right-panel>
         <settings />
@@ -21,6 +20,7 @@
 
 <script>
 import RightPanel from '@/components/RightPanel'
+import Breadcrumb from "@/components/Breadcrumb";
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
@@ -33,6 +33,8 @@ export default {
     Navbar,
     RightPanel,
     Settings,
+    AppMain,
+    Breadcrumb,
     Sidebar,
     TagsView
   },

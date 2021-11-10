@@ -1,10 +1,14 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
+    <navbar />
+    <!-- <div style="height:72px;background: #1492FF;">
+      容器测试部分
+      </div> -->
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar class="sidebar-container"/>
     <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+        <!-- <navbar /> -->
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />

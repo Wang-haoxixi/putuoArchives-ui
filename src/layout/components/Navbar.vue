@@ -1,6 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/>
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/>
@@ -112,10 +112,15 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
-  overflow: hidden;
-  position: relative;
-  background: #fff;
+  position: fixed;
+  top: 0;
+  height: 72px;
+  width: 100vw;
+  z-index: 99;
+  // overflow: hidden;
+  // position: relative;
+  background: #1492FF;
+  padding: 0 20px;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {

@@ -39,9 +39,8 @@
           :base-path="route.path"
         />
         <el-menu-item
-          class="submenu-title-noDropdown"
-          style="height: 72px; position: fixed; bottom: 0;box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.08);"
-          :style="'width:'+ (sidebar.opened === true ? '208px':'60px')"
+          class="submenu-title-noDropdown stretch"
+          :style="'width:' + (sidebar.opened === true ? '212px' : '64px')"
         >
           <hamburger
             id="hamburger-container"
@@ -95,25 +94,32 @@ export default {
 
   created() {
     this.scrollbarWidth = scrollbarWidth();
+    console.log(this.sidebarRouters);
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
-      console.log(this.sidebar.opened)
+      console.log(this.sidebar.opened);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.stretch {
+  height: 72px !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.08);
+}
 .el-scrollbar ::v-deep .el-submenu__title {
   height: 64px;
   line-height: 64px;
   font-size: 18px;
-  padding: 0 16px !important;
+  padding-right: 16px !important;
 }
 .el-scrollbar ::v-deep .submenu-title-noDropdown {
-  padding: 0 16px !important;
+  m: 0 16px !important;
 }
 .el-scrollbar ::v-deep .el-menu-item {
   height: 64px;
@@ -121,7 +127,7 @@ export default {
   font-size: 18px;
   padding: 0 16px 0 36px;
 }
-.el-scrollbar ::v-deep .el-submenu__title i{
+.el-scrollbar ::v-deep .el-submenu__title i {
   font-size: 20px;
 }
 </style>

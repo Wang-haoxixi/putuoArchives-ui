@@ -1,5 +1,6 @@
 <template>
   <div
+    class="sidebar-container"
     :class="{ 'has-logo': showLogo }"
     :style="{
       backgroundColor:
@@ -38,20 +39,22 @@
           :item="route"
           :base-path="route.path"
         />
-        <el-menu-item
-          class="submenu-title-noDropdown stretch"
-          :style="'width:' + (sidebar.opened === true ? '212px' : '64px')"
-        >
-          <hamburger
-            id="hamburger-container"
-            :is-active="sidebar.opened"
-            class="hamburger-container"
-            @toggleClick="toggleSideBar"
-          />
-          <span slot="title">展开</span>
-        </el-menu-item>
       </el-menu>
     </el-scrollbar>
+    <div class="stretch">
+      <el-menu :collapse="isCollapse">
+        <el-menu-item class="submenu-title-noDropdown"
+      >
+        <hamburger
+          id="hamburger-container"
+          :is-active="sidebar.opened"
+          class="hamburger-container"
+          @toggleClick="toggleSideBar"
+        />
+        <span slot="title">展开</span>
+      </el-menu-item>
+      </el-menu>
+    </div>
   </div>
 </template>
 <script>
@@ -107,19 +110,26 @@ export default {
 
 <style lang="scss" scoped>
 .stretch {
-  height: 72px !important;
-  position: fixed !important;
-  bottom: 0 !important;
+  height: 72px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left:0;
   box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.08);
+}
+.stretch ::v-deep .el-menu-item {
+  height: 72px !important;
+  line-height: 72px !important;
+}
+.stretch ::v-deep .el-submenu__title {
+  height: 72px !important;
+  line-height: 72px !important;
 }
 .el-scrollbar ::v-deep .el-submenu__title {
   height: 64px;
   line-height: 64px;
   font-size: 18px;
   padding-right: 16px !important;
-}
-.el-scrollbar ::v-deep .submenu-title-noDropdown {
-  m: 0 16px !important;
 }
 .el-scrollbar ::v-deep .el-menu-item {
   height: 64px;

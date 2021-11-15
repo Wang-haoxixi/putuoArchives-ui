@@ -1,6 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
-
+    <el-button type="success">成功按钮</el-button>
+    <el-button type="success">测试</el-button>
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">

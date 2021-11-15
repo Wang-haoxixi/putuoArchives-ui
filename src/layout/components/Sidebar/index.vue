@@ -97,12 +97,10 @@ export default {
 
   created() {
     this.scrollbarWidth = scrollbarWidth();
-    console.log(this.sidebarRouters);
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
-      console.log(this.sidebar.opened);
     },
   },
 };

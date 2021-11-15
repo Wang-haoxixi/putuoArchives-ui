@@ -1,5 +1,5 @@
 <template>
-  <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
+  <div :class="classObj" class="app-wrapper">
     <navbar />
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar class="sidebar-container"/>
@@ -34,6 +34,7 @@ export default {
     RightPanel,
     Settings,
     AppMain,
+    
     Breadcrumb,
     Sidebar,
     TagsView
@@ -41,7 +42,6 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     ...mapState({
-      theme: state => state.settings.theme,
       sideTheme: state => state.settings.sideTheme,
       sidebar: state => state.app.sidebar,
       device: state => state.app.device,

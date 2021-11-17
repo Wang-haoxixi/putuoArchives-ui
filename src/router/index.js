@@ -59,19 +59,19 @@ export const constantRoutes = [
     component: (resolve) => require(['@/views/error/401'], resolve),
     hidden: true
   },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'index',
-    children: [
-      {
-        path: 'index',
-        component: (resolve) => require(['@/views/index'], resolve),
-        name: 'Index',
-        meta: { title: '工作台', icon: 'icon_gongzuotai', affix: true }
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: 'index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: (resolve) => require(['@/views/workbench/index.vue'], resolve),
+  //       name: 'Index',
+  //       meta: { title: '工作台', icon: 'icon_gongzuotai', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '/user',
     component: Layout,

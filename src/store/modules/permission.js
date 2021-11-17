@@ -8,6 +8,7 @@ const permission = {
   state: {
     routes: [],
     addRoutes: [],
+    indexRouter: {},
     defaultRoutes: [],
     topbarRouters: [],
     sidebarRouters: []
@@ -19,6 +20,11 @@ const permission = {
     },
     SET_DEFAULT_ROUTES: (state, routes) => {
       state.defaultRoutes = constantRoutes.concat(routes)
+    },
+    SET_INDEX_ROUTER:(state, router) =>{
+      state.indexRouter = router
+      console.log('index',state.indexRouter)
+
     },
     SET_TOPBAR_ROUTES: (state, routes) => {
       // 顶部导航菜单默认添加统计报表栏指向首页
@@ -40,9 +46,11 @@ const permission = {
         getRouters().then(res => {
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
+          const indexdata = JSON.parse(JSON.stringify(res.data[0].children[0]))
           const sidebarRoutes = filterAsyncRouter(sdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
           rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
+          commit('SET_INDEX_ROUTER',indexdata)
           commit('SET_ROUTES', rewriteRoutes)
           commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
           commit('SET_DEFAULT_ROUTES', sidebarRoutes)

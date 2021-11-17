@@ -34,9 +34,8 @@ export default {
       // only show routes with meta.title
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
       const first = matched[0]
-
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/index', meta: { title: '工作台' }}].concat(matched)
+        matched = [{ path: this.$store.getters.indexRouter.path, meta: { title: this.$store.getters.indexRouter.meta.title }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
@@ -46,7 +45,7 @@ export default {
       if (!name) {
         return false
       }
-      return name.trim() === 'Index'
+      return name.trim() === this.$store.getters.indexRouter.name
     },
     handleLink(item) {
       const { redirect, path } = item

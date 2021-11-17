@@ -93,7 +93,7 @@
 <script>
 import { getCodeImg, qrcodeLogin } from "@/api/login";
 import Cookies from "js-cookie";
-import dd from 'gdt-jsapi';
+import dd from "gdt-jsapi";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 
 export default {
@@ -130,22 +130,19 @@ export default {
     $route: {
       handler: function (route) {
         this.redirect = route.query && route.query.redirect;
-        console.log(this.redirect)
       },
       immediate: true,
     },
   },
   created() {
     dd.ready(function () {
-      console.log("created")
-    dd.getAuthCode({
-      corpId: "50352393",
-    })
-      .then((res) => {
-        console.log(res);
-        that.autoLogin(res.auth_code);
+      dd.getAuthCode({
+        corpId: "50352393",
       })
-      .catch((err) => {});
+        .then((res) => {
+          that.autoLogin(res.auth_code);
+        })
+        .catch((err) => {});
     });
     this.getCode();
     this.getCookie();
@@ -214,7 +211,9 @@ export default {
           this.$store
             .dispatch("Login", this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || "/" }).catch(() => {});
+              this.$router
+                .push({ path: this.redirect || "index" })
+                .catch(() => {});
             })
             .catch(() => {
               this.loading = false;

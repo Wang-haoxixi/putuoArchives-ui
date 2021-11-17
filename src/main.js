@@ -33,6 +33,9 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 缺省图组件
+import DefaultPage from '@/components/DefaultPage'
+
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -51,6 +54,7 @@ Vue.component('RightToolbar', RightToolbar)
 Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
+Vue.component('DefaultPage', DefaultPage)
 
 Vue.use(directive)
 Vue.use(plugins)

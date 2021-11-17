@@ -50,6 +50,7 @@
       <el-col :span="8">
         <div style="background-color: #ffffff; border-radius: 4px">
           通知消息
+          <default-page :index="3" :show="false"></default-page>
         </div>
       </el-col>
     </el-row>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import { init } from "@/api/workbench";
+import { getlist,getTaskCount } from "@/api/workbench";
 export default {
   name: "Index",
   components: {},
@@ -97,12 +98,18 @@ export default {
   methods: {
     getList() {
       this.loading = true;
-      init().then((res) => {
+      getlist().then((res) => {
         if (res.code == 200) {
           this.total = res.data.total;
           this.loading = false;
         }
       });
+    },
+    handleSizeChange(){
+      console.log("handleSizeChange")
+    },
+    handleCurrentChange(){
+      console.log("handleCurrentChange")
     },
     click(index) {
       this.current = index;

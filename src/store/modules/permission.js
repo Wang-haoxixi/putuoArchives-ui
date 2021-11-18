@@ -62,12 +62,31 @@ const permission = {
             redirect: '/404',
             hidden: true
           })
+          rewriteRoutes.push({
+            path: '/index',
+            redirect: indexRouter.path,
+            hidden: true
+          })
+          let hasBasic = false
+          for (let i = 0; i < rewriteRoutes.length; i++) {
+            if (rewriteRoutes[i].path == '/') {
+              rewriteRoutes[i].redirect = indexRouter.path
+              hasBasic = true
+            }
+          }
+          if (!hasBasic) {
+            rewriteRoutes.push({
+              path: '/',
+              redirect: indexRouter.path,
+              hidden: true
+            })
+          }
           commit('SET_INDEX_ROUTER', indexRouter)
           commit('SET_ROUTES', rewriteRoutes)
           commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
           commit('SET_DEFAULT_ROUTES', sidebarRoutes)
           commit('SET_TOPBAR_ROUTES', sidebarRoutes)
-          let router = {rewriteRoutes: rewriteRoutes,indexRouter: indexRouter}
+          let router = rewriteRoutes
           resolve(router)
         })
       })
@@ -130,9 +149,9 @@ function filterChildren(childrenMap, lastRouter = false) {
 function resolveIndexRouter(router,path) {
   for(let i = 0; i < router.length; i++) {
       if(router[i].hidden === false) {
-        path = path + router[i].path
-        if(router[i].children){ 
-          return resolveIndexRouter(router[i].children, path + '/')
+        path = path + ((path.endsWith('/') || router[i].path.startsWith('/')) ? router[i].path : `/${router[i].path}`)
+        if(router[i].children){
+          return resolveIndexRouter(router[i].children, path)
         }else{
           router[i].path = path
           return router[i]

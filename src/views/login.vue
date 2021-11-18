@@ -129,7 +129,7 @@ export default {
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query?.redirect
       },
       immediate: true,
     },
@@ -212,7 +212,7 @@ export default {
             .dispatch("Login", this.loginForm)
             .then(() => {
               this.$router
-                .push({ path: this.redirect || "index" })
+                .push({ path: this.redirect || "/index" })
                 .catch(() => {});
             })
             .catch(() => {

@@ -1,9 +1,9 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
+  <el-breadcrumb class="app-breadcrumb" separator-class="el-icon-arrow-right">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
         <span v-if="index==0" class="no-redirect">当前位置：</span>
-        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
+        <span :style="'color:'+ (index==levelList.length-1?'#333333':'')" v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{ item.meta.title }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
@@ -32,11 +32,12 @@ export default {
   methods: {
     getBreadcrumb() {
       // only show routes with meta.title
+      console.log(this.$route)
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
       const first = matched[0]
-      if (!this.isDashboard(first)) {
-        matched = [{ path: this.$store.getters.indexRouter.path, meta: { title: this.$store.getters.indexRouter.meta.title }}].concat(matched)
-      }
+      // if (!this.isDashboard(first)) {
+      //   matched = [{ path: this.$store.getters.indexRouter.path, meta: { title: this.$store.getters.indexRouter.meta.title }}].concat(matched)
+      // }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },

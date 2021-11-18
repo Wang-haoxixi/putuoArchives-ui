@@ -1,5 +1,9 @@
-import { constantRoutes } from '@/router'
-import { getRouters } from '@/api/menu'
+import {
+  constantRoutes
+} from '@/router'
+import {
+  getRouters
+} from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView';
 import InnerLink from '@/layout/components/InnerLink'
@@ -21,16 +25,17 @@ const permission = {
     SET_DEFAULT_ROUTES: (state, routes) => {
       state.defaultRoutes = constantRoutes.concat(routes)
     },
-    SET_INDEX_ROUTER:(state, router) =>{
+    SET_INDEX_ROUTER: (state, router) => {
       state.indexRouter = router
-      console.log('index',state.indexRouter)
-
     },
     SET_TOPBAR_ROUTES: (state, routes) => {
       // 顶部导航菜单默认添加统计报表栏指向首页
       const index = [{
         path: 'index',
-        meta: { title: '统计报表', icon: 'dashboard'}
+        meta: {
+          title: '统计报表',
+          icon: 'dashboard'
+        }
       }]
       state.topbarRouters = routes.concat(index);
     },
@@ -40,23 +45,30 @@ const permission = {
   },
   actions: {
     // 生成路由
-    GenerateRoutes({ commit }) {
+    GenerateRoutes({
+      commit
+    }) {
       return new Promise(resolve => {
         // 向后端请求路由数据
         getRouters().then(res => {
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
-          const indexdata = JSON.parse(JSON.stringify(res.data[0].children[0]))
+          const indexdata = JSON.parse(JSON.stringify(res.data))
           const sidebarRoutes = filterAsyncRouter(sdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
-          rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
-          rewriteRoutes[0].redirect = indexdata.path
-          commit('SET_INDEX_ROUTER',indexdata)
+          const indexRouter = resolveIndexRouter(indexdata,'')
+          rewriteRoutes.push({
+            path: '*',
+            redirect: '/404',
+            hidden: true
+          })
+          commit('SET_INDEX_ROUTER', indexRouter)
           commit('SET_ROUTES', rewriteRoutes)
           commit('SET_SIDEBAR_ROUTERS', constantRoutes.concat(sidebarRoutes))
           commit('SET_DEFAULT_ROUTES', sidebarRoutes)
           commit('SET_TOPBAR_ROUTES', sidebarRoutes)
-          resolve(rewriteRoutes)
+          let router = {rewriteRoutes: rewriteRoutes,indexRouter: indexRouter}
+          resolve(router)
         })
       })
     }
@@ -113,6 +125,20 @@ function filterChildren(childrenMap, lastRouter = false) {
     children = children.concat(el)
   })
   return children
+}
+
+function resolveIndexRouter(router,path) {
+  for(let i = 0; i < router.length; i++) {
+      if(router[i].hidden === false) {
+        path = path + router[i].path
+        if(router[i].children){ 
+          return resolveIndexRouter(router[i].children, path + '/')
+        }else{
+          router[i].path = path
+          return router[i]
+        }
+      }
+  }
 }
 
 export const loadView = (view) => {

@@ -35,7 +35,7 @@ export default {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
       const first = matched[0]
       if (!this.isDashboard(first)) {
-        matched = [{ path: "/" + this.$store.getters.indexRouter.path, meta: { title: this.$store.getters.indexRouter.meta.title }}].concat(matched)
+        matched = [{ path: this.$store.getters.indexRouter.path, meta: { title: this.$store.getters.indexRouter.meta.title }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)

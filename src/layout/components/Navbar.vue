@@ -3,35 +3,69 @@
     <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
     <!-- <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/> -->
     <div class="left-menu">
-      <img src="@/assets/logo/logo.png"  class="left-menu-logo"/>
+      <img src="@/assets/logo/logo.png" class="left-menu-logo" />
       <div class="left-menu-title">普陀区档案归集智能监管服务平台</div>
     </div>
     <div class="right-menu">
       <!-- <template v-if="device !== 'mobile'"> -->
-        <!-- <search id="header-search" class="right-menu-item" /> -->
+      <!-- <search id="header-search" class="right-menu-item" /> -->
 
-        <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
+      <!-- <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip> -->
 
-        <!-- <el-tooltip content="文档地址" effect="dark" placement="bottom">
+      <!-- <el-tooltip content="文档地址" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip> -->
 
-        <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
+      <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
 
-        <!-- <el-tooltip content="布局大小" effect="dark" placement="bottom">
+      <!-- <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template> -->
-
+      <el-dropdown trigger="click">
+        <div class="check-box">
+          <span>普陀档案馆</span
+          ><svg-icon icon-class="icon_jiantou_xia" style="margin-left: 12px" />
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="danwei">
+            <span
+              >普陀区档案归集智能监管服务平台普陀区档案归集智能监管服务平台</span
+            >
+          </el-dropdown-item>
+          <el-dropdown-item @click.native="danwei">
+            <span>退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <el-dropdown class="po" trigger="click">
+        <div class="check-box">
+          <span>xx工作台</span
+          ><svg-icon icon-class="icon_qiehuan" style="margin-left: 12px" />
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="work">
+            <span>xx工作台</span>
+          </el-dropdown-item>
+          <el-dropdown-item @click.native="work">
+            <span>退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+      <div class="notice">
+        <el-badge :value="12" style="margin-top: 6px; margin-right: 5px">
+          <svg-icon icon-class="icon_xiaoxi" />
+        </el-badge>
+      </div>
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
         trigger="click"
       >
         <div class="avatar-wrapper">
           <img :src="avatar" class="user-avatar" />
-          <div class="user-name">欢迎您，{{name}}</div>
+          <div class="user-name">欢迎您，{{ name }}</div>
           <!-- <i class="el-icon-caret-bottom" /> -->
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -113,6 +147,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notice {
+  margin-right: 12px;
+  color: #fff;
+  line-height: 24px;
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+.notice ::v-deep .el-badge__content {
+  background-color: #fc5c5c;
+  border: none;
+}
 .navbar {
   position: fixed;
   top: 0;
@@ -173,12 +223,41 @@ export default {
   }
 
   .right-menu {
+    display: flex;
     padding-right: 20px;
+    align-items: center;
     height: 100%;
     line-height: 72px;
 
     &:focus {
       outline: none;
+    }
+    .check-box {
+      display: flex;
+      align-items: center;
+      background-color: #0064c0;
+      padding: 0 8px 0 12px;
+      border-radius: 2px;
+      color: #edf4ff;
+      font-size: 14px;
+      line-height: 28px;
+      height: 28px;
+      margin-right: 12px;
+      &:hover {
+        cursor: pointer;
+      }
+      span {
+        max-width: 280px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        &:focus {
+          cursor: pointer;
+        }
+      }
+      svg {
+        font-size: 24px;
+      }
     }
 
     .right-menu-item {
@@ -201,7 +280,7 @@ export default {
       // margin-right: 30px;
 
       .avatar-wrapper {
-        display:flex;
+        display: flex;
         align-items: center;
         position: relative;
 

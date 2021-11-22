@@ -36,6 +36,8 @@ import DictData from '@/components/DictData'
 // 缺省图组件
 import DefaultPage from '@/components/DefaultPage'
 
+// 内容容器
+import BasicContainer from '@/views/components/BasicContainer'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -55,6 +57,7 @@ Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('DefaultPage', DefaultPage)
+Vue.component('BasicContainer', BasicContainer)
 
 Vue.use(directive)
 Vue.use(plugins)

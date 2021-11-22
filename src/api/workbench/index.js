@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function getlist() {
+export function getlist(query) {
     return request({
       url: '/task/page',
       method: 'get',
+      params: query
     })
   }
   export function getTaskCount() {

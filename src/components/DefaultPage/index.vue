@@ -53,8 +53,8 @@ export default {
         },
         {
           status: "noData",
-          imgSrc: "pic_wutongzhi@2x.png",
-          desc: "无通知消息",
+          imgSrc: "pic_zanwushuju@2x.png",
+          desc: "暂无数据",
         },
         {
           status: "dev",

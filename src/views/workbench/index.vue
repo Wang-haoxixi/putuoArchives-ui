@@ -3,28 +3,124 @@
     <el-row :gutter="20">
       <el-col :span="16">
         <div style="background-color: #ffffff; border-radius: 4px">
-          <div>我的任务</div>
+          <div class="title-container">
+            <div class="title-text">我的任务</div>
+          </div>
           <div>
-            <el-button type="primary" :plain="current != 0" @click="click(0)"
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != 'auditCount'"
+              @click="click(2)"
+              >待处理任务</el-button
+            >
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != '1'"
+              @click="click(1)"
               >进行中任务</el-button
             >
-            <el-button type="primary" :plain="current != 1" @click="click(1)"
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != 'waitReceiveCount'"
+              @click="click(5)"
               >待领取任务</el-button
             >
-            <el-button type="primary" :plain="current != 2" @click="click(2)"
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != 'perfectCount'"
+              @click="click(6)"
               >完善任务</el-button
             >
-            <el-button type="primary" :plain="current != 3" @click="click(3)"
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != 'taskCount'"
+              @click="click(0)"
               >全部任务</el-button
+            >
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != 'waitAuditCount'"
+              @click="click(3)"
+              >待审核任务</el-button
+            >
+            <el-button
+              type="primary"
+              :plain="query.statusFlag != 'reviewedCount'"
+              @click="click(4)"
+              >已审核任务</el-button
             >
           </div>
           <el-table :data="tableData" v-loading="loading" style="width: 100%">
-            <el-table-column prop="date" label="序号"> </el-table-column>
-            <el-table-column prop="name" label="任务/清单名称">
+            <!-- <el-table-column label="序号">
+              <template slot-scope="scope">
+                <span> {{ scope }}</span>
+              </template>
+            </el-table-column> -->
+            <el-table-column
+              prop="taskName"
+              label="任务/清单名称"
+            ></el-table-column>
+            <el-table-column prop="archivesName" label="题名">
             </el-table-column>
-            <el-table-column prop="address" label="任务类型"> </el-table-column>
-            <el-table-column prop="address" label="任务状态"> </el-table-column>
-            <el-table-column prop="address" label="截止日期"> </el-table-column>
+            <el-table-column prop="companyDeptName" label="单位">
+            </el-table-column>
+            <el-table-column prop="responsibleDept" label="责任者">
+            </el-table-column>
+            <el-table-column prop="formTime" label="形成时间">
+            </el-table-column>
+            <el-table-column prop="status" label="审核类型">
+              <template slot-scope="scope">
+                <span>{{
+                  selectDictLabel(dict.type.task_audit_type, scope.row.status)
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="applyUserName" label="申请人">
+            </el-table-column>
+            <el-table-column prop="applyRemark" label="申请理由">
+            </el-table-column>
+            <!-- TODO: 新接口，找辜鹏拿 -->
+            <el-table-column prop="materialType" label="档案类型">
+              <template slot-scope="scope">
+                <span>{{
+                  selectDictLabel(dict.type.task_type, scope.row.materialType)
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="deptName" label="科室"> </el-table-column>
+            <el-table-column prop="liableName" label="归集人">
+            </el-table-column>
+            <!-- TODO: 新接口，找辜鹏拿 -->
+            <el-table-column prop="type" label="归集类型">
+              <template slot-scope="scope">
+                <span>{{
+                  selectDictLabel(dict.type.task_type, scope.row.type)
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="type" label="任务类型">
+              <template slot-scope="scope">
+                <span>{{
+                  selectDictLabel(dict.type.task_type, scope.row.type)
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="任务循环"> </el-table-column>
+            <el-table-column prop="pageStatus" label="任务状态">
+              <template slot-scope="scope">
+                <span>{{
+                  selectDictLabel(
+                    dict.type.task_page_status,
+                    scope.row.pageStatus
+                  )
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="applyTime" label="申请时间">
+            </el-table-column>
+            <el-table-column prop="creteTime " label="创建日期">
+            </el-table-column>
+            <el-table-column prop="endTime" label="截止日期"> </el-table-column>
             <el-table-column label="操作">
               <template slot-scope="scope">
                 <el-button
@@ -49,8 +145,39 @@
       </el-col>
       <el-col :span="8">
         <div style="background-color: #ffffff; border-radius: 4px">
-          通知消息
-          <default-page :index="3" :show="false"></default-page>
+          <div class="title-container">
+            <div class="title-text">通知消息</div>
+            <el-button type="text" style="font-size: 14px">更多</el-button>
+          </div>
+          <default-page :index="1"></default-page>
+          <div
+            class="notice-item"
+            v-for="(item, index) in noticeList"
+            :key="index"
+          >
+            <!-- <div class="notice-item-title"> -->
+            <text-tooltip
+              :content="item.noticeTitle"
+              class="notice-item-title"
+            ></text-tooltip>
+            <!-- </div> -->
+
+            <!-- <el-tooltip
+              effect="dark"
+              :content="item.noticeTitle"
+              placement="top-start"
+            > -->
+            <!-- <div class="notice-item-title">{{ item.noticeTitle }}</div> -->
+            <!-- </el-tooltip> -->
+            <text-tooltip
+              :content="time(item.createTime)"
+              class="notice-item-time"
+            ></text-tooltip>
+            <!-- <div class="notice-item-time">
+              1小时前
+              {{ item.updateTime }}
+            </div> -->
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -58,9 +185,12 @@
 </template>
 
 <script>
-import { getlist,getTaskCount } from "@/api/workbench";
+import { formatTime } from "@/utils/index";
+import { getlist, getTaskCount } from "@/api/workbench";
+import { listNotice } from "@/api/system/notice";
 export default {
-  name: "Index",
+  name: "Workbench",
+  dicts: ["task_type", "task_page_status", "task_audit_type"],
   components: {},
   data() {
     return {
@@ -69,62 +199,103 @@ export default {
         size: 10,
         total: 0,
       },
-      current: 0,
+      query: {
+        statusFlag: 0,
+      },
+      noticeList: [],
       loading: true,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "清单任务",
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "清单任务",
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "清单任务",
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄",
-        },
-      ],
+      tableData: [],
     };
   },
+  watch: {
+    query: {
+      handler(newName, oldName) {
+        this.getList(newName);
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
   methods: {
-    getList() {
+    time(time) {
+      if (this.dayjs(this.dayjs()).diff(time, "minute") < 5) {
+        return "刚刚";
+      } else if (this.dayjs(this.dayjs()).diff(time, "minute") < 60) {
+        return this.dayjs(this.dayjs()).diff(time, "minute") < 60 + "分钟前";
+      } else if (this.dayjs(this.dayjs()).diff(time, "hour") < 24) {
+        return this.dayjs(this.dayjs()).diff(time, "hour") + "小时前";
+      } else if (this.dayjs(this.dayjs()).diff(time, "day") < 30) {
+        return this.dayjs(this.dayjs()).diff(time, "day") + "天前";
+      } else {
+        return this.dayjs(time).date();
+      }
+    },
+    init() {
+      this.getNoticeList();
+      this.getTaskCount();
+      this.getList();
+    },
+    getNoticeList() {
+      listNotice().then((res) => {
+        this.noticeList = res.data.records;
+      });
+    },
+    getTaskCount() {
+      getTaskCount().then((res) => {
+        // console.log(res);
+      });
+    },
+    getList(query) {
       this.loading = true;
-      getlist().then((res) => {
+      getlist(query).then((res) => {
         if (res.code == 200) {
+          this.tableData = res.data.records;
           this.total = res.data.total;
           this.loading = false;
         }
       });
     },
-    handleSizeChange(){
-      console.log("handleSizeChange")
+    handleSizeChange() {
+      console.log("handleSizeChange");
     },
-    handleCurrentChange(){
-      console.log("handleCurrentChange")
+    handleCurrentChange() {
+      console.log("handleCurrentChange");
     },
     click(index) {
-      this.current = index;
+      this.query.statusFlag = index;
     },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type];
     },
   },
   created() {
-    this.getList();
+    // console.log(formatTime(this.dayjs("2021-11-15 10:59:42")));
+    // console.log(this.dayjs("2021-11-15 10:59:42").unix);
+    this.init();
+    // this.getList();
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.title-container {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.title-text {
+  font-size: 24px;
+  line-height: 33px;
+  color: #333333;
+  font-weight: 500;
+}
+// .title-more-text {
+//   font-size: 24px;
+//   line-height: 33px;
+//   color: #333333;
+//   font-weight: 500;
+// }
 .dashboard-editor-container {
   // padding: 32px;
   background-color: rgb(240, 242, 245);
@@ -134,6 +305,29 @@ export default {
     background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
+  }
+}
+.notice-item {
+  display: flex;
+  flex-direction: space-between;
+  align-items: center;
+  line-height: 64px;
+  height: 64px;
+  margin: 0 20px;
+  border-bottom: 1px solid #eeeeee;
+  .notice-item-title {
+    min-width: 0;
+    flex: 1;
+    line-height: 64px;
+    font-size: 16px;
+    color: #333333;
+  }
+  .notice-item-time {
+    text-align: right;
+    width: 80px;
+    padding-left: 12px;
+    font-size: 14px;
+    color: #999999;
   }
 }
 

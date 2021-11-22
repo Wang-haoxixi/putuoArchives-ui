@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Cookies from 'js-cookie'
 import Element from 'element-ui'
+import dayjs from 'dayjs'
 // import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/theme/index.css' // theme
@@ -35,7 +36,8 @@ import VueMeta from 'vue-meta'
 import DictData from '@/components/DictData'
 // 缺省图组件
 import DefaultPage from '@/components/DefaultPage'
-
+// 文字溢出提示组件
+import TextTooltip from '@/components/TextTooltip'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -46,6 +48,8 @@ Vue.prototype.addDateRange = addDateRange
 Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.handleTree = handleTree
+Vue.prototype.dayjs = dayjs
+
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
@@ -55,6 +59,7 @@ Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('DefaultPage', DefaultPage)
+Vue.component('TextTooltip', TextTooltip)
 
 Vue.use(directive)
 Vue.use(plugins)

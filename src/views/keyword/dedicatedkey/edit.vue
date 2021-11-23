@@ -1,20 +1,17 @@
 <template>
   <basic-container>
-    <content-box title="通用关键词库">
-      <template>
-        <div class=""></div>
-        <div>
-          <search-input @search="toSearch"></search-input>
-          <el-button style="margin-left: 10px;" type="primary" icon="el-icon-plus" >新增关键词库</el-button>
-          <el-button @click="startBatch">启用</el-button>
-          <el-button @click="stopBatch">禁用</el-button>
-        </div>
-        <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
-          <template v-slot:status="scope">
-            <color-tag :value="scope.row.status" :tags="statusTags"></color-tag>
-          </template>
-        </hc-crud>
+    <content-box title="专用关键词库">
+      <template v-slot:operations>
+        <search-input @search="toSearch"></search-input>
+        <el-button style="margin-left: 10px;" type="primary" icon="el-icon-plus" >新增关键词库</el-button>
+        <el-button @click="startBatch">启用</el-button>
+        <el-button @click="stopBatch">禁用</el-button>
       </template>
+      <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
+        <template v-slot:status="scope">
+          <color-tag :value="scope.row.status" :tags="statusTags"></color-tag>
+        </template>
+      </hc-crud>
     </content-box>
   </basic-container>
 </template>
@@ -24,7 +21,7 @@ import {
   getPageDept,
   startData,
   stopData,
-} from "@/api/keyword/general";
+} from "@/api/keyword/dedicated";
 import HcCrud from "@/views/components/HcCrud/index"
 import ColorTag from "@/views/components/ColorTag/index"
 import ContentBox from "@/views/components/ContentBox/index"
@@ -61,7 +58,7 @@ export default {
             prop: "name"
           },
           {
-            label: "关键词属性",
+            label: "使用单位",
             prop: "deptName"
           },
           {
@@ -71,7 +68,20 @@ export default {
             sortable: "custom"
           },
           {
-            label: "更新时间",
+            label: "创建人",
+            prop: "createByName",
+          },
+          {
+            label: "创建时间",
+            prop: "createTime",
+            sortable: "custom"
+          },
+          {
+            label: "最后修改人",
+            prop: "updateByName"
+          },
+          {
+            label: "最后修改时间",
             prop: "updateTime",
             sortable: "custom"
           }
@@ -120,7 +130,7 @@ export default {
           for (let i = 0; i < select.length; i++) {
             ids.push(select[i].id)
           }
-          return startData({ids})
+          return startData(ids)
         }).then(() => {
           this.$modal.msgSuccess("启用成功");
           this.$refs.hcCrud.refresh();
@@ -137,7 +147,7 @@ export default {
           for (let i = 0; i < select.length; i++) {
             ids.push(select[i].id)
           }
-          return stopData({ids})
+          return stopData(ids)
         }).then(() => {
           this.$modal.msgSuccess("禁用成功");
           this.$refs.hcCrud.refresh();

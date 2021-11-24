@@ -141,6 +141,7 @@
             :total="page.total"
           >
           </el-pagination>
+          <input @change="change" type="file" />
         </div>
       </el-col>
       <el-col :span="8">
@@ -149,7 +150,10 @@
             <div class="title-text">通知消息</div>
             <el-button type="text" style="font-size: 14px">更多</el-button>
           </div>
-          <default-page :index="1"></default-page>
+          <default-page
+            :index="1"
+            :show="!noticeList.length > 0"
+          ></default-page>
           <div
             class="notice-item"
             v-for="(item, index) in noticeList"
@@ -188,12 +192,14 @@
 import { formatTime } from "@/utils/index";
 import { getlist, getTaskCount } from "@/api/workbench";
 import { listNotice } from "@/api/system/notice";
+import request from '@/utils/request'
 export default {
   name: "Workbench",
   dicts: ["task_type", "task_page_status", "task_audit_type"],
   components: {},
   data() {
     return {
+      fileList: [],
       page: {
         current: 1,
         size: 10,
@@ -217,6 +223,33 @@ export default {
     },
   },
   methods: {
+    change(e) {
+      let files = e.target.files;
+
+      // 上传部分
+      let url = "/file/upload"; //你的后台上传地址
+      let data = new FormData();
+      data.append("file", files[0]);
+      request({
+        url,
+        method: "post",
+        timeout: 10000000,
+        data,
+        headers: {},
+        //原生获取上传进度的事件
+        onUploadProgress: function (progressEvent) {
+          let complete =
+            (((progressEvent.loaded / progressEvent.total) * 100) | 0) + "%";
+          console.log("上传 " + complete);
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     time(time) {
       if (this.dayjs(this.dayjs()).diff(time, "minute") < 5) {
         return "刚刚";
@@ -231,7 +264,7 @@ export default {
       }
     },
     init() {
-      this.getNoticeList();
+      // this.getNoticeList();
       this.getTaskCount();
       this.getList();
     },

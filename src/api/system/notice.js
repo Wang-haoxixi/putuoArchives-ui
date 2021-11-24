@@ -1,9 +1,19 @@
 import request from '@/utils/request'
 
 // 查询公告列表
-export function listNotice(query) {
+export function getNoticeList(query) {
   return request({
     url: '/system/notice/list',
+    method: 'get',
+  })
+}
+
+
+//长轮询公告列表
+export function circularListNotice(query) {
+  return request({
+    url: '/system/notice/watch',
+    timeout: 90000,
     method: 'get',
     params: query
   })

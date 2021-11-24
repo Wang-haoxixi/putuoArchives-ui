@@ -94,6 +94,7 @@ import SizeSelect from "@/components/SizeSelect";
 import Search from "@/components/HeaderSearch";
 import RuoYiGit from "@/components/RuoYi/Git";
 import RuoYiDoc from "@/components/RuoYi/Doc";
+import { getNoticeList, circularListNotice } from "@/api/system/notice";
 
 export default {
   components: {
@@ -125,7 +126,33 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      noticeList: undefined,
+      status: "",
+    };
+  },
+  created() {
+    this.getNoticeList();
+  },
   methods: {
+    upload() {},
+    getNoticeList() {
+      getNoticeList().then((res) => {
+        console.log(res.data.data);
+        this.circularListNotice();
+      });
+    },
+    circularListNotice() {
+      circularListNotice()
+        .then((res) => {
+          this.noticeList = res.data.data;
+          this.circularListNotice();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
     },

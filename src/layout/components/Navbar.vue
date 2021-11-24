@@ -57,7 +57,11 @@
         </el-dropdown-menu>
       </el-dropdown>
       <div class="notice">
-        <el-badge :value="12" style="margin-top: 6px; margin-right: 5px">
+        <el-badge
+          :value="unread"
+          :hidden="!unread > 0"
+          style="margin-top: 6px; margin-right: 5px"
+        >
           <svg-icon icon-class="icon_xiaoxi" />
         </el-badge>
       </div>
@@ -119,6 +123,7 @@ export default {
       "currentWorkbench",
       "deptList",
       "roleList",
+      "unread"
     ]),
     setting: {
       get() {
@@ -152,20 +157,23 @@ export default {
       workbenchChange(item).then((res) => {
         if (res.code === 200) {
           console.log(this.roleList);
-          window.open(location.origin,"_self")
+          window.open(location.origin, "_self");
         }
       });
     },
     upload() {},
     getNoticeList() {
       getNoticeList().then((res) => {
+        this.$store.commit("SET_NOTICE_LIST", res.data.data.records);
+        this.$store.commit("SET_UNREAD", res.data.noRead);
         this.circularListNotice();
       });
     },
     circularListNotice() {
       circularListNotice()
         .then((res) => {
-          this.noticeList = res.data.data;
+          this.$store.commit("SET_NOTICE_LIST", res.data.data.records);
+          this.$store.commit("SET_UNREAD", res.data.noRead);
           this.circularListNotice();
         })
         .catch((err) => {

@@ -5,7 +5,7 @@ const notice = {
     },
   
     mutations: {
-      SET_UNREAd: (state, unread) => {
+      SET_UNREAD: (state, unread) => {
         state.unread = unread
       },
       SET_NOTICE_LIST: (state, noticeList) => {

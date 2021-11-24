@@ -16,7 +16,10 @@ const user = {
     name: '',
     avatar: '',
     roles: [],
-    permissions: []
+    permissions: [],
+    currentWorkbench: {},
+    deptList: undefined,
+    roleList: undefined,
   },
 
   mutations: {
@@ -34,6 +37,15 @@ const user = {
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
+    },
+    SET_CURRENT_WORKBENCH: (state, currentWorkbench) => {
+      state.currentWorkbench = currentWorkbench
+    },
+    SET_DEPT_LIST: (state, deptList) => {
+      state.deptList = deptList
+    },
+    SET_ROLE_LIST: (state, roleList) => {
+      state.roleList = roleList
     }
   },
 
@@ -112,6 +124,9 @@ const user = {
           } else {
             commit('SET_ROLES', ['ROLE_DEFAULT'])
           }
+          commit('SET_CURRENT_WORKBENCH', res.workbench.currentWorkbench)
+          commit('SET_DEPT_LIST', res.workbench.deptList)
+          commit('SET_ROLE_LIST', res.workbench.roleList)
           commit('SET_NAME', user.nickName)
           commit('SET_AVATAR', avatar)
           resolve(res)

@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 import { praseStrEmpty } from "@/utils/ruoyi";
 
+
+export function workbenchChange(data) {
+  return request({
+    url: '/user/workbench',
+    method: 'post',
+    data: data
+  })
+}
+
 // 查询用户列表
 export function listUser(query) {
   return request({

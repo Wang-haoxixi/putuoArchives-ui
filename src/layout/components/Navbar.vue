@@ -24,33 +24,35 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template> -->
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" v-if="deptList">
         <div class="check-box">
-          <span>普陀档案馆</span
+          <span>{{
+            currentWorkbench.unitName + currentWorkbench.deptName
+          }}</span
           ><svg-icon icon-class="icon_jiantou_xia" style="margin-left: 12px" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="danwei">
-            <span
-              >普陀区档案归集智能监管服务平台普陀区档案归集智能监管服务平台</span
-            >
-          </el-dropdown-item>
-          <el-dropdown-item @click.native="danwei">
-            <span>退出登录</span>
+          <el-dropdown-item
+            @click.native="workbenchChange(item)"
+            v-for="(item, index) in deptList"
+            :key="index"
+          >
+            <span>{{ item.unitName + item.deptName }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dropdown class="po" trigger="click">
+      <el-dropdown trigger="click" v-if="roleList">
         <div class="check-box">
-          <span>xx工作台</span
+          <span>{{ currentWorkbench.roleName }}</span
           ><svg-icon icon-class="icon_qiehuan" style="margin-left: 12px" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native="work">
-            <span>xx工作台</span>
-          </el-dropdown-item>
-          <el-dropdown-item @click.native="work">
-            <span>退出登录</span>
+          <el-dropdown-item
+            @click.native="workbenchChange(item)"
+            v-for="(item, index) in roleList"
+            :key="index"
+          >
+            <span>{{ item.roleName }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -94,6 +96,7 @@ import SizeSelect from "@/components/SizeSelect";
 import Search from "@/components/HeaderSearch";
 import RuoYiGit from "@/components/RuoYi/Git";
 import RuoYiDoc from "@/components/RuoYi/Doc";
+import { workbenchChange } from "@/api/system/user";
 import { getNoticeList, circularListNotice } from "@/api/system/notice";
 
 export default {
@@ -108,7 +111,15 @@ export default {
     RuoYiDoc,
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar", "device", "name"]),
+    ...mapGetters([
+      "sidebar",
+      "avatar",
+      "device",
+      "name",
+      "currentWorkbench",
+      "deptList",
+      "roleList",
+    ]),
     setting: {
       get() {
         return this.$store.state.settings.showSettings;
@@ -133,13 +144,21 @@ export default {
     };
   },
   created() {
+    console.log(this.roleList);
     this.getNoticeList();
   },
   methods: {
+    workbenchChange(item) {
+      workbenchChange(item).then((res) => {
+        if (res.code === 200) {
+          console.log(this.roleList);
+          window.open(location.origin,"_self")
+        }
+      });
+    },
     upload() {},
     getNoticeList() {
       getNoticeList().then((res) => {
-        console.log(res.data.data);
         this.circularListNotice();
       });
     },

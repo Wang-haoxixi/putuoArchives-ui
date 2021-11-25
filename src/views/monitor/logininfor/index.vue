@@ -58,10 +58,6 @@ export default {
             prop: "userName"
           },
           {
-            label: "角色",
-            prop: "roleName"
-          },
-          {
             label: "IP地址",
             prop: "ipaddr"
           },

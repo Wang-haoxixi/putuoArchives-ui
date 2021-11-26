@@ -61,6 +61,7 @@
           :value="unread"
           :hidden="!unread > 0"
           style="margin-top: 6px; margin-right: 5px"
+          @click.native="notice"
         >
           <svg-icon icon-class="icon_xiaoxi" />
         </el-badge>
@@ -153,6 +154,9 @@ export default {
     this.getNoticeList();
   },
   methods: {
+    notice(){
+      this.$router.push({path: "noticeList"})
+    },
     workbenchChange(item) {
       workbenchChange(item).then((res) => {
         if (res.code === 200) {

@@ -149,7 +149,7 @@
         <!-- <div class="notice-item-title">{{ item.noticeTitle }}</div> -->
         <!-- </el-tooltip> -->
         <text-tooltip
-          :content="time(item.createTime)"
+          :content="timeInterval(item.createTime)"
           class="notice-item-time"
         ></text-tooltip>
         <!-- <div class="notice-item-time">
@@ -163,7 +163,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { formatTime } from "@/utils/index";
+import { timeInterval } from "@/utils/index";
 import { getlist, getTaskCount } from "@/api/workbench";
 import { listNotice } from "@/api/system/notice";
 import request from "@/utils/request";
@@ -199,6 +199,7 @@ export default {
     },
   },
   methods: {
+    timeInterval,
     change(e) {
       let files = e.target.files;
 
@@ -225,19 +226,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    },
-    time(time) {
-      if (this.dayjs(this.dayjs()).diff(time, "minute") < 5) {
-        return "刚刚";
-      } else if (this.dayjs(this.dayjs()).diff(time, "minute") < 60) {
-        return this.dayjs(this.dayjs()).diff(time, "minute") < 60 + "分钟前";
-      } else if (this.dayjs(this.dayjs()).diff(time, "hour") < 24) {
-        return this.dayjs(this.dayjs()).diff(time, "hour") + "小时前";
-      } else if (this.dayjs(this.dayjs()).diff(time, "day") < 30) {
-        return this.dayjs(this.dayjs()).diff(time, "day") + "天前";
-      } else {
-        return this.dayjs(time).date();
-      }
     },
     init() {
       console.log(this.noticeList);

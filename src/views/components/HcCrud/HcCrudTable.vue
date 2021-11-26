@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 100%;" header-row-class-name="hc-crud-table-header" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}" v-loading="tableLoading" :default-expand-all="option.defaultExpand" v-on="$listeners">
+  <el-table :row-style="option.rowStyle" :show-header="option.showHeader" :data="tableData" style="width: 100%;" header-row-class-name="hc-crud-table-header" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}" v-loading="tableLoading" :default-expand-all="option.defaultExpand" v-on="$listeners">
     <el-table-column
       align="center"
       v-if="option.selection"
@@ -16,7 +16,7 @@
         <div>{{scope.$index + 1 + startIndex}}</div>
       </template>
     </el-table-column>
-    <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.prop" :label="item.label"  :width="item.width || ''" :sortable="item.sortable">
+    <el-table-column v-for="(item, index) in columns" :key="index" :prop="item.prop" :label="item.label"  :width="item.width || ''" :sortable="item.sortable" :show-overflow-tooltip="item.showOverflowTooltip">
       <template v-if="item.slot || item.type == 'select' || item.formatter" v-slot="scope">
         <slot v-if="item.slot" :name="item.prop" :row="scope.row">
         </slot>
@@ -57,7 +57,10 @@ export default {
     },
     option: {
       type: Object,
-      required: true
+      required: true,
+      default:{
+        showHeader: true,
+      }
     },
     startIndex: {
       type: Number,

@@ -22,8 +22,9 @@ export function circularListNotice(query) {
 // 查询公告详细
 export function getNotice(noticeId) {
   return request({
-    url: '/system/notice/' + noticeId,
-    method: 'get'
+    url: '/system/notice/record/detail',
+    method: 'get',
+    params: {id:noticeId}
   })
 }
 
@@ -48,7 +49,8 @@ export function updateNotice(data) {
 // 删除公告
 export function delNotice(noticeId) {
   return request({
-    url: '/system/notice/' + noticeId,
-    method: 'delete'
+    url: '/system/notice/record/del',
+    method: 'post',
+    data: [noticeId]
   })
 }

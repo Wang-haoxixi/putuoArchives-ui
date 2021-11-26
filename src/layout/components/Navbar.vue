@@ -123,7 +123,7 @@ export default {
       "currentWorkbench",
       "deptList",
       "roleList",
-      "unread"
+      "unread",
     ]),
     setting: {
       get() {
@@ -172,8 +172,10 @@ export default {
     circularListNotice() {
       circularListNotice()
         .then((res) => {
-          this.$store.commit("SET_NOTICE_LIST", res.data.data.records);
-          this.$store.commit("SET_UNREAD", res.data.noRead);
+          if (res.data.isNewData === true) {
+            this.$store.commit("SET_NOTICE_LIST", res.data.data.records);
+            this.$store.commit("SET_UNREAD", res.data.noRead);
+          }
           this.circularListNotice();
         })
         .catch((err) => {

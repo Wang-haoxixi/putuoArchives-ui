@@ -4,7 +4,7 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar class="sidebar-container"/>
     <div :class="{hasTagsView:needTagsView}" class="main-container">
-      <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+      <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
       <!-- <div :class="{'fixed-header':fixedHeader}"> -->
         <!-- <navbar /> -->
         <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container"/> -->

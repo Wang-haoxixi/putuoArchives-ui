@@ -25,7 +25,7 @@ export default {
 <style lang="scss" scoped>
 .app-main {
   /* 124= navbar + title  124  */
-  padding: 0 20px 20px;
+  padding: 20px;
   min-height: calc(100vh - 124px);
   width: 100%;
   position: relative;

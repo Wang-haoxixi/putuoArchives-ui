@@ -63,7 +63,7 @@
     </slot>
     <!-- 分页 -->
     <slot v-if="!allShow" name="pagination">
-      <div class="pagination-box">
+      <div class="pagination-box" :style="{'text-align': option.pageAlign}">
         <el-pagination
           style="display: inline-block"
           @size-change="sizeChange"

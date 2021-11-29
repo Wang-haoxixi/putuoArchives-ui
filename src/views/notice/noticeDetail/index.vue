@@ -3,7 +3,7 @@
     <div class="title">
       <div class="title-text">消息详情</div>
       <div>
-        <el-button type="primary">转发消息</el-button>
+        <el-button type="primary" @click="forward">转发消息</el-button>
         <el-button>删除</el-button>
         <el-button>返回</el-button>
       </div>
@@ -44,6 +44,24 @@ export default {
   methods: {
       link(link){
           window.open(link,"_blank");
+      },
+      forward(){
+        this.$prompt('请选择接收人', '转发消息', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+          inputErrorMessage: '邮箱格式不正确'
+        }).then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: '你的邮箱是: ' + value
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
+        });
       }
   }
 };

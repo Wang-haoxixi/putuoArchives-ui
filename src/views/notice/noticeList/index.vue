@@ -35,7 +35,7 @@
               justify-content: space-between;
             "
           >
-            <el-button size="medium" type="text" @click="del(scope.row.id)"
+            <el-button size="medium" style="font-size: 14px" type="text" @click="del(scope.row.id)"
               >删除</el-button
             >
             <el-button

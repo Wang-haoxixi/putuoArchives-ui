@@ -28,9 +28,9 @@
       <template v-slot="scope">
         <template v-for="(item, index) in menuList">
           <template v-if="item.auto">
-            <el-button v-if="item.auto" :key="index" type="text" size="mini" @click="handleAutoEvent(item.type, scope.row)">{{handleName(item.type)}}</el-button>
+            <el-button class="menu-button" v-if="item.auto" :key="index" type="text" size="mini" @click="handleAutoEvent(item.type, scope.row)">{{handleName(item.type)}}</el-button>
           </template>
-          <el-button v-else :key="index" type="text" size="mini" @click="handleEvent(item.fun, scope.row)">{{item.label}}</el-button>
+          <el-button v-else class="menu-button" :key="index" type="text" size="mini" @click="handleEvent(item.fun, scope.row)">{{item.label}}</el-button>
         </template>
         <slot name="menu" :row="scope.row">
         </slot>
@@ -181,5 +181,8 @@ export default {
 <style lang="scss" scoped>
 .hc-crud-table-header {
   color: #333333;
+}
+.menu-button{
+  font-size:14px;
 }
 </style>

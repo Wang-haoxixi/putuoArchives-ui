@@ -52,6 +52,7 @@ export default {
       font-size: 24px;
       height: 33px;
       line-height: 33px;
+      font-weight: 600;
     }
     .tips {
       padding-bottom: 2px;

@@ -1,12 +1,12 @@
 <template>
-  <div class="hc-crud-container">
+  <div class="hc-crud-container" :class="{'not-out': notOut}">
     <div v-if="searchList && searchList.length > 0" class="hc-crud-search">
       <!-- <div class="menu-left">
         <el-button v-if="optionC.addBtn" type="primary" :size="optionC.headerSize" icon="el-icon-plus" @click="toCreate">新建</el-button>
         <slot name="menuLeft"></slot>
       </div> -->
 
-        <hc-search-form ref="hcSearchForm" :searchQuery="searchList" :search-show="optionC.search" @search="coverSearch" @reset-search="afterResetSearch">
+        <hc-search-form style="margin-top: 20px;" ref="hcSearchForm" :searchQuery="searchList" :search-show="optionC.search" @search="coverSearch" @reset-search="afterResetSearch">
           <template v-slot:basicSearch="scope">
             <slot name="basicSearch" :searchFun="scope.searchFun"></slot>
           </template>
@@ -25,7 +25,7 @@
     </div>
     <slot name="operation">
       <div v-if="operationList && operationList.length > 0" class="hc-crud-operation">
-        <el-button v-for="(operation, index) in operationList" :key="index" :type="operation.type" @click="operation.fun">{{operation.label}}</el-button>
+        <el-button v-for="(operation, index) in operationList" :key="index" :type="operation.type" :icon="operation.icon" @click="operation.fun">{{operation.label}}</el-button>
       </div>
     </slot>
     <!-- 表格 -->
@@ -149,6 +149,10 @@ export default {
     beforeOpen: {
       type: Function,
       default: null
+    },
+    notOut: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -421,6 +425,14 @@ export default {
     .menu-right {
       display: flex;
       align-items: center;
+    }
+  }
+  &.not-out {
+    .hc-crud-table, .search-box {
+      margin: {
+        left: 0;
+        right: 0;
+      }
     }
   }
 }

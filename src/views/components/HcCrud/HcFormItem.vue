@@ -90,6 +90,19 @@
   >
   </el-date-picker>
 
+  <el-date-picker
+    v-else-if="option.type == 'daterange'"
+    :value="value || ''"
+    type="daterange"
+    :format="option.format"
+    :value-format="option.valueFormat"
+    range-separator="至"
+    start-placeholder="开始时间"
+    end-placeholder="结束时间"
+    @input="change"
+  >
+  </el-date-picker>
+
   <el-switch
     v-else-if="option.type == 'switch'"
     :value="value"

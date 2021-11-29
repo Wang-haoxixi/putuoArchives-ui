@@ -151,3 +151,32 @@ export function updateAuthRole(data) {
     params: data
   })
 }
+
+// 查询用户列表
+export function getUserPage(query) {
+  return request({
+    url: '/user/list_page',
+    method: 'get',
+    params: query
+  })
+}
+
+export function updateUserRole(data) {
+  return request({
+    url: 'role/user/modify',
+    method: 'post',
+    data
+  })
+}
+
+export function getUserRecordsPage(query) {
+  return request({
+    url: '/user/change_logs',
+    method: 'get',
+    params: query
+  })
+}
+
+
+
+

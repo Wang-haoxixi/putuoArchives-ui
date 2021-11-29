@@ -9,10 +9,30 @@ export function listRole(query) {
   })
 }
 
+export function getRolePage(params) {
+  return request({
+    url: "/role/list/page",
+    params
+  })
+}
+
+export function getAuthUserPage(params) {
+  return request({
+    url: "/role/user/role_id",
+    params
+  })
+}
+
+export function getIdentityList () {
+  return request({
+    url: '/role/identity/list'
+  })
+}
+
 // 查询角色详细
 export function getRole(roleId) {
   return request({
-    url: '/system/role/' + roleId,
+    url: '/role/info?roleId=' + roleId,
     method: 'get'
   })
 }
@@ -20,7 +40,7 @@ export function getRole(roleId) {
 // 新增角色
 export function addRole(data) {
   return request({
-    url: '/system/role',
+    url: '/role/add',
     method: 'post',
     data: data
   })
@@ -29,8 +49,8 @@ export function addRole(data) {
 // 修改角色
 export function updateRole(data) {
   return request({
-    url: '/system/role',
-    method: 'put',
+    url: '/role/edit',
+    method: 'post',
     data: data
   })
 }
@@ -116,5 +136,36 @@ export function authUserSelectAll(data) {
     url: '/system/role/authUser/selectAll',
     method: 'put',
     params: data
+  })
+}
+
+export function removeRoleBatch (data) {
+  return request({
+    url: 'role/remove',
+    method: 'post',
+    data
+  })
+}
+
+export function addRoleUserBatch (data) {
+  return request({
+    url: '/role/user/batch/add',
+    method: 'post',
+    data
+  })
+}
+
+export function removeRoleUserBatch (data) {
+  return request({
+    url: '/role/user/batch/remove',
+    method: 'post',
+    data
+  })
+}
+
+export function getRoleList(params) {
+  return request({
+    url: "/role/list",
+    params
   })
 }

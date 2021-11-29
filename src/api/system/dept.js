@@ -66,3 +66,22 @@ export function delDept(deptId) {
     method: 'delete'
   })
 }
+
+// 获取部门树
+export function getDeptTree() {
+  return request({
+    url: '/system/dept/all/tree',
+    method: 'get'
+  })
+}
+
+export function getDeptUser(params) {
+  return request({
+    url: '/user/list_dept',
+    method: 'get',
+    params
+  })
+}
+
+
+

@@ -54,3 +54,11 @@ export function delNotice(noticeId) {
     data: [noticeId]
   })
 }
+// 转发公告
+export function forwardNotice(data) {
+  return request({
+    url: '/system/notice/forward',
+    method: 'post',
+    data: data
+  })
+}

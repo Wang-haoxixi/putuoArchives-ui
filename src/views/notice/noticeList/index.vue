@@ -143,7 +143,6 @@ export default {
         .catch(() => {});
     },
     del(id) {
-      console.log(id);
       this.$modal
         .confirm("是否确认删除该条消息？")
         .then(function () {})

@@ -4,8 +4,8 @@
       <div class="title-text">消息详情</div>
       <div>
         <el-button type="primary" @click="forward">转发消息</el-button>
-        <el-button>删除</el-button>
-        <el-button>返回</el-button>
+        <el-button @click="del">删除</el-button>
+        <el-button @click="back">返回</el-button>
       </div>
     </div>
     <div class="main">
@@ -23,13 +23,16 @@
         ></el-button>
       </div>
     </div>
+    <Form v-if="data.id" ref="form" :noticeId="data.id" @refresh="refresh"></Form>
   </div>
 </template>
 
 <script>
-import { getNotice } from "@/api/system/notice";
+import { getNotice,delNotice } from "@/api/system/notice";
+import Form from "./form"
 export default {
   name: "noticeDetail",
+  components: {Form},
   data() {
     return {
         data: ''
@@ -46,22 +49,22 @@ export default {
           window.open(link,"_blank");
       },
       forward(){
-        this.$prompt('请选择接收人', '转发消息', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-          inputErrorMessage: '邮箱格式不正确'
-        }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '你的邮箱是: ' + value
+        this.$refs.form.open();
+      },
+      del(){
+        this.$modal
+        .confirm("是否确认删除该条消息？")
+        .then(function () {})
+        .then(() => {
+          delNotice(this.data.id).then((res) => {
+            this.$modal.msgSuccess("删除成功");
+            this.$router.go(-1);
           });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入'
-          });       
-        });
+        })
+        .catch(() => {});
+      },
+      back(){
+        this.$router.back(-1);
       }
   }
 };

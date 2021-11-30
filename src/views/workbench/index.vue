@@ -48,12 +48,9 @@
           >已审核任务</el-button
         >
       </div>
-      <el-table :data="tableData" v-loading="loading" style="width: 100%">
-        <!-- <el-table-column label="序号">
-              <template slot-scope="scope">
-                <span> {{ scope }}</span>
-              </template>
-            </el-table-column> -->
+      <hc-crud not-out ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
+      </hc-crud>
+      <!-- <el-table :data="tableData" v-loading="loading" style="width: 100%">
         <el-table-column
           prop="taskName"
           label="任务/清单名称"
@@ -71,9 +68,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="applyUserName" label="申请人"> </el-table-column>
-        <el-table-column prop="applyRemark" label="申请理由"> </el-table-column>
-        <!-- TODO: 新接口，找辜鹏拿 -->
-        <el-table-column prop="materialType" label="档案类型">
+        <el-table-column prop="applyRemark" label="申请理由"> </el-table-column> -->
+      <!-- TODO: 新接口，找辜鹏拿 -->
+      <!-- <el-table-column prop="materialType" label="档案类型">
           <template slot-scope="scope">
             <span>{{
               selectDictLabel(dict.type.task_type, scope.row.materialType)
@@ -81,9 +78,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="deptName" label="科室"> </el-table-column>
-        <el-table-column prop="liableName" label="归集人"> </el-table-column>
-        <!-- TODO: 新接口，找辜鹏拿 -->
-        <el-table-column prop="type" label="归集类型">
+        <el-table-column prop="liableName" label="归集人"> </el-table-column> -->
+      <!-- TODO: 新接口，找辜鹏拿 -->
+      <!-- <el-table-column prop="type" label="归集类型">
           <template slot-scope="scope">
             <span>{{
               selectDictLabel(dict.type.task_type, scope.row.type)
@@ -125,7 +122,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="page.total"
       >
-      </el-pagination>
+      </el-pagination> -->
     </div>
     <div style="background-color: #ffffff; border-radius: 4px">
       <div class="title-container">
@@ -164,15 +161,115 @@
 <script>
 import { mapGetters } from "vuex";
 import { timeInterval } from "@/utils/index";
-import { getlist, getTaskCount } from "@/api/workbench";
-import { listNotice } from "@/api/system/notice";
+import { getList, getTaskCount } from "@/api/workbench";
+import HcCrud from "@/views/components/HcCrud/index";
 import request from "@/utils/request";
 export default {
   name: "Workbench",
   dicts: ["task_type", "task_page_status", "task_audit_type"],
-  components: {},
+  components: { HcCrud },
   computed: {
     ...mapGetters(["noticeList"]),
+    tableOption() {
+      return {
+        index: true,
+        indexLabel: "序号",
+        pageAlign: "center",
+        columns: [
+          {
+            label: "任务/清单名称",
+            prop: "taskName",
+          },
+          {
+            label: "题名",
+            prop: "archivesName",
+          },
+          {
+            label: "单位",
+            prop: "companyDeptName",
+          },
+          {
+            label: "责任者",
+            prop: "responsibleDept",
+          },
+          {
+            label: "形成时间",
+            prop: "formTime",
+          },
+          {
+            label: "审核类型",
+            prop: "status",
+            type: "select",
+            dicData: this.dict.type.task_audit_type,
+          },
+          {
+            label: "申请人",
+            prop: "applyUserName",
+          },
+          {
+            label: "申请理由",
+            prop: "applyRemark",
+          },
+          // TODO:辜鹏
+          // {
+          //   label: "档案类型",
+          //   prop: "materialType",
+          //   type: "select",
+          //   dicData: this.dict.type.task_type,
+          // },
+          {
+            label: "科室",
+            prop: "deptName",
+          },
+          {
+            label: "归集人",
+            prop: "liableName",
+          },
+          // TODO:辜鹏
+          // {
+          //   label: "归集类型",
+          //   prop: "type",
+          // },
+          {
+            label: "任务类型",
+            prop: "type",
+            type: "select",
+            dicData: this.dict.type.task_type,
+          },
+          {
+            label: "任务循环",
+            prop: "name",
+          },
+          {
+            label: "任务状态",
+            prop: "pageStatus",
+            type: "select",
+            dicData: this.dict.type.task_page_status,
+          },
+          {
+            label: "申请时间",
+            prop: "applyTime",
+          },
+          {
+            label: "创建日期",
+            prop: "creteTime",
+          },
+          {
+            label: "截止日期",
+            prop: "endTime",
+          },
+        ],
+        // menu: [
+        //   {
+        //     label: "查看",
+        //     fun: (row) => {
+        //       this.toEdit(row);
+        //     },
+        //   },
+        // ],
+        // menuWidth: 180,
+      };
+    },
   },
   data() {
     return {
@@ -192,7 +289,7 @@ export default {
   watch: {
     query: {
       handler(newName, oldName) {
-        this.getList(newName);
+        // this.getList(newName);
       },
       immediate: true,
       deep: true,
@@ -200,53 +297,39 @@ export default {
   },
   methods: {
     timeInterval,
-    change(e) {
-      let files = e.target.files;
-
-      // 上传部分
-      let url = "/file/upload"; //你的后台上传地址
-      let data = new FormData();
-      data.append("file", files[0]);
-      request({
-        url,
-        method: "post",
-        timeout: 10000000,
-        data,
-        headers: {},
-        //原生获取上传进度的事件
-        onUploadProgress: function (progressEvent) {
-          let complete =
-            (((progressEvent.loaded / progressEvent.total) * 100) | 0) + "%";
-          console.log("上传 " + complete);
-        },
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
+    fetchListFun(params) {
+      return new Promise((resolve, reject) => {
+        getList(params).then(({ data }) => {
+          resolve({
+            records: data.records,
+            page: {
+              total: data.total,
+            },
+          });
         });
+      });
     },
     init() {
-      console.log(this.noticeList);
+      console.log(this.dict.type.task_type);
+      // console.log(this.noticeList);
       this.getTaskCount();
-      this.getList();
+      // this.getList();
     },
     getTaskCount() {
       getTaskCount().then((res) => {
         // console.log(res);
       });
     },
-    getList(query) {
-      this.loading = true;
-      getlist(query).then((res) => {
-        if (res.code == 200) {
-          this.tableData = res.data.records;
-          this.total = res.data.total;
-          this.loading = false;
-        }
-      });
-    },
+    // getList(query) {
+    //   this.loading = true;
+    //   getlist(query).then((res) => {
+    //     if (res.code == 200) {
+    //       this.tableData = res.data.records;
+    //       this.total = res.data.total;
+    //       this.loading = false;
+    //     }
+    //   });
+    // },
     handleSizeChange() {
       console.log("handleSizeChange");
     },

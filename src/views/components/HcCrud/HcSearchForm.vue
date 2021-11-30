@@ -6,7 +6,11 @@
         <form-item :option="item" v-model="searchForm[item.prop]" style="height: 100%;width: 100%;"></form-item>
       </div>
     </div>
-    <div class="button-list">
+    <template v-if="searchQuery.length % 3 == 0">
+      <div></div>
+      <div></div>
+    </template>
+    <div class="button-list" :class="{'is-alone' : searchQuery.length % 3 == 0}">
       <el-button type="primary" icon="el-icon-search" @click="toSearch">搜索</el-button>
       <el-button @click="toReset">重置</el-button>
     </div>
@@ -59,5 +63,9 @@ export default {
 }
 .button-list {
   margin-top: 34px;
+  &.is-alone {
+    margin-top: 0;
+    text-align: right;
+  }
 }
 </style>

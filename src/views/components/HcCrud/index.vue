@@ -459,6 +459,12 @@ export default {
 
 .hc-crud-table {
   margin: 20px -20px 0;
+  ::v-deep .el-button--text {
+    font-size: 14px !important;
+  }
+  ::v-deep .el-dropdown {
+    font-size: 14px !important;
+  }
 }
 
 .pagination-box {

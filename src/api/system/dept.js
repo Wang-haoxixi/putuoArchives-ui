@@ -91,5 +91,33 @@ export function getDeptUser(params) {
   })
 }
 
+// 获取立档单位列表
+export function getDeptPage(params) {
+  return request({
+    url: '/system/dept/new/list',
+    method: 'get',
+    params
+  })
+}
+
+// 获取立档单位列表
+export function getDeptRecordPage(params) {
+  return request({
+    url: '/system/dd_dept_log/list',
+    method: 'get',
+    params
+  })
+}
+
+// 修改立档单位全宗号
+export function updateQzh(data) {
+  return request({
+    url: '/system/dept/new/update_sys_dept',
+    method: 'post',
+    data
+  })
+}
+
+
 
 

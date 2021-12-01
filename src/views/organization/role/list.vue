@@ -14,7 +14,7 @@
           </template>
           <template v-if="scope.row.type == 2">
             <el-button type="text" @click="toEdit(scope.row)">修改</el-button>
-            <el-dropdown
+            <el-dropdown size="medium"
               @command="(command) => handleCommand(command, scope.row)"
               v-hasPermi="['system:role:edit']"
             >

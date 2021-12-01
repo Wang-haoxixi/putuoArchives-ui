@@ -5,7 +5,7 @@
     width="70%"
     append-to-body
     :before-close="dialogBeforeClose">
-    <el-form ref="form" :model="formData" :rules="formRules">
+    <el-form ref="form" :model="formData" :rules="formRules" :label-position="option.labelPosition">
       <el-form-item v-for="item in formList" :key="item.prop" :prop="item.prop" :label="item.label+'：'" :label-width="option.labelWidth || item.labelWidth">
         <slot :name="`${item.prop}Form`" :form-data="formData">
           <hc-form-item v-model="formData[item.prop]" :option="item" :disabled="type == 'view' || item[`${type}Disabled`]"></hc-form-item>
@@ -115,8 +115,8 @@ export default {
     },
     open (data = {}, type = 'add') {
       if (this.beforeOpen) {
-        this.beforeOpen(() => {
-          this.handleOpen(data, type)
+        this.beforeOpen((dataC = data) => {
+          this.handleOpen(dataC, type)
         }, data, type)
       } else {
         this.handleOpen(data, type)

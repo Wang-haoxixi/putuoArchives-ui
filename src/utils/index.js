@@ -390,7 +390,6 @@ export function isNumberStr(str) {
  
 //时间间隔计算
 export function timeInterval(time) {
-  console.log(time)
   if (this.dayjs(this.dayjs()).diff(time, "minute") < 5) {
     return "刚刚";
   } else if (this.dayjs(this.dayjs()).diff(time, "minute") < 60) {

@@ -150,7 +150,6 @@ export default {
     };
   },
   created() {
-    console.log(this.roleList);
     this.getNoticeList();
   },
   methods: {
@@ -160,7 +159,6 @@ export default {
     workbenchChange(item) {
       workbenchChange(item).then((res) => {
         if (res.code === 200) {
-          console.log(this.roleList);
           window.open(location.origin, "_self");
         }
       });

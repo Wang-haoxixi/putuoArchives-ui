@@ -7,122 +7,118 @@
       <div>
         <el-button
           type="primary"
-          :plain="query.statusFlag != 'auditCount'"
+          v-if="currentWorkbench.identity == 3"
+          :plain="statusFlag != '2'"
           @click="click(2)"
-          >待处理任务</el-button
+          >待处理任务{{
+            count.waitHandleCount > 0 ? "(" + count.waitHandleCount + ")" : ""
+          }}</el-button
         >
         <el-button
           type="primary"
-          :plain="query.statusFlag != '1'"
+          v-if="
+            currentWorkbench.identity == 2 || currentWorkbench.identity == 3
+          "
+          :plain="statusFlag != '1'"
           @click="click(1)"
-          >进行中任务</el-button
+          >进行中任务
+          {{
+            count.conductCount > 0 ? "(" + count.conductCount + ")" : ""
+          }}</el-button
         >
         <el-button
           type="primary"
-          :plain="query.statusFlag != 'waitReceiveCount'"
+          v-if="currentWorkbench.identity == 2"
+          :plain="statusFlag != '5'"
           @click="click(5)"
-          >待领取任务</el-button
+          >待领取任务
+          {{
+            count.waitReceiveCount > 0 ? "(" + count.waitReceiveCount + ")" : ""
+          }}</el-button
         >
         <el-button
           type="primary"
-          :plain="query.statusFlag != 'perfectCount'"
+          v-if="currentWorkbench.identity == 2"
+          :plain="statusFlag != '6'"
           @click="click(6)"
-          >完善任务</el-button
+          >完善任务{{
+            count.perfectCount > 0 ? "(" + count.perfectCount + ")" : ""
+          }}</el-button
         >
-        <el-button
+        <!-- <el-button
           type="primary"
-          :plain="query.statusFlag != 'taskCount'"
+          v-if="
+            currentWorkbench.identity == 2 || currentWorkbench.identity == 3
+          "
+          :plain="statusFlag != '0'"
           @click="click(0)"
-          >全部任务</el-button
+          >全部任务{{
+            count.taskCount > 0 ? "(" + count.taskCount + ")" : ""
+          }}</el-button
+        > -->
+        <el-button type="primary" :plain="statusFlag != '0'" @click="click(0)"
+          >全部任务{{
+            count.taskCount > 0 ? "(" + count.taskCount + ")" : ""
+          }}</el-button
         >
         <el-button
           type="primary"
-          :plain="query.statusFlag != 'waitAuditCount'"
+          v-if="currentWorkbench.identity == 4"
+          :plain="statusFlag != '3'"
           @click="click(3)"
-          >待审核任务</el-button
+          >待审核任务{{
+            count.waitAuditCount > 0 ? "(" + count.waitAuditCount + ")" : ""
+          }}</el-button
         >
         <el-button
           type="primary"
-          :plain="query.statusFlag != 'reviewedCount'"
+          v-if="currentWorkbench.identity == 4"
+          :plain="statusFlag != '4'"
           @click="click(4)"
-          >已审核任务</el-button
+          >已审核任务{{
+            count.reviewedCount > 0 ? "(" + count.reviewedCount + ")" : ""
+          }}</el-button
         >
       </div>
-      <hc-crud not-out ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
-      </hc-crud>
-      <!-- <el-table :data="tableData" v-loading="loading" style="width: 100%">
-        <el-table-column
-          prop="taskName"
-          label="任务/清单名称"
-        ></el-table-column>
-        <el-table-column prop="archivesName" label="题名"> </el-table-column>
-        <el-table-column prop="companyDeptName" label="单位"> </el-table-column>
-        <el-table-column prop="responsibleDept" label="责任者">
-        </el-table-column>
-        <el-table-column prop="formTime" label="形成时间"> </el-table-column>
-        <el-table-column prop="status" label="审核类型">
-          <template slot-scope="scope">
-            <span>{{
-              selectDictLabel(dict.type.task_audit_type, scope.row.status)
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="applyUserName" label="申请人"> </el-table-column>
-        <el-table-column prop="applyRemark" label="申请理由"> </el-table-column> -->
-      <!-- TODO: 新接口，找辜鹏拿 -->
-      <!-- <el-table-column prop="materialType" label="档案类型">
-          <template slot-scope="scope">
-            <span>{{
-              selectDictLabel(dict.type.task_type, scope.row.materialType)
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="deptName" label="科室"> </el-table-column>
-        <el-table-column prop="liableName" label="归集人"> </el-table-column> -->
-      <!-- TODO: 新接口，找辜鹏拿 -->
-      <!-- <el-table-column prop="type" label="归集类型">
-          <template slot-scope="scope">
-            <span>{{
-              selectDictLabel(dict.type.task_type, scope.row.type)
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="type" label="任务类型">
-          <template slot-scope="scope">
-            <span>{{
-              selectDictLabel(dict.type.task_type, scope.row.type)
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="任务循环"> </el-table-column>
-        <el-table-column prop="pageStatus" label="任务状态">
-          <template slot-scope="scope">
-            <span>{{
-              selectDictLabel(dict.type.task_page_status, scope.row.pageStatus)
-            }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="applyTime" label="申请时间"> </el-table-column>
-        <el-table-column prop="creteTime " label="创建日期"> </el-table-column>
-        <el-table-column prop="endTime" label="截止日期"> </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button type="text" @click="handleEdit(scope.$index, scope.row)"
+      <hc-crud
+        not-out
+        ref="hcCrud"
+        :option="tableOption"
+        :fetchListFun="fetchListFun"
+      >
+        <template v-slot:fun="scope">
+          <div style="display: flex; justify-content: space-between">
+            <el-button
+              size="medium"
+              style="font-size: 14px"
+              type="text"
+              @click="edit(scope.row.id)"
+              >编辑</el-button
+            >
+            <el-button
+              size="medium"
+              style="font-size: 14px"
+              type="text"
+              @click="del(scope.row.id)"
+              >删除</el-button
+            >
+            <el-button
+              size="medium"
+              style="font-size: 14px"
+              type="text"
+              @click="agree(scope.row.id)"
+              >通过</el-button
+            >
+            <el-button
+              size="medium"
+              style="font-size: 14px"
+              type="text"
+              @click="detail(scope.row.id)"
               >查看</el-button
             >
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="page.current"
-        :page-size="page.size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="page.total"
-      >
-      </el-pagination> -->
+          </div>
+        </template>
+      </hc-crud>
     </div>
     <div style="background-color: #ffffff; border-radius: 4px">
       <div class="title-container">
@@ -131,28 +127,14 @@
       </div>
       <default-page :index="1" :show="!noticeList.length > 0"></default-page>
       <div class="notice-item" v-for="(item, index) in noticeList" :key="index">
-        <!-- <div class="notice-item-title"> -->
         <text-tooltip
           :content="item.noticeTitle"
           class="notice-item-title"
         ></text-tooltip>
-        <!-- </div> -->
-
-        <!-- <el-tooltip
-              effect="dark"
-              :content="item.noticeTitle"
-              placement="top-start"
-            > -->
-        <!-- <div class="notice-item-title">{{ item.noticeTitle }}</div> -->
-        <!-- </el-tooltip> -->
         <text-tooltip
           :content="timeInterval(item.createTime)"
           class="notice-item-time"
         ></text-tooltip>
-        <!-- <div class="notice-item-time">
-              1小时前
-              {{ item.updateTime }}
-            </div> -->
       </div>
     </div>
   </div>
@@ -161,15 +143,14 @@
 <script>
 import { mapGetters } from "vuex";
 import { timeInterval } from "@/utils/index";
-import { getList, getTaskCount } from "@/api/workbench";
+import { getList, getTaskCount, getArchiveList } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
-import request from "@/utils/request";
 export default {
   name: "Workbench",
-  dicts: ["task_type", "task_page_status", "task_audit_type"],
+  dicts: ["task_type", "task_page_status", "task_audit_type","get_file_type","imputation_type"],
   components: { HcCrud },
   computed: {
-    ...mapGetters(["noticeList"]),
+    ...mapGetters(["noticeList", "currentWorkbench"]),
     tableOption() {
       return {
         index: true,
@@ -179,89 +160,158 @@ export default {
           {
             label: "任务/清单名称",
             prop: "taskName",
+            hidden:
+              this.currentWorkbench.identity != 2 &&
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 4 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "题名",
             prop: "archivesName",
+            hidden: this.currentWorkbench.identity != 1,
           },
           {
             label: "单位",
             prop: "companyDeptName",
+            hidden:
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "责任者",
             prop: "responsibleDept",
+            hidden: this.currentWorkbench.identity != 1,
           },
           {
             label: "形成时间",
             prop: "formTime",
+            hidden: this.currentWorkbench.identity != 1,
           },
           {
             label: "审核类型",
             prop: "status",
             type: "select",
             dicData: this.dict.type.task_audit_type,
+            hidden: this.currentWorkbench.identity != 4,
           },
           {
             label: "申请人",
             prop: "applyUserName",
+            hidden: this.currentWorkbench.identity != 4,
           },
           {
             label: "申请理由",
             prop: "applyRemark",
+            hidden: this.currentWorkbench.identity != 4,
           },
           // TODO:辜鹏
-          // {
-          //   label: "档案类型",
-          //   prop: "materialType",
-          //   type: "select",
-          //   dicData: this.dict.type.task_type,
-          // },
+          {
+            label: "档案类型",
+            prop: "materialType",
+            type: "select",
+            dicData: this.dict.type.get_file_type,
+            hidden: this.currentWorkbench.identity != 1,
+          },
           {
             label: "科室",
             prop: "deptName",
+            hidden:
+              this.currentWorkbench.identity != 1 &&
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "归集人",
             prop: "liableName",
+            hidden:
+              this.currentWorkbench.identity != 1 &&
+              this.currentWorkbench.identity != 3,
           },
           // TODO:辜鹏
-          // {
-          //   label: "归集类型",
-          //   prop: "type",
-          // },
+          {
+            label: "归集类型",
+            prop: "liableType",
+            type: "select",
+            dicData: this.dict.type.imputation_type,
+            hidden: this.currentWorkbench.identity != 1,
+          },
           {
             label: "任务类型",
             prop: "type",
             type: "select",
             dicData: this.dict.type.task_type,
+            hidden:
+              this.currentWorkbench.identity != 2 &&
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "任务循环",
             prop: "name",
+            hidden:
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "任务状态",
             prop: "pageStatus",
             type: "select",
             dicData: this.dict.type.task_page_status,
+            hidden:
+              this.currentWorkbench.identity != 2 &&
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "申请时间",
             prop: "applyTime",
+            hidden: this.currentWorkbench.identity != 4,
           },
           {
             label: "创建日期",
             prop: "creteTime",
+            hidden:
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
           },
           {
             label: "截止日期",
             prop: "endTime",
+            hidden:
+              this.currentWorkbench.identity != 2 &&
+              this.currentWorkbench.identity != 3 &&
+              this.currentWorkbench.identity != 5 &&
+              this.currentWorkbench.identity != 7,
+          },
+          {
+            label: "操作",
+            prop: "fun",
+            slot: true,
           },
         ],
         // menu: [
         //   {
+        //     label: "通过",
+        //     hidden: true,
+        //     fun: (row) => {
+        //       this.toEdit(row);
+        //     },
+        //   },
+        //   {
         //     label: "查看",
+        //     fun: (row) => {
+        //       this.toEdit(row);
+        //     },
+        //   },
+        //   {
+        //     label: "删除",
         //     fun: (row) => {
         //       this.toEdit(row);
         //     },
@@ -273,47 +323,58 @@ export default {
   },
   data() {
     return {
-      fileList: [],
-      page: {
-        current: 1,
-        size: 10,
-        total: 0,
-      },
-      query: {
-        statusFlag: 0,
-      },
-      loading: true,
-      tableData: [],
+      // page: {
+      //   current: 1,
+      //   size: 10,
+      //   total: 0,
+      // },
+      count: {},
+      statusFlag: 0,
     };
   },
-  watch: {
-    query: {
-      handler(newName, oldName) {
-        // this.getList(newName);
-      },
-      immediate: true,
-      deep: true,
-    },
-  },
+  // watch: {
+  //   query: {
+  //     handler(newName, oldName) {
+  //       // this.getList(newName);
+  //     },
+  //     immediate: true,
+  //     deep: true,
+  //   },
+  // },
   methods: {
+    del() {},
+    edit() {},
+    detail() {},
+    agree() {},
     timeInterval,
     fetchListFun(params) {
       return new Promise((resolve, reject) => {
-        getList(params).then(({ data }) => {
-          resolve({
-            records: data.records,
-            page: {
-              total: data.total,
-            },
+        if (this.currentWorkbench.identity === 1) {
+          getArchiveList(params).then(({ data }) => {
+            resolve({
+              records: data.records,
+              page: {
+                total: data.total,
+              },
+            });
           });
-        });
+        } else {
+          getList({
+            statusFlag: this.statusFlag,
+            ...params,
+          }).then(({ data }) => {
+            resolve({
+              records: data.records,
+              page: {
+                total: data.total,
+              },
+            });
+          });
+        }
       });
     },
     init() {
-      console.log(this.dict.type.task_type);
-      // console.log(this.noticeList);
       this.getTaskCount();
-      // this.getList();
     },
     getTaskCount() {
       getTaskCount().then((res) => {
@@ -337,7 +398,8 @@ export default {
       console.log("handleCurrentChange");
     },
     click(index) {
-      this.query.statusFlag = index;
+      this.statusFlag = index;
+      this.$refs.hcCrud.refresh();
     },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type];

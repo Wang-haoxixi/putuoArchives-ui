@@ -13,3 +13,11 @@ export function getList(query) {
       method: 'get',
     })
   } 
+
+  export function getArchiveList(query) {
+    return request({
+      url: '/archive/get_data/get_list_page',
+      method: 'get',
+      params: query
+    })
+  }

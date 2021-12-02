@@ -33,7 +33,7 @@
               <div class="item-operation">
                 <el-button size="mini" @click="toEdit(row.id)">更新文件</el-button>
                 <el-button size="mini" @click="toDelete(row.id)">删除文件</el-button>
-                <el-button type="primary" plain size="mini">在线预览</el-button>
+                <el-button type="primary" plain size="mini" @click="toPreview(row.fileId)">在线预览</el-button>
                 <el-button type="primary" size="mini" @click="toDownLoad(row.fileId)">下载文件</el-button>
               </div>
             </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { fileDownloadUrl } from "@/api/file/index"
+import { fileDownloadUrl, filePreviewUrl } from "@/api/file/index"
 import { getTrainPage, deleteTrain } from "@/api/train/index"
 import HcCrud from "@/views/components/HcCrud/index"
 import ColorTag from "@/views/components/ColorTag/index"
@@ -122,6 +122,13 @@ export default {
         const a = document.createElement('a')
         a.href = `${process.env.VUE_APP_BASE_API}${data}`
         a.click()
+      })
+    },
+    toPreview (fileId) {
+      filePreviewUrl({fileId}).then(({data}) => {
+        if (data) {
+          window.open(data)
+        }
       })
     }
   },

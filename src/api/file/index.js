@@ -25,6 +25,15 @@ export function fileDownload (fileId) {
 export function fileDownloadUrl (params) {
   return request({
     url: "/file/download/url",
+    timeout: 0,
+    params
+  })
+}
+
+export function filePreviewUrl (params) {
+  return request({
+    url: "/file/preview/url",
+    timeout: 0,
     params
   })
 }

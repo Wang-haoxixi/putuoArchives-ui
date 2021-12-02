@@ -40,6 +40,8 @@ import DefaultPage from '@/components/DefaultPage'
 import TextTooltip from '@/components/TextTooltip'
 // 内容容器
 import BasicContainer from '@/views/components/BasicContainer'
+// 提示组件
+import Tip from '@/views/components/common/Tip'
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -63,6 +65,7 @@ Vue.component('ImageUpload', ImageUpload)
 Vue.component('DefaultPage', DefaultPage)
 Vue.component('TextTooltip', TextTooltip)
 Vue.component('BasicContainer', BasicContainer)
+Vue.component('Tip', Tip)
 
 Vue.use(directive)
 Vue.use(plugins)

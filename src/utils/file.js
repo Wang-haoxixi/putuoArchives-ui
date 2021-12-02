@@ -28,3 +28,26 @@ export function getFileMimeType(file) {
 }
 
 export const annexFileTypes = ['.m4a', '.mp3', '.mid', '.xmf', '.ogg', '.wav', '.3gp', '.mp4', '.jpg', '.gif', '.png', '.jpeg', '.bmp', '.apk', '.ppt', '.xls', '.doc', '.pdf', '.chm', '.txt']
+
+export const downLoadBlob = (blob, fileName) => {
+  const file = new Blob([blob], { type: blob.type })
+  const url = URL.createObjectURL(file)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = fileName
+  a.click()
+}
+
+export const selectFile = () => {
+  return new Promise((resolve, reject) => {
+    let inputSingle = document.createElement('input')
+    inputSingle.type = 'file'
+    // inputSingle.multiple = true
+    inputSingle.onchange = () => {
+      resolve(inputSingle.files)
+      inputSingle = null
+    }
+    inputSingle.click()
+  })
+
+}

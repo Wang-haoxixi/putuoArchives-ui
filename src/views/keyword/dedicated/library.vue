@@ -3,8 +3,8 @@
     <content-box title="专用关键词库">
       <template v-slot:operations>
         <search-input @search="toSearch"></search-input>
-        <el-button style="margin-left: 10px;" type="primary" icon="el-icon-plus" >新增关键词库</el-button>
-        <el-button @click="startBatch">启用</el-button>
+        <!-- <el-button style="margin-left: 10px;" type="primary" icon="el-icon-plus" >新增关键词库</el-button> -->
+        <el-button style="margin-left: 10px;" @click="startBatch">启用</el-button>
         <el-button @click="stopBatch">禁用</el-button>
       </template>
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
@@ -18,9 +18,9 @@
 
 <script>
 import {
-  getPageDept,
-  startData,
-  stopData,
+  getLibraryPage,
+  startLibrary,
+  stopLibrary,
 } from "@/api/keyword/dedicated";
 import HcCrud from "@/views/components/HcCrud/index"
 import ColorTag from "@/views/components/ColorTag/index"
@@ -65,7 +65,8 @@ export default {
             label: "状态",
             prop: "status",
             slot: true,
-            sortable: "custom"
+            sortable: "custom",
+            width: 80,
           },
           {
             label: "创建人",
@@ -74,7 +75,8 @@ export default {
           {
             label: "创建时间",
             prop: "createTime",
-            sortable: "custom"
+            sortable: "custom",
+            width: 160,
           },
           {
             label: "最后修改人",
@@ -83,31 +85,26 @@ export default {
           {
             label: "最后修改时间",
             prop: "updateTime",
-            sortable: "custom"
+            sortable: "custom",
+            width: 160,
           }
         ],
         menu: [
           {
             label: "维护词库",
-            fun: (row) => {console.log(row)}
-          },
-          {
-            label: "编辑",
-            fun: () => {}
-          },
-          {
-            label: "删除",
-            fun: () => {}
+            fun: (row) => {
+              this.toKeyword(row)
+            }
           }
         ],
-        menuWidth: 180
+        menuWidth: 90
       }
     }
   },
   methods: {
     fetchListFun (params) {
       return new Promise((resolve, reject) => {
-        getPageDept(params).then(({data}) => {
+        getLibraryPage(params).then(({data}) => {
           resolve({
             records: data.records,
             page: {
@@ -125,36 +122,46 @@ export default {
     startBatch () {
       let select = this.$refs.hcCrud.multipleSelection
       if (select.length > 0) {
-        this.$modal.confirm('是否确认启用所选关键词？').then(function() {
+        this.$modal.confirm('是否确认启用所选关键词库？').then(function() {
           let ids = []
           for (let i = 0; i < select.length; i++) {
             ids.push(select[i].id)
           }
-          return startData(ids)
+          return startLibrary(ids)
         }).then(() => {
           this.$modal.msgSuccess("启用成功");
           this.$refs.hcCrud.refresh();
         }).catch(() => {});
       } else {
-        this.$modal.msgWarning("请先勾选需要启用的关键词")
+        this.$modal.msgWarning("请先勾选需要启用的关键词库")
       }
     },
     stopBatch () {
       let select = this.$refs.hcCrud.multipleSelection
       if (select.length > 0) {
-        this.$modal.confirm('是否确认禁用所选关键词？').then(function() {
+        this.$modal.confirm('是否确认禁用所选关键词库？').then(function() {
           let ids = []
           for (let i = 0; i < select.length; i++) {
             ids.push(select[i].id)
           }
-          return stopData(ids)
+          return stopLibrary(ids)
         }).then(() => {
           this.$modal.msgSuccess("禁用成功");
           this.$refs.hcCrud.refresh();
         }).catch(() => {});
       } else {
-        this.$modal.msgWarning("请先勾选需要禁用的关键词")
+        this.$modal.msgWarning("请先勾选需要禁用的关键词库")
       }
+    },
+    toEdit (row) {
+      this.$router.push({
+        path: "/keyword/dedicated/library/edit?id=" + row.id
+      })
+    },
+    toKeyword (row) {
+      this.$router.push({
+        path: "/keyword/dedicated/keyword?id=" + row.id
+      })
     }
   },
 };

@@ -3,6 +3,12 @@
     <div style="background-color: #ffffff; border-radius: 4px">
       <div class="title-container">
         <div class="title-text">我的任务</div>
+        <el-button
+          @click="create()"
+          v-if="currentWorkbench.identity == 3"
+          type="primary"
+          >制发任务清单</el-button
+        >
       </div>
       <div>
         <el-button
@@ -147,7 +153,13 @@ import { getList, getTaskCount, getArchiveList } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
   name: "Workbench",
-  dicts: ["task_type", "task_page_status", "task_audit_type","get_file_type","imputation_type"],
+  dicts: [
+    "task_type",
+    "task_page_status",
+    "task_audit_type",
+    "get_file_type",
+    "imputation_type",
+  ],
   components: { HcCrud },
   computed: {
     ...mapGetters(["noticeList", "currentWorkbench"]),
@@ -342,6 +354,10 @@ export default {
   //   },
   // },
   methods: {
+    //制发任务清单
+    create() {
+      this.$router.push({ path: "createTask" });
+    },
     del() {},
     edit() {},
     detail() {},

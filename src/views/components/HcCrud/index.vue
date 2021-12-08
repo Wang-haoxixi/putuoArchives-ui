@@ -348,7 +348,7 @@ export default {
     sortChange ({prop, order}) {
       if (order) {
         this.order = {
-          field: prop,
+          field: prop.replace(/([A-Z])/g,"_$1").toLowerCase(),
           order: order == "ascending" ? "asc" : "desc"
         }
       } else {

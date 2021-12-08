@@ -1,6 +1,6 @@
 <template>
   <basic-container>
-    <content-box title="新增/更新培训文件">
+    <content-box :title="title">
       <template v-slot:operations>
         <el-button type="primary" @click="submit">保存</el-button>
         <el-button style="margin-left: 10px;" @click="cancel">取消</el-button>
@@ -80,6 +80,11 @@ export default {
         ]
       }
     };
+  },
+  computed: {
+    title () {
+      return this.$route.query?.id ? "更新培训文件" : "新增培训文件"
+    }
   },
   created () {
     let id = this.$route.query?.id

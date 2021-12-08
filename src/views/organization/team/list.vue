@@ -9,7 +9,6 @@
         <div class="dept-tree">
           <el-tree
             ref="dept"
-            class="dept-tree"
             :data="deptTree"
             node-key="id"
             empty-text="加载中，请稍后"

@@ -10,7 +10,7 @@
       >
         <template v-slot:menu="scope">
           <template v-if="scope.row.type == 1">
-            <el-button type="text">分配用户</el-button>
+            <el-button type="text" @click="toEditAuthUser(scope.row)">分配用户</el-button>
           </template>
           <template v-if="scope.row.type == 2">
             <el-button type="text" @click="toEdit(scope.row)">修改</el-button>

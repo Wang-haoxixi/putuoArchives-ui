@@ -141,7 +141,7 @@ export default {
             value: statistics[2] || 0
           },
           {
-            label: "中心词",
+            label: "未设置",
             value: statistics[0] || 0
           }
         ]

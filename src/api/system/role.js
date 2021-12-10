@@ -58,8 +58,8 @@ export function updateRole(data) {
 // 角色数据权限
 export function dataScope(data) {
   return request({
-    url: '/system/role/dataScope',
-    method: 'put',
+    url: '/role/dataScope',
+    method: 'post',
     data: data
   })
 }

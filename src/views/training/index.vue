@@ -3,7 +3,7 @@
     <content-box title="在线培训">
       <template v-slot:operations>
         <search-input @search="toSearch"></search-input>
-        <el-button style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="toAdd">新增培训文件</el-button>
+        <el-button v-hasPermi="['train:add']" style="margin-left: 10px;" type="primary" icon="el-icon-plus" @click="toAdd">新增培训文件</el-button>
       </template>
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
         <template v-slot:table="scope">
@@ -31,8 +31,8 @@
                 </div>
               </div>
               <div class="item-operation">
-                <el-button size="mini" @click="toEdit(row.id)">更新文件</el-button>
-                <el-button size="mini" @click="toDelete(row.id)">删除文件</el-button>
+                <el-button v-hasPermi="['train:edit']" size="mini" @click="toEdit(row.id)">更新文件</el-button>
+                <el-button v-hasPermi="['train:delete']" size="mini" @click="toDelete(row.id)">删除文件</el-button>
                 <el-button type="primary" plain size="mini" @click="toPreview(row.fileId)">在线预览</el-button>
                 <el-button type="primary" size="mini" @click="toDownLoad(row.fileId)">下载文件</el-button>
               </div>

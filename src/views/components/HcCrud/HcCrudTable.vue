@@ -30,7 +30,7 @@
           <template v-if="item.auto">
             <el-button class="menu-button" v-if="item.auto" :key="index" type="text" size="mini" @click="handleAutoEvent(item.type, scope.row)">{{handleName(item.type)}}</el-button>
           </template>
-          <el-button v-else class="menu-button" :key="index" type="text" size="mini" @click="handleEvent(item.fun, scope.row)">{{item.label}}</el-button>
+          <el-button v-else-if="!item.hidden || !menuHidden(item.hidden, scope)" class="menu-button" :key="index" type="text" size="mini" @click="handleEvent(item.fun, scope.row)">{{item.label}}</el-button>
         </template>
         <slot name="menu" :row="scope.row">
         </slot>
@@ -44,6 +44,7 @@
 
 <script>
 import HcEmptyData from "@/views/components/HcEmptyData/index"
+import { checkPermi } from "@/utils/permission"
 export default {
   components: { HcEmptyData },
   props: {
@@ -92,6 +93,10 @@ export default {
         let menuList = []
         for (let i = 0; i < menu.length; i++) {
           let menuItem = menu[i]
+          // 判断该菜单按钮是否有权限，如果没有则跳过
+          if (menuItem.hasOwnProperty("permissions") && !checkPermi(menuItem.permissions)) {
+            continue
+          }
           if (menuItem == 'view' || menuItem == 'edit' || menuItem == 'delete') {
             menuList.push({
               auto: true,
@@ -100,7 +105,8 @@ export default {
           } else if (menuItem instanceof Object && menuItem.fun && menuItem.label) {
             menuList.push({
               label: menuItem.label,
-              fun: menuItem.fun
+              fun: menuItem.fun,
+              hidden: menuItem.hidden
             })
           }
         }
@@ -144,7 +150,7 @@ export default {
           }
         }
       } else if (item.dicName) {
-        return 'getDicValue(item.dicName, value)'
+        // return 'getDicValue(item.dicName, value)'
       } else if (item.dicFun && item.dicFun instanceof Function) {
         let dicData = this.dicMap[item.prop] || []
         for (let i = 0; i < dicData.length; i++) {
@@ -173,6 +179,14 @@ export default {
     },
     handleAutoEvent (type, row) {
       this.$emit('handle-auto-event', {type, row})
+    },
+    menuHidden (hidden, scope) {
+      if (typeof hidden == 'function' && hidden(scope)){
+        return true
+      } else if (typeof hidden != 'function' && hidden) {
+        return true
+      }
+      return false
     }
   }
 }

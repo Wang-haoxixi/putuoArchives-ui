@@ -92,34 +92,54 @@
         :option="tableOption"
         :fetchListFun="fetchListFun"
       >
+        <template v-slot:loop="scope">
+          <span>{{
+            selectDictLabel(dict.type.loop_type, scope.row.nextLoopType)
+          }}</span
+          ><span v-if="scope.row.nextLoopType > 1"
+            >循环 {{ scope.row.currentLoopNum }}/{{ scope.row.nextLoopNum }}
+          </span>
+        </template>
         <template v-slot:fun="scope">
           <div style="display: flex; justify-content: space-between">
             <el-button
               size="medium"
               style="font-size: 14px"
               type="text"
-              @click="edit(scope.row.id)"
+              v-if="(currentWorkbench.identity == 2 && scope.row.pageStatus == 1 )"
+              @click="receive(scope.row.taskId)"
+              >领取</el-button
+            >
+            <el-button
+              size="medium"
+              style="font-size: 14px"
+              type="text"
+              v-if="scope.row.pageStatus == 18"
+              @click="edit(scope.row.taskId)"
               >编辑</el-button
             >
             <el-button
               size="medium"
               style="font-size: 14px"
               type="text"
-              @click="del(scope.row.id)"
+              v-if="scope.row.pageStatus == 18"
+              @click="del(scope.row.taskId)"
               >删除</el-button
             >
             <el-button
               size="medium"
               style="font-size: 14px"
               type="text"
-              @click="agree(scope.row.id)"
+              v-if="currentWorkbench.identity == 4 && scope.row.statusFlag == 3"
+              @click="agree(scope.row.taskId)"
               >通过</el-button
             >
             <el-button
               size="medium"
               style="font-size: 14px"
               type="text"
-              @click="detail(scope.row.id)"
+              v-if="scope.row.taskId"
+              @click="detail(scope.row.taskId)"
               >查看</el-button
             >
           </div>
@@ -159,6 +179,7 @@ export default {
     "task_audit_type",
     "get_file_type",
     "imputation_type",
+    "loop_type",
   ],
   components: { HcCrud },
   computed: {
@@ -263,7 +284,8 @@ export default {
           },
           {
             label: "任务循环",
-            prop: "name",
+            prop: "loop",
+            slot: true,
             hidden:
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
@@ -308,28 +330,6 @@ export default {
             slot: true,
           },
         ],
-        // menu: [
-        //   {
-        //     label: "通过",
-        //     hidden: true,
-        //     fun: (row) => {
-        //       this.toEdit(row);
-        //     },
-        //   },
-        //   {
-        //     label: "查看",
-        //     fun: (row) => {
-        //       this.toEdit(row);
-        //     },
-        //   },
-        //   {
-        //     label: "删除",
-        //     fun: (row) => {
-        //       this.toEdit(row);
-        //     },
-        //   },
-        // ],
-        // menuWidth: 180,
       };
     },
   },
@@ -357,6 +357,9 @@ export default {
     //制发任务清单
     create() {
       this.$router.push({ path: "createTask" });
+    },
+    receive(){
+      
     },
     del() {},
     edit() {},

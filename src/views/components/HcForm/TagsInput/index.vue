@@ -1,59 +1,108 @@
 <template>
-  <div class="tags-input" :class="{focus: focus}" @click="handleFocus">
-    <el-tag v-for="(tag, index) in value" :key="index" class="tags" closable size="mini" @close="removeTag(index)" @click.native.stop="">{{tag}}</el-tag>
-    <el-input ref="input" class="input" :maxlength="tagSize" v-model="tag" @click.native.stop="" @keyup.enter.native="addTag" @focus="focus = true" @blur="onBlur"></el-input>
+  <div class="tags-input" :class="{ focus: focus }" @click="handleFocus">
+    <el-tag
+      v-for="(tag, index) in value"
+      :key="index"
+      class="tags"
+      closable
+      size="mini"
+      @close="removeTag(index)"
+      @click.native.stop=""
+      >{{ tag }}</el-tag
+    >
+    <el-autocomplete
+      v-if="autocomplete"
+      ref="input"
+      class="input"
+      :trigger-on-focus="false"
+      :fetch-suggestions="querySearch"
+      :maxlength="tagSize"
+      @select="addTag"
+      v-model="tag"
+      @click.native.stop=""
+      @keyup.enter.native="addTag"
+      @focus="focus = true"
+      @blur="onBlur"
+    ></el-autocomplete>
+    <el-input
+      v-else
+      ref="input"
+      class="input"
+      :maxlength="tagSize"
+      v-model="tag"
+      @click.native.stop=""
+      @keyup.enter.native="addTag"
+      @focus="focus = true"
+      @blur="onBlur"
+    ></el-input>
   </div>
 </template>
 
 <script>
+import { keywordLike } from "@/api/workbench/index";
 export default {
   props: {
     value: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     maxlength: {
       type: Number,
-      default: 5
+      default: 5,
     },
     tagSize: {
       type: Number,
-      default: 10
-    }
+      default: 10,
+    },
+    autocomplete: {
+      type: Boolean,
+      default: true,
+    },
   },
-  data () {
+  data() {
     return {
       focus: false,
-      tag: ""
-    }
+      tag: "",
+    };
   },
   methods: {
-    onBlur () {
-      this.focus = false
-      this.tag = ""
+    querySearch(queryString, cb) {
+      keywordLike({ name: queryString }).then((res) => {
+        let array = [];
+        res.data.forEach((item) => {
+          array.push({ value: item });
+        });
+        cb(array);
+      });
     },
-    addTag () {
+    onBlur() {
+      this.focus = false;
+      this.tag = "";
+    },
+    addTag() {
       if (!this.tag.trim()) {
-        this.$emit('input-empty')
-        return
+        this.$emit("input-empty");
+        return;
       }
       if (this.value.length < this.maxlength) {
-        this.$emit("input", [...this.value, this.tag.trim()])
-        this.tag = ""
+        this.$emit("input", [...this.value, this.tag.trim()]);
+        this.$emit("change", [...this.value, this.tag.trim()])
+        this.tag = "";
       } else {
-        this.$emit('exceed')
+        this.$emit("exceed");
       }
     },
-    removeTag (index) {
-      let tags = [...this.value]
-      tags.splice(index, 1)
-      this.$emit("input", tags)
+    removeTag(index) {
+      let tags = [...this.value];
+      tags.splice(index, 1);
+      this.$emit("input", tags);
+      this.$emit("change", tags);
     },
-    handleFocus () {
-      this.$refs.input.focus()
-    }
-  }
-}
+    handleFocus() {
+      this.$refs.input.focus();
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -81,6 +130,9 @@ export default {
     height: 22px;
     margin-left: 5px;
     margin-top: 5px;
+    ::v-deep .el-input--default {
+      width: 100% !important;
+    }
   }
   ::v-deep input {
     padding: 0;

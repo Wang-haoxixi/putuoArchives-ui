@@ -1,6 +1,6 @@
 <template>
   <basic-container>
-    <content-box title="立档单位变更记录">
+    <content-box title="立档单位变更记录" back>
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun" :searchQuery="searchQuery">
       </hc-crud>
     </content-box>

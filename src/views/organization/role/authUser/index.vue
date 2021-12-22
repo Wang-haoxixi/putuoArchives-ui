@@ -1,6 +1,6 @@
 <template>
   <basic-container>
-    <content-box title="分配用户">
+    <content-box title="分配用户" back>
       <hc-crud
         ref="hcCrud"
         :option="tableOption"

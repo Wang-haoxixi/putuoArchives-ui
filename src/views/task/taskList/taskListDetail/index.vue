@@ -26,11 +26,32 @@
         >
         <el-col :span="6"
           ><div class="subtitle">归集周期</div>
-          <div class="info">每天循环，第5次，共6次</div>
+          <div class="info">
+            <span>{{
+            selectDictLabel(dict.type.loop_type, data.nextLoopType)
+          }}</span
+          ><span v-if="data.nextLoopType > 1"
+            >循环，第{{ data.currentLoopNum }}次，共{{ data.nextLoopNum }}次
+          </span>
+          </div>
           <div class="subtitle">创建科室</div>
           <div class="info">办公室</div></el-col
         >
       </el-row>
+      <div class="data-container">
+        <div class="data-container-item">
+          <div class="title">{{data.taskNum}}</div>
+          <div class="text">子任务总数</div>
+        </div>
+        <div class="data-container-item">
+          <div class="title">{{data.taskCompleteNum}}</div>
+          <div class="text">已完成任务数</div>
+        </div>
+        <div class="data-container-item">
+          <div class="title">{{Math.round(data.taskCompleteNum/data.taskNum *10000) / 100}}%</div>
+          <div class="text">完成率</div>
+        </div>
+      </div>
     </div>
     <div class="container">
       <div class="title">
@@ -67,7 +88,7 @@ import HcCrud from "@/views/components/HcCrud/index";
 
 export default {
   components: { HcCrud },
-  dicts: ["task_material_type"],
+  dicts: ["task_material_type", "loop_type"],
   computed: {
     tableOption() {
       return {
@@ -135,6 +156,33 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.data-container {
+  margin-top: 13px;
+  height: 105px;
+  display: flex;
+  .data-container-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: #f2f3f5 1px solid;
+    &:not(:last-child) {
+      border-right: #f2f3f5 1px solid;
+    }
+    .title {
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 42px;
+    }
+    .text {
+      padding-top: 3px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #999999;
+    }
+  }
+}
 .container {
   background-color: #ffffff;
   border-radius: 4px;

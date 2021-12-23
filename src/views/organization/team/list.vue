@@ -25,6 +25,16 @@
         </div>
         <div class="user-list">
           <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun" not-out>
+            <template v-slot:roles="scope">
+              <template v-if="scope.row.roles && scope.row.roles.length > 1">
+                <el-tooltip :content="getRoles(scope.row.roles)" placement="top">
+                  <span>{{scope.row.roles[0].roleName}}（{{scope.row.roles.length}}）</span>
+                </el-tooltip>
+              </template>
+              <template v-else-if="scope.row.roles && scope.row.roles.length == 1">
+                {{scope.row.roles[0].roleName}}
+              </template>
+            </template>
           </hc-crud>
         </div>
       </div>
@@ -102,7 +112,9 @@ export default {
           },
           {
             label: "角色",
-            prop: "roleName"
+            prop: "roles",
+            slot: true,
+            width: 150
           }
         ],
         menu: [
@@ -176,6 +188,13 @@ export default {
         this.$modal.msgSuccess("修改成功！")
         this.$refs.hcCrud.refresh()
       })
+    },
+    getRoles (roles) {
+      let content = []
+      for (let i = 0; i < roles.length; i++) {
+        content.push(roles[i].roleName)
+      }
+      return content.join(",")
     }
   },
 };

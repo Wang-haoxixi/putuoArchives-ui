@@ -24,7 +24,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="权限范围">
-        <el-select v-model="form.dataScope" @change="dataScopeSelectChange">
+        <el-select v-model="form.dataScope" @change="dataScopeSelectChange" :disabled="form.isCustom === false">
           <el-option
             v-for="item in dataScopeOptions"
             :key="item.value"
@@ -33,7 +33,7 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数据权限" v-show="form.dataScope == 2">
+      <el-form-item label="数据权限" v-show="form.dataScope == 2" :disabled="form.isCustom === false">
         <el-checkbox
           v-model="deptNodeAll"
           @change="handleCheckedTreeNodeAll($event, 'dept')"

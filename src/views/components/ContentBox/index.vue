@@ -6,7 +6,9 @@
         <div v-if="tips" class="tips">{{tips}}</div>
       </div>
       <div class="operations">
-        <slot name="operations"></slot>
+        <slot name="operations">
+          <el-button v-if="back" @click="goBack">返回</el-button>
+        </slot>
       </div>
     </div>
     <div class="content">
@@ -29,10 +31,19 @@ export default {
     operations: {
       type: Array,
       default: () => []
+    },
+    back: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
+    }
+  },
+  methods: {
+    goBack () {
+      this.$router.back()
     }
   }
 }

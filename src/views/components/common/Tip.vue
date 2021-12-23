@@ -2,12 +2,15 @@
   <el-tooltip :content="content" :placement="placement" v-bind="$attrs" v-on="$listeners">
     <div v-if="content!==''" slot="content" v-html="content"></div>
     <div v-if="content===''" slot="content" v-html="message"></div>
-    <i :class="icon"></i>
+    <svg-icon
+      style="font-size: 20px;"
+      :icon-class="icon"
+    />
   </el-tooltip>
 </template>
 <script>
 export default {
-  name: 'IepTip',
+  name: 'Tip',
   props: {
     content: {
       type: String,
@@ -23,7 +26,7 @@ export default {
     },
     icon: {
       type: String,
-      default: 'el-icon-warning-outline',
+      default: 'icon_beizhu',
     },
   },
 }

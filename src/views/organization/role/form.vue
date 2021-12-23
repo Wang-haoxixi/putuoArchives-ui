@@ -7,24 +7,25 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="角色名称" prop="roleName">
-        <el-input v-model="form.roleName" placeholder="请输入角色名称" />
+        <el-input v-model="form.roleName" placeholder="请输入角色名称" :disabled="form.isCustom === false"/>
       </el-form-item>
       <el-form-item prop="identity">
         <span slot="label">
           角色身份
-          <el-tooltip
+          <!-- <el-tooltip
             content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasRole('admin')`)"
             placement="top"
           >
             <i class="el-icon-question"></i>
-          </el-tooltip>
+          </el-tooltip> -->
         </span>
-        <el-select v-model="form.identity" placeholder="请选择角色身份">
+        <el-select v-model="form.identity" placeholder="请选择角色身份" :disabled="form.isCustom === false">
           <el-option
             v-for="(item, index) in this.identitys"
             :key="index"
             :value="item.identity"
             :label="item.name"
+            :disabled="!item.isCustom"
             >{{ item.name }}</el-option
           >
         </el-select>
@@ -37,7 +38,7 @@
         />
       </el-form-item>
       <el-form-item label="状态">
-        <el-radio-group v-model="form.status">
+        <el-radio-group v-model="form.status" :disabled="form.isCustom === false">
           <el-radio
             v-for="dict in dict.type.sys_normal_disable"
             :key="dict.value"

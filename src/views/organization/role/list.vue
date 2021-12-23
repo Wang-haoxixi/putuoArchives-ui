@@ -26,7 +26,7 @@
                   >数据权限</el-dropdown-item
                 >
                 <el-dropdown-item command="handleAuthUser">分配用户</el-dropdown-item>
-                <el-dropdown-item command="handleDelete">删除</el-dropdown-item>
+                <el-dropdown-item command="handleDelete" v-if="scope.row.isCustom">删除</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -94,10 +94,6 @@ export default {
     };
   },
   created () {
-    setTimeout(() => {
-      console.log(this.$router)
-      console.log(this.$route)
-    }, 10000)
   },
   computed: {
     tableOption() {

@@ -67,3 +67,29 @@ export function taskListCreate(data) {
     data: data
   })
 }
+
+//子任务详情
+export function getTaskDetails(query) {
+  return request({
+    url: '/task/details',
+    method: 'get',
+    params: query
+  })
+}
+//子任务详情生命周期
+export function getTaskLifeCycle(query) {
+  return request({
+    url: '/task/record/page',
+    method: 'get',
+    params: query
+  })
+}
+
+//任务清单详情
+export function getTaskListDetail(query) {
+  return request({
+    url: '/task/list/details',
+    method: 'get',
+    params: query
+  })
+}

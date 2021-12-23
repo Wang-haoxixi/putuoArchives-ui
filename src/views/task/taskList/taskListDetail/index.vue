@@ -8,21 +8,21 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="subtitle">清单名称</div>
-          <div class="info">0521年中讨论会议</div>
+          <div class="info">{{ data.taskListName }}</div>
           <div class="subtitle">创建单位</div>
-          <div class="info">普陀区档案馆</div>
+          <div class="info">{{ data.companyDeptName }}</div>
         </el-col>
         <el-col :span="6"
           ><div class="subtitle">任务开始日期</div>
-          <div class="info">2021-09-12</div>
+          <div class="info">{{ data.startTime }}</div>
           <div class="subtitle">创建日期</div>
-          <div class="info">2021-09-12</div></el-col
+          <div class="info">{{ data.creteTime }}</div></el-col
         >
         <el-col :span="6"
           ><div class="subtitle">任务截止日期</div>
-          <div class="info">2021-09-12</div>
+          <div class="info">{{ data.endTime }}</div>
           <div class="subtitle">创建人</div>
-          <div class="info">小明</div></el-col
+          <div class="info">{{ data.createName }}</div></el-col
         >
         <el-col :span="6"
           ><div class="subtitle">归集周期</div>
@@ -52,14 +52,88 @@
     </div>
     <div class="container">
       <div class="title"><div class="title-text">任务列表</div></div>
+      <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
+        <template v-slot:status="scope">
+          <color-tag :value="scope.row.status" :tags="statusTags"></color-tag>
+        </template>
+      </hc-crud>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
-</script>
+import { getTaskListDetail, getList } from "@/api/workbench";
+import HcCrud from "@/views/components/HcCrud/index";
 
+export default {
+  components: { HcCrud },
+  dicts: ["task_material_type"],
+  computed: {
+    tableOption() {
+      return {
+        index: false,
+        columns: [
+          {
+            label: "题名",
+            prop: "archivesName",
+          },
+          {
+            label: "材料类型",
+            prop: "materialType",
+            type: "select",
+            dicData: this.dict.type.task_material_type,
+          },
+          {
+            label: "归集档案员",
+            prop: "liableName",
+          },
+          {
+            label: "截止日期",
+            prop: "endTime",
+          },
+          {
+            label: "状态",
+            prop: "remark",
+          },
+          {
+            label: "领取时间",
+            prop: "remark",
+          },
+          {
+            label: "完成时间",
+            prop: "remark",
+          },
+        ],
+      };
+    },
+  },
+  data() {
+    return { id: 0, data: "" };
+  },
+  methods: {
+    fetchListFun(params) {
+      return new Promise((resolve, reject) => {
+        getList({ taskListId: this.id, ...params }).then(({ data }) => {
+          resolve({
+            records: data.records,
+            page: {
+              total: data.total,
+            },
+          });
+        });
+      });
+    },
+  },
+  created() {
+    let id = this.$route.query.id;
+    console.log(this.$route);
+    this.id = id;
+    getTaskListDetail({ taskListId: id }).then((res) => {
+      this.data = res.data;
+    });
+  },
+};
+</script>
 <style lang="scss" scoped>
 .container {
   background-color: #ffffff;

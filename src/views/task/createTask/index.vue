@@ -104,14 +104,14 @@
       <div class="table-title">
         <div class="table-title-text">子任务管理</div>
         <el-button type="">从模板选择</el-button>
-        <el-button style="margin-left: 12px" type="primary"
+        <el-button style="margin-left: 12px" type="primary" @click="addTemplate"
           >将本清单添加为模版</el-button
         >
       </div>
       <el-table :data="form.taskList" style="width: 100%">
         <el-table-column prop="index" label="子任务">
           <template slot-scope="scope">
-            {{ scope.row }}
+            {{ scope.$index + 1 }}
           </template>
         </el-table-column>
         <el-table-column prop="taskName" label="题名"></el-table-column>
@@ -155,7 +155,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="state" label="状态"> </el-table-column>
+        <el-table-column prop="pageStatus" label="状态">
+          <template slot-scope="scope">
+            {{
+              selectDictLabel(dict.type.task_page_status, scope.row.pageStatus)
+            }}
+          </template>
+        </el-table-column>
         <el-table-column prop="fun" label="操作"> </el-table-column>
       </el-table>
       <div class="add" @click="dialogFormVisible = true">
@@ -236,7 +242,10 @@
           prop="liableObj"
         >
           <el-select :value="subform.liableObj.label">
-            <el-option style="height: auto;padding: 0" :value="subform.liableObj">
+            <el-option
+              style="height: auto; padding: 0"
+              :value="subform.liableObj"
+            >
               <el-tree
                 :data="liableList"
                 @node-click="handleNodeClick"
@@ -373,9 +382,10 @@ import {
   getUnit,
   taskListCreate,
 } from "@/api/workbench/index";
+import { addTemplate } from "@/api/task/template";
 export default {
   components: { TagsInput },
-  dicts: ["loop_type", "task_material_type"],
+  dicts: ["loop_type", "task_material_type", "task_page_status"],
   data() {
     return {
       form: {
@@ -399,7 +409,7 @@ export default {
         materialType: "",
         startTime: "",
         endTime: "",
-        state: "",
+        pageStatus: "",
         fileList: [],
       },
       fileOptions: [],
@@ -469,9 +479,18 @@ export default {
     this.getLiable();
   },
   methods: {
+    //添加清单模板
+    addTemplate() {
+      addTemplate({
+        taskListName: "测试清单模板",
+        taskList: this.form.taskList,
+      }).then((res) => {
+        console.log(res);
+      });
+    },
     getLiable() {
       getLiable().then((res) => {
-        console.log(res)
+        console.log(res);
         this.liableList = res.data;
       });
     },
@@ -479,7 +498,7 @@ export default {
       if (node.isLeaf) {
         this.collaborateDialogVisible = false;
         this.form.perfectUserId = data.value;
-        this.submit(4)
+        this.submit(4);
       }
     },
     handleNodeClick(data, node) {
@@ -500,20 +519,30 @@ export default {
       this.$refs["subForm"].validateField("keywordTagList");
     },
     submit(saveFlag) {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          this.form.saveFlag = saveFlag;
-          taskListCreate(this.form).then((res) => {
-            if (res.code === 200) {
-              this.$message.success("成功");
-              this.$router.back();
-            }
-          });
-        } else {
-          this.$message.error("请检查输入内容");
-          return false;
-        }
-      });
+      if (saveFlag == 1) {
+        this.form.saveFlag = saveFlag;
+        taskListCreate(this.form).then((res) => {
+          if (res.code === 200) {
+            this.$message.success("成功");
+            this.$router.back();
+          }
+        });
+      } else {
+        this.$refs["form"].validate((valid) => {
+          if (valid) {
+            this.form.saveFlag = saveFlag;
+            taskListCreate(this.form).then((res) => {
+              if (res.code === 200) {
+                this.$message.success("成功");
+                this.$router.back();
+              }
+            });
+          } else {
+            this.$message.error("请检查输入内容");
+            return false;
+          }
+        });
+      }
     },
     addSubForm() {
       this.$refs["subForm"].validate((valid) => {
@@ -524,8 +553,9 @@ export default {
           });
           this.subform.responsibleDept = responsibleLabelList.join(",");
           this.subform.liable = this.subform.liableObj.value;
-          console.log(this.subform);
+          this.subform.pageStatus = "0";
           this.form.taskList.push(this.subform);
+          this.dialogFormVisible = false;
         } else {
           this.$message.error("请检查输入内容");
           return false;

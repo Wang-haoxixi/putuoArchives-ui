@@ -92,6 +92,10 @@
         :option="tableOption"
         :fetchListFun="fetchListFun"
       >
+        <template v-slot:taskName="scope">
+          <div>{{ scope.row.taskName }}</div>
+          <div style="color:#999999;font-size:12px;line-height:17px">所属清单：{{ scope.row.taskListName }}</div>
+        </template>
         <template v-slot:loop="scope">
           <span>{{
             selectDictLabel(dict.type.loop_type, scope.row.nextLoopType)
@@ -106,7 +110,7 @@
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="(currentWorkbench.identity == 2 && scope.row.pageStatus == 1 )"
+              v-if="currentWorkbench.identity == 2 && scope.row.pageStatus == 1"
               @click="receive(scope.row.taskId)"
               >领取</el-button
             >
@@ -193,6 +197,7 @@ export default {
           {
             label: "任务/清单名称",
             prop: "taskName",
+            slot: true,
             hidden:
               this.currentWorkbench.identity != 2 &&
               this.currentWorkbench.identity != 3 &&
@@ -358,12 +363,12 @@ export default {
     create() {
       this.$router.push({ path: "createTask" });
     },
-    receive(){
-      
-    },
+    receive() {},
     del() {},
     edit() {},
-    detail() {},
+    detail(id) {
+      this.$router.push({ path: "taskDetail",query:{id:id}})
+    },
     agree() {},
     timeInterval,
     fetchListFun(params) {

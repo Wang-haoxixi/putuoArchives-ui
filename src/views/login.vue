@@ -1,91 +1,113 @@
 <template>
   <div class="login">
-    <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      style="margin-right: 20px"
-    >
-      <h3 class="title">普陀区档案归集智能监管服务平台</h3>
-      <el-form-item prop="username">
-        <el-input
-          v-model="loginForm.username"
-          type="text"
-          auto-complete="off"
-          placeholder="账号"
-        >
-          <svg-icon
-            slot="prefix"
-            icon-class="user"
-            class="el-input__icon input-icon"
-          />
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          auto-complete="off"
-          placeholder="密码"
-          @keyup.enter.native="handleLogin"
-        >
-          <svg-icon
-            slot="prefix"
-            icon-class="password"
-            class="el-input__icon input-icon"
-          />
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="code" v-if="captchaOnOff">
-        <el-input
-          v-model="loginForm.code"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter.native="handleLogin"
-        >
-          <svg-icon
-            slot="prefix"
-            icon-class="validCode"
-            class="el-input__icon input-icon"
-          />
-        </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img" />
-        </div>
-      </el-form-item>
-      <el-checkbox
-        v-model="loginForm.rememberMe"
-        style="margin: 0px 0px 25px 0px"
-        >记住密码</el-checkbox
+    <!--  顶部  -->
+    <div class="top">
+      <img src="@/assets/logo/logo.png" class="top-icon">
+      <div class="top-text">普陀区档案归集智能监管服务平台</div>
+    </div>
+    <div v-if="loginMode === 'account'">
+      <el-form
+        ref="loginForm"
+        :model="loginForm"
+        :rules="loginRules"
+        class="login-form"
       >
-      <el-form-item style="width: 100%">
-        <el-button
-          :loading="loading"
-          size="medium"
-          type="primary"
-          style="width: 100%"
-          @click.native.prevent="handleLogin"
-        >
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
-        </el-button>
-        <div style="float: right" v-if="register">
-          <router-link class="link-type" :to="'/register'"
-            >立即注册</router-link
+        <h3 class="title">管理员登录</h3>
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginForm.username"
+            type="text"
+            auto-complete="off"
+            placeholder="账号"
           >
-        </div>
-      </el-form-item>
-    </el-form>
-    <iframe
-      style="width: 400px; height: 400px; border: none; border-radius: 10px"
-      src="https://login.dg-work.cn/oauth2/auth.htm?response_type=code&client_id=jgxtsm_dingoa&redirect_uri=http://localhost&scope=get_user_info&authType=QRCODE&embedMode=true"
-    >
-    </iframe>
+            <svg-icon
+              slot="prefix"
+              icon-class="icon_yonghuming"
+              class="el-input__icon input-icon"
+            />
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            auto-complete="off"
+            placeholder="密码"
+            @keyup.enter.native="handleLogin"
+          >
+            <svg-icon
+              slot="prefix"
+              icon-class="icon_mima"
+              class="el-input__icon input-icon"
+            />
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="code" v-if="captchaOnOff" style="">
+          <el-input
+            v-model="loginForm.code"
+            auto-complete="off"
+            placeholder="验证码"
+            style="width: 187px"
+            @keyup.enter.native="handleLogin"
+          >
+            <svg-icon
+              slot="prefix"
+              icon-class="icon_yanzhengma"
+              class="el-input__icon input-icon"
+            />
+          </el-input>
+          <div class="login-code">
+            <img :src="codeUrl" @click="getCode" class="login-code-img" />
+          </div>
+        </el-form-item>
+        <el-checkbox class="checkbox" v-model="loginForm.rememberMe"
+          >记住密码</el-checkbox
+        >
+        <el-form-item style="width: 100%">
+          <el-button
+            :loading="loading"
+            type="primary"
+            style="
+              width: 100%;
+              margin-top: 20px;
+              border-radius: 4px;
+              height: 40px;
+              line-height: 40px;
+              padding: 0;
+            "
+            @click.native.prevent="handleLogin"
+          >
+            <span v-if="!loading">登 录</span>
+            <span v-else>登 录 中...</span>
+          </el-button>
+          <div style="float: right" v-if="register">
+            <router-link class="link-type" :to="'/register'"
+              >立即注册</router-link
+            >
+          </div>
+        </el-form-item>
+      </el-form>
+      <div class="login-switch" @click="checkLoginMode('qrcode')">
+        <div class="login-switch-text">用户登录</div>
+        <svg-icon class="login-switch-icon" icon-class="icon_jiantou_you" />
+      </div>
+    </div>
+    <div v-if="loginMode === 'qrcode'">
+      <div>
+        <iframe
+          style="width: 400px; height: 400px; border: none; border-radius: 8px;box-shadow: 0px 3px 9px rgba(0, 59, 103, 0.16);"
+          src="https://login.dg-work.cn/oauth2/auth.htm?response_type=code&client_id=jgxtsm_dingoa&redirect_uri=http://localhost&scope=get_user_info&authType=QRCODE&embedMode=true"
+        >
+        </iframe>
+      </div>
+      <div class="login-switch" @click="checkLoginMode('account')">
+        <div class="login-switch-text">管理员登录</div>
+        <svg-icon class="login-switch-icon" icon-class="icon_jiantou_you" />
+      </div>
+    </div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2021 govmade.com All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -123,13 +145,15 @@ export default {
       captchaOnOff: true,
       // 注册开关
       register: false,
+      //登录方式
+      loginMode: "qrcode",
       redirect: undefined,
     };
   },
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query?.redirect
+        this.redirect = route.query?.redirect;
       },
       immediate: true,
     },
@@ -154,6 +178,9 @@ export default {
     });
   },
   methods: {
+    checkLoginMode(item) {
+      this.loginMode = item;
+    },
     getCode() {
       getCodeImg().then((res) => {
         this.captchaOnOff =
@@ -238,26 +265,46 @@ export default {
   background-size: cover;
 }
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0px auto 24px;
   text-align: center;
-  color: #707070;
+  color: #3b3b3b;
+  font-size: 22px;
+  line-height: 30px;
+}
+.el-form-item {
+  margin: 0;
+  padding: 8px 0 12px;
 }
 
 .login-form {
-  border-radius: 6px;
+  border-radius: 8px;
   background: #ffffff;
+  box-shadow: 0px 3px 9px rgba(0, 59, 103, 0.16);
   width: 400px;
-  padding: 25px 25px 5px 25px;
+  height: 430px;
+  padding: 32px 40px 44px;
+  // padding: 25px 25px 5px 25px;
   .el-input {
-    height: 38px;
-    input {
-      height: 38px;
+    height: 50px;
+    ::v-deep input {
+      font-size: 18px !important;
+      height: 50px;
+      border: #dddddd 1px solid;
+      border-radius: 2px;
+    }
+    ::v-deep .el-input__inner {
+      padding: 0 40px;
+    }
+    ::v-deep .el-input__prefix {
+      left: 0;
     }
   }
   .input-icon {
-    height: 39px;
-    width: 14px;
-    margin-left: 2px;
+    padding: 13px 8px;
+    height: 50px;
+    width: 40px;
+    font-size: 24px;
+    left: 0;
   }
 }
 .login-tip {
@@ -266,8 +313,9 @@ export default {
   color: #bfbfbf;
 }
 .login-code {
-  width: 33%;
-  height: 38px;
+  width: 122px;
+  height: 46px;
+  padding: 2px 0;
   float: right;
   img {
     cursor: pointer;
@@ -287,6 +335,44 @@ export default {
   letter-spacing: 1px;
 }
 .login-code-img {
-  height: 38px;
+  height: 46px;
+}
+.checkbox {
+  color: #3b3b3b;
+  font-size: 14px;
+  line-height: 20px;
+}
+.login-switch {
+  color: #ffffff;
+  font-size: 14px;
+  float: right;
+  display: flex;
+  padding-top: 16px;
+  cursor: pointer;
+}
+.login-switch-text {
+  line-height: 20px;
+}
+.login-switch-icon {
+  font-size: 20px;
+  margin-left: 4px;
+}
+.top {
+  position: fixed;
+  left: 69px;
+  top: 35px;
+  display: flex;
+  align-items: center;
+  .top-text {
+    font-size: 24px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    line-height: 33px;
+    color: #1492ff;
+  }
+  .top-icon {
+    width: 50px;
+    height: 50px;
+  }
 }
 </style>

@@ -60,8 +60,8 @@
       <div class="status">
         <div class="subtitle">
           当前状态
-          <span style="color: #15be50; font-size: 20px; padding-left: 16px"
-            >已完成</span
+          <span style="font-size: 20px; padding-left: 16px"
+            >{{ selectDictLabel(dict.type.task_page_status, data.status)}}</span
           ><span class="subtitle" style="padding-left: 80px"
             >2021-09-12 12:00:09 </span
           ><span class="subtitle" style="padding-left: 40px"
@@ -88,7 +88,7 @@ import HcCrud from "@/views/components/HcCrud/index";
 
 export default {
   components: { HcCrud },
-  dicts: ["task_material_type", "loop_type"],
+  dicts: ["task_material_type", "loop_type","task_page_status"],
   computed: {
     tableOption() {
       return {

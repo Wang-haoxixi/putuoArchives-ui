@@ -64,7 +64,7 @@
         </div>
         <div>
           <div class="key">状态</div>
-          <div class="value">{{ data.status }}</div>
+          <div class="value">{{selectDictLabel(dict.type.task_page_status, data.status)}}</div>
         </div>
         <div>
           <div class="key">任务完成时间</div>
@@ -74,7 +74,7 @@
     </div>
     <div class="container">
       <div class="subtitle">子任务状态</div>
-      <div>{{ data.status }}</div>
+      <div>{{ selectDictLabel(dict.type.task_page_status, data.status)}}</div>
       <div class="subtitle">任务生命周期</div>
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
         <template v-slot:status="scope">
@@ -90,7 +90,7 @@ import { getTaskDetails, getTaskLifeCycle } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
   components: { HcCrud },
-  dicts: ["keyword_type"],
+  dicts: ["keyword_type","task_page_status"],
   data() {
     return { id: 0, data: {} };
   },

@@ -3,7 +3,7 @@
     <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav"/> -->
     <!-- <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav"/> -->
     <div class="left-menu">
-      <img src="@/assets/logo/logo.png" class="left-menu-logo" />
+      <img src="@/assets/logo/logo_white.png" class="left-menu-logo" />
       <div class="left-menu-title">普陀区档案归集智能监管服务平台</div>
     </div>
     <div class="right-menu">

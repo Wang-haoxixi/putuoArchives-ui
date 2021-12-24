@@ -1,98 +1,117 @@
 <template>
-  <div class="dashboard-editor-container">
-
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
-
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row>
-
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
-      </el-col>
-    </el-row>
-
-    
+  <div class="container">
+    <div class="header">
+      <span>普陀区档案归集智能监管服务平台数据大屏</span>
+      <Time class="time"></Time>
+    </div>
+    <div class="list">
+      <div class="item">
+        <div class="title">监管对象档案工作</div>
+        <el-scrollbar class="content" wrap-class="scrollbar-wrapper">
+          <archives></archives>
+        </el-scrollbar>
+      </div>
+      <div class="item">
+        <div class="title">监管对象归集队伍建设情况</div>
+        <el-scrollbar class="content" wrap-class="scrollbar-wrapper">
+          <team></team>
+        </el-scrollbar>
+      </div>
+      <div class="item">
+        <div class="title">监管对象归集工作开展情况</div>
+        <el-scrollbar class="content" wrap-class="scrollbar-wrapper">
+          <work></work>
+        </el-scrollbar>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import PanelGroup from '../dashboard/PanelGroup'
-import LineChart from '../dashboard/LineChart'
-import RaddarChart from '../dashboard/RaddarChart'
-import PieChart from '../dashboard/PieChart'
-import BarChart from '../dashboard/BarChart'
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import Time from "@/views/components/Time/index"
+import archives from "./archives/index"
+import team from "./team/index"
+import work from "./work/index"
 
 export default {
   name: 'Index',
   components: {
-    PanelGroup,
-    LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart
+    Time,
+    archives,
+    team,
+    work
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
     }
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.dashboard-editor-container {
-  padding: 32px;
-  background-color: rgb(240, 242, 245);
+.container {
+  min-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 112px);
+}
+.header {
+  flex: 30px 0 0;
   position: relative;
-
-  .chart-wrapper {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 22px;
+  .time {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    color: #666;
+    font-size: 14px;
+  }
+}
+.list {
+  margin-top: 20px;
+  flex: 100px 1 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  // grid-template-rows: 1fr;
+  grid-column-gap: 20px;
+  .item {
     background: #fff;
-    padding: 16px 16px 0;
-    margin-bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    .title {
+      flex: 56px 0 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      background-color: #59AAF5;
+      font-size: 18px;
+      color: #fff;
+      &:before {
+        content: "";
+        display: block;
+        height: 8px;
+        width: 8px;
+        margin-right: 8px;
+        background-color: #fff;
+      }
+    }
+    .content {
+      flex: 100px 1 1;
+    }
   }
 }
 
-@media (max-width:1024px) {
-  .chart-wrapper {
-    padding: 8px;
-  }
+::v-deep .scrollbar-wrapper {
+  overflow-x: hidden !important;
 }
 </style>

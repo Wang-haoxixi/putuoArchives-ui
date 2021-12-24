@@ -66,6 +66,35 @@ Vue.component('DefaultPage', DefaultPage)
 Vue.component('TextTooltip', TextTooltip)
 Vue.component('BasicContainer', BasicContainer)
 Vue.component('Tip', Tip)
+import ECharts from 'vue-echarts'
+import { use } from 'echarts/core'
+
+// import ECharts modules manually to reduce bundle size
+import {
+  CanvasRenderer
+} from 'echarts/renderers'
+import {
+  BarChart,
+  PieChart
+} from 'echarts/charts'
+import {
+  GridComponent,
+  TooltipComponent,
+  LegendComponent
+} from 'echarts/components'
+
+use([
+  CanvasRenderer,
+  BarChart,
+  PieChart,
+  GridComponent,
+  TooltipComponent,
+  LegendComponent
+]);
+
+// register globally (or you can do it locally)
+Vue.component('v-chart', ECharts)
+
 
 Vue.use(directive)
 Vue.use(plugins)

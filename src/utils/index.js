@@ -399,6 +399,6 @@ export function timeInterval(time) {
   } else if (this.dayjs(this.dayjs()).diff(time, "day") < 30) {
     return this.dayjs(this.dayjs()).diff(time, "day") + "天前";
   } else {
-    return this.dayjs(time).date();
+    return this.dayjs(time).format("YYYY-MM-DD HH:mm:ss");
   }
 }

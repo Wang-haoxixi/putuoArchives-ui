@@ -3,14 +3,15 @@
     <content-box title="消息中心">
       <template v-slot:operations>
         <search-input @search="toSearch"></search-input>
-        <el-button style="margin-left: 10px" type="primary">全部已读</el-button>
+        <el-button style="margin-left: 10px" type="primary" @click="readAll"
+          >全部已读</el-button
+        >
       </template>
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
         <template v-slot:readStatus="scope">
-          <span
-            :class="scope.row.readStatus === 0 ? 'read' : 'unread'"
-            >{{ scope.row.readStatus === 0 ? "已读" : "未读" }}</span
-          >
+          <span :class="scope.row.readStatus === 0 ? 'read' : 'unread'">{{
+            scope.row.readStatus === 0 ? "已读" : "未读"
+          }}</span>
         </template>
         <template v-slot:noticeTitle="scope">
           <div
@@ -22,10 +23,9 @@
           </div>
         </template>
         <template v-slot:createTime="scope">
-          <span
-            style="color: #999999; font-size: 14px"
-            >{{ timeInterval(scope.row.createTime) }}</span
-          >
+          <span style="color: #999999; font-size: 14px">{{
+            timeInterval(scope.row.createTime)
+          }}</span>
         </template>
         <template v-slot:fun="scope">
           <div
@@ -35,7 +35,11 @@
               justify-content: space-between;
             "
           >
-            <el-button size="medium" style="font-size: 14px" type="text" @click="del(scope.row.id)"
+            <el-button
+              size="medium"
+              style="font-size: 14px"
+              type="text"
+              @click="del(scope.row.id)"
               >删除</el-button
             >
             <el-button
@@ -54,7 +58,12 @@
 </template>
 
 <script>
-import { getNoticeList, delNotice, getNotice } from "@/api/system/notice";
+import {
+  getNoticeList,
+  delNotice,
+  getNotice,
+  readAll,
+} from "@/api/system/notice";
 import HcCrud from "@/views/components/HcCrud/index";
 import { timeInterval } from "@/utils/index";
 import ContentBox from "@/views/components/ContentBox/index";
@@ -130,8 +139,14 @@ export default {
     },
   },
   methods: {
-    detail(id){
-      this.$router.push({ path: "noticeDetail",query:{id:id}})
+    readAll() {
+      readAll().then((res) => {
+        this.$modal.msgSuccess("成功");
+        this.$refs.hcCrud.refresh();
+      });
+    },
+    detail(id) {
+      this.$router.push({ path: "noticeDetail", query: { id: id } });
     },
     read(id) {
       getNotice(id)
@@ -168,13 +183,11 @@ export default {
         });
       });
     },
-    toSearch(name) {
-      this.$refs.hcCrud.refresh(
-        {},
-        {
-          name,
-        }
-      );
+    toSearch(noticeTitle) {
+      console.log(noticeTitle);
+      this.$refs.hcCrud.refresh({}, {
+        noticeTitle
+      })
     },
     startBatch() {
       let select = this.$refs.hcCrud.multipleSelection;

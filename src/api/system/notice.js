@@ -5,6 +5,7 @@ export function getNoticeList(query) {
   return request({
     url: '/system/notice/list',
     method: 'get',
+    params: query
   })
 }
 
@@ -60,5 +61,12 @@ export function forwardNotice(data) {
     url: '/system/notice/forward',
     method: 'post',
     data: data
+  })
+}
+// 消息全部已读
+export function readAll() {
+  return request({
+    url: 'system/notice/record/read',
+    method: 'post',
   })
 }

@@ -92,6 +92,7 @@ export default {
       })
     },
     toSearch (fileTitle) {
+      console.log(fileTitle)
       this.$refs.hcCrud.refresh({}, {
         fileTitle
       })

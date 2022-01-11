@@ -184,7 +184,6 @@ export default {
       });
     },
     toSearch(noticeTitle) {
-      console.log(noticeTitle);
       this.$refs.hcCrud.refresh({}, {
         noticeTitle
       })

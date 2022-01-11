@@ -15,6 +15,7 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
+    userId: '',
     roles: [],
     permissions: [],
     currentWorkbench: {},
@@ -31,6 +32,9 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
+    },
+    SET_USER_ID: (state,userId) =>{
+      state.userId = userId
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
@@ -128,6 +132,7 @@ const user = {
           commit('SET_DEPT_LIST', res.workbench.deptList)
           commit('SET_ROLE_LIST', res.workbench.roleList)
           commit('SET_NAME', user.nickName)
+          commit('SET_USER_ID', user.userId)
           commit('SET_AVATAR', avatar)
           resolve(res)
         }).catch(error => {

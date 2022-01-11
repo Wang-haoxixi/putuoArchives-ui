@@ -10,7 +10,7 @@
           >制发任务清单</el-button
         >
       </div>
-      <div>
+      <div style="padding-left: 20px">
         <el-button
           type="primary"
           v-if="currentWorkbench.identity == 3"
@@ -484,9 +484,9 @@ export default {
     color: #333333;
   }
   .notice-item-time {
-    text-align: right;
-    width: 80px;
-    padding-left: 12px;
+    text-align: left;
+    width: 160px;
+    margin-left: 12px;
     font-size: 14px;
     color: #999999;
   }

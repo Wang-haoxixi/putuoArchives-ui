@@ -93,3 +93,11 @@ export function getTaskListDetail(query) {
     params: query
   })
 }
+//完善人领取任务
+export function taskReceive(data) {
+  return request({
+    url: '/task/perfect/receive',
+    method: 'post',
+    data: data
+  })
+}

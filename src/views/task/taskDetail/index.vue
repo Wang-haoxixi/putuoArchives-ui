@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="page">
     <div class="container">
       <div class="title">
-        <div class="title-text">0521年中讨论会议</div>
-        <el-button type="primary" @click="taskListDetail">查看任务清单</el-button>
+        <div class="title-text">{{ data.taskName }}</div>
+        <el-button type="primary" @click="taskListDetail"
+          >查看任务清单</el-button
+        >
       </div>
       <div class="key-value" style="padding-top: 24px">
         <div>
@@ -31,7 +33,15 @@
         </div>
         <div>
           <div class="key">题名关键词</div>
-          <div class="value">{{ data.keywordTag }}</div>
+          <div class="value">
+            <el-tag
+              v-for="(tag, index) in data.keywordTagList"
+              :key="index"
+              class="tags"
+              size="mini"
+              >{{ tag }}</el-tag
+            >
+          </div>
         </div>
         <div>
           <div class="key">形成时间</div>
@@ -42,18 +52,31 @@
           <div class="value">{{ data.responsibleDept }}</div>
         </div>
         <div>
-          <div class="key">关联材料</div>
+          <div class="key">
+            关联材料
+            <el-button
+              type="primary"
+              size="mini"
+              plain
+              style="margin-left: 20px"
+              >编辑关联材料</el-button
+            >
+          </div>
           <div
             class="key"
-            style="line-height: 20px;"
+            style="line-height: 20px; font-size: 14px"
             v-for="(item, index) in data.fileRelationList"
             :key="index"
           >
             {{ item.fileName }}
-            <el-button type="text" style="margin-left: 16px; padding: 2px 0"
+            <el-button
+              type="text"
+              style="margin-left: 16px; padding: 2px 0; font-size: 14px"
               >在线预览</el-button
             >
-            <el-button type="text" style="margin-left: 16px; padding: 2px 0"
+            <el-button
+              type="text"
+              style="margin-left: 16px; padding: 2px 0; font-size: 14px"
               >下载</el-button
             >
           </div>
@@ -64,7 +87,9 @@
         </div>
         <div>
           <div class="key">状态</div>
-          <div class="value">{{selectDictLabel(dict.type.task_page_status, data.status)}}</div>
+          <div class="value">
+            {{ selectDictLabel(dict.type.task_page_status, data.status) }}
+          </div>
         </div>
         <div>
           <div class="key">任务完成时间</div>
@@ -74,27 +99,42 @@
     </div>
     <div class="container">
       <div class="subtitle">子任务状态</div>
-      <div>{{ selectDictLabel(dict.type.task_page_status, data.status)}}</div>
-      <div class="subtitle">任务生命周期</div>
+      <div class="status">
+        <div class="status-title">当前状态</div>
+        <div class="status-text">
+          {{ selectDictLabel(dict.type.task_page_status, data.status) }}
+        </div>
+      </div>
+      <div class="subtitle" style="margin-top: 20px">任务生命周期</div>
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
         <template v-slot:status="scope">
           <color-tag :value="scope.row.status" :tags="statusTags"></color-tag>
         </template>
       </hc-crud>
     </div>
+    <div
+      class="bottom"
+      v-if="data.perfectUserId == userId && data.status == 15"
+    >
+      <el-button type="primary" @click="taskReceive">领取任务</el-button>
+    </div>
   </div>
 </template>
 
 <script>
-import { getTaskDetails, getTaskLifeCycle } from "@/api/workbench";
+import { getTaskDetails, getTaskLifeCycle, taskReceive } from "@/api/workbench";
+import { mapState } from "vuex";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
   components: { HcCrud },
-  dicts: ["keyword_type","task_page_status"],
+  dicts: ["keyword_type", "task_page_status"],
   data() {
     return { id: 0, data: {} };
   },
   computed: {
+    ...mapState({
+      userId: (state) => state.user.userId,
+    }),
     tableOption() {
       return {
         index: false,
@@ -122,21 +162,36 @@ export default {
     },
   },
   methods: {
-    fetchListFun(params) {
-      return new Promise((resolve, reject) => {
-        getTaskLifeCycle(params).then(({ data }) => {
-          resolve({
-            records: data.records,
-            page: {
-              total: data.total,
-            },
+    taskReceive() {
+      taskReceive([this.id]).then((res) => {
+        if (res.code === 200) {
+          this.$modal.msgSuccess("领取成功！");
+          getTaskDetails({ taskId: this.id }).then((res) => {
+            this.data = res.data;
           });
-        });
+        }
       });
     },
-    taskListDetail(){
-      this.$router.push({path: 'taskListDetail', query:{id:this.data.taskListId}})
-    }
+    fetchListFun(params) {
+      return new Promise((resolve, reject) => {
+        getTaskLifeCycle({ ...params, dataId: this.id, dataType: 2 }).then(
+          ({ data }) => {
+            resolve({
+              records: data.records,
+              page: {
+                total: data.total,
+              },
+            });
+          }
+        );
+      });
+    },
+    taskListDetail() {
+      this.$router.push({
+        path: "taskListDetail",
+        query: { id: this.data.taskListId },
+      });
+    },
   },
   created() {
     let id = this.$route.query.id;
@@ -152,6 +207,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tags {
+  height: 22px;
+  line-height: 22px;
+  border-radius: 2px;
+  &:not(:first-child) {
+    margin-left: 4px;
+  }
+}
+.page {
+  padding-bottom: 64px;
+}
+.bottom {
+  position: fixed;
+  z-index: 99;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  height: 64px;
+  text-align: right;
+}
 .container {
   padding: 20px;
   background-color: #ffffff;
@@ -175,6 +252,23 @@ export default {
     font-weight: 500;
     line-height: 28px;
     color: #333333;
+  }
+  .status {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    .status-title {
+      color: #666666;
+      font-size: 16px;
+      line-height: 22px;
+    }
+    .status-text {
+      padding-left: 20px;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 28px;
+      color: #333333;
+    }
   }
   .key-value {
     display: grid;

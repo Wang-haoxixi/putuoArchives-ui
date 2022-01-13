@@ -63,9 +63,9 @@
           <span style="font-size: 20px; padding-left: 16px"
             >{{ selectDictLabel(dict.type.task_page_status, data.status)}}</span
           ><span class="subtitle" style="padding-left: 80px"
-            >2021-09-12 12:00:09 </span
+            >{{status.createTime}} </span
           ><span class="subtitle" style="padding-left: 40px"
-            >子任务2完成（13/13）</span
+            >{{status.content}}</span
           >
         </div>
         <el-button type="text">查看状态详情</el-button>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { getTaskListDetail, getList } from "@/api/workbench";
+import { getTaskListDetail, getList,getTaskLifeCycle } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 
 export default {
@@ -129,7 +129,7 @@ export default {
     },
   },
   data() {
-    return { id: 0, data: "" };
+    return { id: 0, data: "",status:"" };
   },
   methods: {
     fetchListFun(params) {
@@ -152,6 +152,9 @@ export default {
     getTaskListDetail({ taskListId: id }).then((res) => {
       this.data = res.data;
     });
+    getTaskLifeCycle({dataId:id,dataType: 1}).then(res => {
+      this.status = res.data.records[0];
+    })
   },
 };
 </script>

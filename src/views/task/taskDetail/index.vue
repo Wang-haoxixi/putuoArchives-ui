@@ -59,6 +59,7 @@
               size="mini"
               plain
               style="margin-left: 20px"
+              @click="dialogVisible = true"
               >编辑关联材料</el-button
             >
           </div>
@@ -72,11 +73,13 @@
             <el-button
               type="text"
               style="margin-left: 16px; padding: 2px 0; font-size: 14px"
+              @click="toPreview(item.fileUrl)"
               >在线预览</el-button
             >
             <el-button
               type="text"
               style="margin-left: 16px; padding: 2px 0; font-size: 14px"
+              @click="toDownLoad(item.fileUrl)"
               >下载</el-button
             >
           </div>
@@ -118,18 +121,73 @@
     >
       <el-button type="primary" @click="taskReceive">领取任务</el-button>
     </div>
+    <el-dialog title="编辑关联材料" :visible.sync="dialogVisible" width="484px">
+      <div class="materialList">
+        <div
+          class="material"
+          v-for="(item, index) in data.fileRelationList"
+          :key="index"
+        >
+          <div class="materialName">{{ item.fileName }}</div>
+          <el-button type="text" @click="materialDel(index)">删除</el-button>
+          <!-- <div class="materialDel"></div> -->
+        </div>
+      </div>
+      <el-form :model="materialForm" ref="materialForm">
+        <el-form-item prop="file">
+          <el-select
+            v-model="materialForm.fileList"
+            filterable
+            remote
+            value-key="fileUrl"
+            reserve-keyword
+            placeholder="请选择关联材料"
+            :remote-method="materialRemote"
+            :loading="fileLoading"
+          >
+            <el-option
+              v-for="item in fileOptions"
+              :key="item.id"
+              :label="item.fileTitle"
+              :value="{
+                fileName: item.fileTitle,
+                fileUrl: item.id,
+              }"
+            >
+            </el-option>
+          </el-select>
+          <el-button type="primary" plain style="" @click="materialAdd"
+            >添加</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getTaskDetails, getTaskLifeCycle, taskReceive } from "@/api/workbench";
+import {
+  getTaskDetails,
+  getTaskLifeCycle,
+  taskReceive,
+  getMaterials,
+  fileUpdate,
+} from "@/api/workbench";
+import {trainDownloadUrl, trainPreviewUrl} from "@/api/file/index"
 import { mapState } from "vuex";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
   components: { HcCrud },
   dicts: ["keyword_type", "task_page_status"],
   data() {
-    return { id: 0, data: {} };
+    return {
+      id: 0,
+      data: {},
+      dialogVisible: false,
+      materialForm: {},
+      fileOptions: [],
+      fileLoading: false,
+    };
   },
   computed: {
     ...mapState({
@@ -162,6 +220,71 @@ export default {
     },
   },
   methods: {
+    toDownLoad (id) {
+      trainDownloadUrl({id}).then(({data}) => {
+        const a = document.createElement('a')
+        a.href = `${process.env.VUE_APP_BASE_API}${data}`
+        a.click()
+      })
+    },
+    toPreview (id) {
+      trainPreviewUrl({id}).then(({data}) => {
+        if (data) {
+          window.open(data)
+        }
+      })
+    },
+    materialDel(index) {
+      let list = JSON.parse(JSON.stringify(this.data.fileRelationList));
+      list.splice(index, 1)
+      this.fileUpdateFun(list);
+    },
+    materialAdd() {
+      //repeat去重字段初始化
+      let repeat = false;
+      console.log(this.materialForm.fileList);
+      //判断添加的材料是否已经存在
+      if (this.materialForm.fileList) {
+        for (let i = 0; i < this.data.fileRelationList.length; i++) {
+          if (
+            //注意：因为后台接口设计问题，fileUrl其实是关联材料的id。
+            this.data.fileRelationList[i].fileUrl ==
+            this.materialForm.fileList.fileUrl
+          ) {
+            repeat = true;
+          }
+        }
+        if (repeat) {
+          this.$modal.msgError("您添加的材料已存在");
+        } else {
+          let list = JSON.parse(JSON.stringify(this.data.fileRelationList));
+          list.push(this.materialForm.fileList);
+          this.fileUpdateFun(list);
+        }
+      }
+    },
+    fileUpdateFun(list) {
+      fileUpdate({ taskId: this.id, fileList: list }).then((res) => {
+        if (res.data === true) {
+          this.$modal.msgSuccess("操作成功");
+          this.data.fileRelationList = list;
+        }
+      });
+    },
+    materialRemote(query) {
+      this.fileLoading = true;
+      getMaterials({ fileTitle: query }).then((res) => {
+        this.fileLoading = false;
+        this.fileOptions = res.data.records;
+      });
+    },
+    // remoteMethod(query) {
+    //   this.fileLoading = true;
+    //   getMaterials({ fileTitle: query }).then((res) => {
+    //     this.fileLoading = false;
+    //     this.fileOptions = res.data.records;
+    //   });
+    // },
     taskReceive() {
       taskReceive([this.id]).then((res) => {
         if (res.code === 200) {
@@ -169,6 +292,7 @@ export default {
           getTaskDetails({ taskId: this.id }).then((res) => {
             this.data = res.data;
           });
+          this.$refs.hcCrud.refresh();
         }
       });
     },
@@ -207,6 +331,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.materialList {
+  .material {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    .materialName {
+      padding-right: 32px;
+      color: #333333;
+    }
+  }
+}
 .tags {
   height: 22px;
   line-height: 22px;

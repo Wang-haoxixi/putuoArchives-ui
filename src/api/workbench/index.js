@@ -101,3 +101,11 @@ export function taskReceive(data) {
     data: data
   })
 }
+//更新关联材料
+export function fileUpdate(data) {
+  return request({
+    url: '/task/file/update',
+    method: 'post',
+    data: data
+  })
+}

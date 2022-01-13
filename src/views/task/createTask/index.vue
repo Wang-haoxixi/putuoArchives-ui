@@ -479,6 +479,22 @@ export default {
     this.getLiable();
   },
   methods: {
+    subformInitialization(){
+      this.subform = {
+        taskName: "",
+        keywordTagList: [],
+        responsibleDept: "",
+        responsibleDeptList: [],
+        formTime: "",
+        liable: "",
+        liableObj: "",
+        materialType: "",
+        startTime: "",
+        endTime: "",
+        pageStatus: "",
+        fileList: [],
+      }
+    },
     //添加清单模板
     addTemplate() {
       addTemplate({
@@ -555,7 +571,9 @@ export default {
           this.subform.liable = this.subform.liableObj.value;
           this.subform.pageStatus = "0";
           this.form.taskList.push(this.subform);
+          this.$refs['subform'].resetFields();
           this.dialogFormVisible = false;
+          // this.subformInitialization();
         } else {
           this.$message.error("请检查输入内容");
           return false;

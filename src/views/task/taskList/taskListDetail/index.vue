@@ -28,11 +28,11 @@
           ><div class="subtitle">归集周期</div>
           <div class="info">
             <span>{{
-            selectDictLabel(dict.type.loop_type, data.nextLoopType)
-          }}</span
-          ><span v-if="data.nextLoopType > 1"
-            >循环，第{{ data.currentLoopNum }}次，共{{ data.nextLoopNum }}次
-          </span>
+              selectDictLabel(dict.type.loop_type, data.nextLoopType)
+            }}</span
+            ><span v-if="data.nextLoopType > 1"
+              >循环，第{{ data.currentLoopNum }}次，共{{ data.nextLoopNum }}次
+            </span>
           </div>
           <div class="subtitle">创建科室</div>
           <div class="info">办公室</div></el-col
@@ -40,15 +40,19 @@
       </el-row>
       <div class="data-container">
         <div class="data-container-item">
-          <div class="title">{{data.taskNum}}</div>
+          <div class="title">{{ data.taskNum }}</div>
           <div class="text">子任务总数</div>
         </div>
         <div class="data-container-item">
-          <div class="title">{{data.taskCompleteNum}}</div>
+          <div class="title">{{ data.taskCompleteNum }}</div>
           <div class="text">已完成任务数</div>
         </div>
         <div class="data-container-item">
-          <div class="title">{{Math.round(data.taskCompleteNum/data.taskNum *10000) / 100}}%</div>
+          <div class="title">
+            {{
+              Math.round((data.taskCompleteNum / data.taskNum) * 10000) / 100
+            }}%
+          </div>
           <div class="text">完成率</div>
         </div>
       </div>
@@ -60,15 +64,16 @@
       <div class="status">
         <div class="subtitle">
           当前状态
-          <span style="font-size: 20px; padding-left: 16px"
-            >{{ selectDictLabel(dict.type.task_page_status, data.status)}}</span
+          <span style="font-size: 20px; padding-left: 16px">{{
+            selectDictLabel(dict.type.task_page_status, data.status)
+          }}</span
           ><span class="subtitle" style="padding-left: 80px"
-            >{{status.createTime}} </span
-          ><span class="subtitle" style="padding-left: 40px"
-            >{{status.content}}</span
-          >
+            >{{ status.createTime }} </span
+          ><span class="subtitle" style="padding-left: 40px">{{
+            status.content
+          }}</span>
         </div>
-        <el-button type="text">查看状态详情</el-button>
+        <el-button type="text" @click="taskListLog" >查看状态详情</el-button>
       </div>
     </div>
     <div class="container">
@@ -83,12 +88,12 @@
 </template>
 
 <script>
-import { getTaskListDetail, getList,getTaskLifeCycle } from "@/api/workbench";
+import { getTaskListDetail, getList, getTaskLifeCycle } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 
 export default {
   components: { HcCrud },
-  dicts: ["task_material_type", "loop_type","task_page_status"],
+  dicts: ["task_material_type", "loop_type", "task_page_status"],
   computed: {
     tableOption() {
       return {
@@ -129,9 +134,12 @@ export default {
     },
   },
   data() {
-    return { id: 0, data: "",status:"" };
+    return { id: 0, data: "", status: "" };
   },
   methods: {
+    taskListLog(){
+      this.$router.push({ path: '/taskListLog', query: { id: this.id } })
+    },
     fetchListFun(params) {
       return new Promise((resolve, reject) => {
         getList({ taskListId: this.id, ...params }).then(({ data }) => {
@@ -152,9 +160,9 @@ export default {
     getTaskListDetail({ taskListId: id }).then((res) => {
       this.data = res.data;
     });
-    getTaskLifeCycle({dataId:id,dataType: 1}).then(res => {
+    getTaskLifeCycle({ dataId: id, dataType: 1 }).then((res) => {
       this.status = res.data.records[0];
-    })
+    });
   },
 };
 </script>

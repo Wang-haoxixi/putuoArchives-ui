@@ -91,7 +91,7 @@
         <div>
           <div class="key">状态</div>
           <div class="value">
-            {{ selectDictLabel(dict.type.task_page_status, data.status) }}
+            {{ selectDictLabel(dict.type.task_page_status, data.pageStatus) }}
           </div>
         </div>
         <div>
@@ -105,7 +105,7 @@
       <div class="status">
         <div class="status-title">当前状态</div>
         <div class="status-text">
-          {{ selectDictLabel(dict.type.task_page_status, data.status) }}
+          {{ selectDictLabel(dict.type.task_page_status, data.pageStatus) }}
         </div>
       </div>
       <div class="subtitle" style="margin-top: 20px">任务生命周期</div>

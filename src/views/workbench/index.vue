@@ -105,7 +105,7 @@
           </span>
         </template>
         <template v-slot:fun="scope">
-          <div style="display: flex; justify-content: space-between">
+          <div>
             <el-button
               size="medium"
               style="font-size: 14px"
@@ -167,13 +167,31 @@
         ></text-tooltip>
       </div>
     </div>
+    <el-dialog
+      title="领取任务"
+      :visible.sync="dialogVisible"
+      width="33.61%">
+      <div>
+        <span>您可以设置时间节点来提醒完成任务，默认在任务结束前1天会提醒您检查任务是否完成。</span>
+        <p>设置提醒时间</p>
+        <el-date-picker
+          v-model="warnTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期">
+        </el-date-picker>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="finish">完成</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { timeInterval } from "@/utils/index";
-import { getList, getTaskCount, getArchiveList } from "@/api/workbench";
+import { getList, getTaskCount, getArchiveList, receiveTask } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
   name: "Workbench",
@@ -347,6 +365,10 @@ export default {
       // },
       count: {},
       statusFlag: 0,
+
+      dialogVisible: false,
+      warnTime:'',
+      taskId:'',
     };
   },
   // watch: {
@@ -363,7 +385,10 @@ export default {
     create() {
       this.$router.push({ path: "createTask" });
     },
-    receive() {},
+    receive(taskId) {
+      this.dialogVisible = true;
+      this.taskId = taskId
+    },
     del() {},
     edit() {},
     detail(id) {
@@ -427,6 +452,18 @@ export default {
     },
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type];
+    },
+    finish(){
+      receiveTask({
+        remindTime: this.warnTime,
+        taskId: this.taskId,
+      }).then(res=>{
+        if(res.code == 200){
+          this.$message.success('领取成功');
+          this.dialogVisible = false;
+          this.$refs.hcCrud.refresh();
+        }
+      })
     },
   },
   created() {

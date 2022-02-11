@@ -109,3 +109,11 @@ export function fileUpdate(data) {
     data: data
   })
 }
+// 领取任务
+export function receiveTask(data) {
+  return request({
+    url: '/task/receive',
+    method: 'post',
+    data: data
+  })
+}

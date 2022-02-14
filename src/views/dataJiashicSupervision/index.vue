@@ -50,24 +50,31 @@
               ref="formData"
               class="formData"
             >
-              <el-form-item label="纳入监管单位总数">
-                <el-input></el-input>
+              <el-form-item label="纳入监管单位总数" prop="absorbData.dictValue">
+                <el-input-number v-model.trim="absorbData.dictValue" :min='1' @change="absorb"></el-input-number>
               </el-form-item>
-              <el-form-item label="建成档案室总数">
-                <el-input></el-input>
+              <el-form-item label="建成档案室总数" prop="buildupData.dictValue">
+                <el-input-number v-model.trim="buildupData.dictValue" :min='1' @change="buildup"></el-input-number>
               </el-form-item>
             </el-form>
             <p class="p">统计数据文件上传：</p>
-            <el-table :data="fileData" style="width: 100%">
+            <el-table :data="statisticsTableData" style="width: 100%">
               <el-table-column type="index" width="50" label="序号">
               </el-table-column>
-              <el-table-column prop="date" label="文件名称"> </el-table-column>
-              <el-table-column prop="date" label="是否已上传">
+              <el-table-column prop="fileName" label="文件名称"> </el-table-column>
+              <el-table-column prop="isUpload" label="是否已上传">
+                <template slot-scope="scope">
+                  {{ scope.row.isUpload == 1 ? "是" : "否" }}
+                </template>
               </el-table-column>
-              <el-table-column prop="date" label="是否必传"> </el-table-column>
-              <el-table-column prop="date" label="最近更新人">
+              <el-table-column prop="mustUpload" label="是否必传">
+                 <template slot-scope="scope">
+                  {{ scope.row.mustUpload == 1 ? "是" : "否" }}
+                </template>
               </el-table-column>
-              <el-table-column prop="date" label="最近更新时间">
+              <el-table-column prop="updateBy" label="最近更新人">
+              </el-table-column>
+              <el-table-column prop="updateTime" label="最近更新时间">
               </el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -81,9 +88,6 @@
               </el-table-column>
             </el-table>
             <p class="p">专项归集数据上传：</p>
-            <el-button type="primary" @click="createData"
-              >新建专项归集数据</el-button
-            >
             <el-table :data="fileData" style="width: 100%">
               <el-table-column type="index" width="50" label="序号">
               </el-table-column>
@@ -110,13 +114,13 @@
                 </template>
               </el-table-column>
             </el-table>
-            <pagination
+            <!-- <pagination
               v-show="total2 > 0"
               :total2="total2"
               :page.sync="queryParams.current"
               :limit.sync="queryParams.size"
               @pagination="getList"
-            />
+            /> -->
           </el-tab-pane>
         </el-tabs>
       </content-box>
@@ -127,8 +131,8 @@
 <script>
 import ContentBox from "@/views/components/ContentBox/index";
 import Pagination from "@/components/Pagination/index";
-import { getList } from "@/api/cockpitManage";
-import { listData } from "@/api/system/dict/data";
+import { getList, allFile, specialCollection } from "@/api/cockpitManage";
+import { listData, updateData } from "@/api/system/dict/data";
 export default {
   components: { ContentBox, Pagination },
   data() {
@@ -150,18 +154,33 @@ export default {
       dictParams: {
         dictType: "cockpit_plate",
       },
+      // 统计字典参数
+      dictStatisticsParams: {
+        dictType: "statistical_data_upload",
+      },
       // 角色总条数
       total: 0,
       // 字典数据
       dictData: [],
       // 专项总数据
       total2: 0,
+      // 纳入监管单位数据
+      absorbData: 0,
+      // 建成档案室数据
+      buildupData: 0,
+      // 统计数据文件表格数据
+      statisticsTableData: [],
+      // 专项归集表格数据
+      specialTableData: [],
     };
   },
   computed: {},
   created() {
     this.getDictData();
+    this.getDictStatisticsData();
     this.getList();
+
+    this.getAllFile();
   },
   methods: {
     // tab切换按钮
@@ -188,24 +207,66 @@ export default {
     // 角色设置
     handleSet(row) {
       console.log(row);
-      this.$router.push({
-        path: "/dataJiashicSupervision/set/?id=" + row.id,
-      });
+      this.$router.push({ path: "/dataJiashicSupervision/set/?id=" + row.id });
     },
     /** 查询所在版块数据 */
     getDictData() {
-      listData(this.dictParams).then(({ rows }) => {
-        this.dictData = rows;
+      listData(this.dictParams).then(({ rows }) => { this.dictData = rows; });
+    },
+    /** 查询统计数据 */
+    getDictStatisticsData() {
+      listData(this.dictStatisticsParams).then(({ rows }) => {
+        if (rows) {
+          this.absorbData = rows[0];
+          this.buildupData = rows[1];
+        }
       });
     },
     // 查看按钮
-    handleCheck() {},
+    handleCheck(row) {
+      console.log(111,row)
+      this.$router.push({
+        path: `/dataJiashicSupervision/fileDetail`,
+        query: {
+          id: row.id,
+          dict: row.dict,
+          fileName: row.fileName
+        }
+      })
+    },
     // 新建专项归集数据
     createData() {},
     // 编辑按钮
     handleEdit() {},
     // 删除按钮
     handleDelete() {},
+    /* 修改统计字典数据 */
+    changeStatistics(data) {
+      updateData(data).then((res) => {});
+    },
+    // 纳入监管单位总数设置
+    absorb() {
+      if(this.absorbData.dictValue==undefined){ return this.$message.warning('纳入监管单位总数不能为空') }
+      this.changeStatistics(this.absorbData);
+    },
+    // 建成档案室总数设置
+    buildup() {
+      if(this.buildupData.dictValue==undefined){ return this.$message.warning('建成档案室总数不能为空') }
+      this.changeStatistics(this.buildupData);
+    },
+    // 查询统计数据文件
+    getAllFile(){
+      allFile({ type: 0 }).then(({ data })=>{
+        this.statisticsTableData = data
+      })
+    },
+    // 查询专项归集数据
+    getSpecialData(){
+      specialCollection().then(({ data })=>{
+        console.log('data..', data)
+        this.specialTableData = data
+      })
+    }
   },
 };
 </script>

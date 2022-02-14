@@ -27,4 +27,42 @@ export function editCockpit(data) {
   })
 }
 
+// 查询统计数据文件
+export function allFile(query) {
+  return request({
+    url: '/archive/get_cockpit/get_dict_list',
+    method: 'get',
+    params: query
+  })
+}
 
+// 查询专项归集数据
+export function specialCollection(query) {
+  return request({
+    url: '/archive/get_cockpit/page_list_cockpit_special_collection',
+    method: 'get',
+    params: query
+  })
+}
+
+// 分页查询文件内容
+export function fileContent(query) {
+  return request({
+    url: '/archive/get_cockpit/get_list_file',
+    method: 'get',
+    params: query
+  })
+}
+
+// 下载模板
+export function downloadTemplate (data) {
+  const formData = new FormData()
+  formData.append("enums", data)
+  return request({
+    method: 'post',
+    url: '/archive/get_cockpit/export',
+    responseType: "blob",
+    showHeaders: true,
+    data: formData,
+  })
+}

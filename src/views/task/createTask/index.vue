@@ -413,6 +413,7 @@ export default {
         materialType: "",
         startTime: "",
         endTime: "",
+        liableDeptId: "",
         pageStatus: "",
         fileList: [],
       },
@@ -484,7 +485,6 @@ export default {
   },
   methods: {
     subformInitialization() {
-      console.log(this.subform)
       this.subform = {
         taskName: "",
         keywordTagList: [],
@@ -497,6 +497,7 @@ export default {
         startTime: "",
         endTime: "",
         pageStatus: "",
+        liableDeptId: "",
         fileList: [],
       };
       this.dialogFormVisible = false;
@@ -526,6 +527,7 @@ export default {
     handleNodeClick(data, node) {
       if (node.isLeaf) {
         this.subform.liableObj = data;
+        this.subform.liableDeptId= node.parent.data.value;
       }
     },
     cancel() {

@@ -169,7 +169,11 @@
         新增任务
       </div>
     </div>
-    <el-dialog title="新增/编辑任务" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="新增/编辑任务"
+      :visible.sync="dialogFormVisible"
+      destroy-on-close
+    >
       <el-form
         :model="subform"
         class="taskForm"
@@ -479,7 +483,8 @@ export default {
     this.getLiable();
   },
   methods: {
-    subformInitialization(){
+    subformInitialization() {
+      console.log(this.subform)
       this.subform = {
         taskName: "",
         keywordTagList: [],
@@ -493,7 +498,8 @@ export default {
         endTime: "",
         pageStatus: "",
         fileList: [],
-      }
+      };
+      this.dialogFormVisible = false;
     },
     //添加清单模板
     addTemplate() {
@@ -571,9 +577,7 @@ export default {
           this.subform.liable = this.subform.liableObj.value;
           this.subform.pageStatus = "0";
           this.form.taskList.push(this.subform);
-          this.$refs['subform'].resetFields();
-          this.dialogFormVisible = false;
-          // this.subformInitialization();
+          this.subformInitialization();
         } else {
           this.$message.error("请检查输入内容");
           return false;

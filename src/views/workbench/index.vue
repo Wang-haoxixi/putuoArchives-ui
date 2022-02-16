@@ -154,10 +154,10 @@
     <div style="background-color: #ffffff; border-radius: 4px">
       <div class="title-container">
         <div class="title-text">通知消息</div>
-        <el-button type="text" style="font-size: 14px">更多</el-button>
+        <el-button type="text" style="font-size: 14px" @click="goNoticeList">更多</el-button>
       </div>
       <default-page :index="1" :show="!noticeList.length > 0"></default-page>
-      <div class="notice-item" v-for="(item, index) in noticeList" :key="index">
+      <div class="notice-item" v-for="(item, index) in noticeList" :key="index"  @click=goNoticeDetail(item.id)>
         <text-tooltip
           :content="item.noticeTitle"
           class="notice-item-title"
@@ -414,6 +414,13 @@ export default {
   //   },
   // },
   methods: {
+    goNoticeList(){
+    this.$router.push({path: "noticeList"})
+
+    },
+    goNoticeDetail(id){
+      this.$router.push({ path: "noticeDetail", query: { id: id } });
+    },
     //制发任务清单
     create() {
       this.$router.push({ path: "createTask" });
@@ -509,6 +516,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notice-item {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  &:hover {
+    cursor: pointer;
+    background-color: #edf4ff;
+    .notice-item-title{
+      color: #1492ff;
+    }
+  }
+}
 .title-container {
   padding: 16px 0;
   display: flex;
@@ -544,7 +563,7 @@ export default {
   align-items: center;
   line-height: 64px;
   height: 64px;
-  margin: 0 20px;
+  padding: 0 20px;
   border-bottom: 1px solid #eeeeee;
   .notice-item-title {
     min-width: 0;

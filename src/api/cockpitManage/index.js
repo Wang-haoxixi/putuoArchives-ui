@@ -66,3 +66,71 @@ export function downloadTemplate (data) {
     data: formData,
   })
 }
+
+// 上传文件
+export function fileUpload (data) {
+  const formData = new FormData()
+  for (const key in data) {
+    formData.append(key, data[key])
+  }
+  return request({
+    url: '/archive/get_cockpit/importData',
+    method: 'post',
+    data: formData
+  })
+}
+
+// 导出数据
+export function exportData (data) {
+  const formData = new FormData()
+  formData.append("enums", data)
+  return request({
+    method: 'post',
+    url: '/archive/get_cockpit/export_list',
+    responseType: "blob",
+    showHeaders: true,
+    data: formData,
+  })
+}
+
+// 新增/修改专项归集
+export function specialPro(data) {
+  return request({
+    url: '/archive/get_cockpit/save_or_update_cockpit_special_collection',
+    method: 'post',
+    data: data
+  })
+}
+
+// 删除专项
+export function specialDel(data) {
+  const formData = new FormData()
+  formData.append("id", data)
+  return request({
+    url: '/archive/get_cockpit/del_cockpit_special_collection',
+    method: 'post',
+    data: formData
+  })
+}
+
+// 根据id删除文件内容
+export function delFile(data) {
+  const formData = new FormData()
+  for (const key in data) {
+    formData.append(key, data[key])
+  }
+  return request({
+    url: '/archive/get_cockpit/delFileContent',
+    method: 'post',
+    data: formData
+  })
+}
+
+// 根据id编辑文件内容
+export function updateFileContent(data) {
+  return request({
+    url: '/archive/get_cockpit/updateFileContent',
+    method: 'post',
+    data: data
+  })
+}

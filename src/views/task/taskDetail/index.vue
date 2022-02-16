@@ -207,9 +207,9 @@ export default {
           },
           {
             label: "操作",
-            prop: "type",
-            type: "select",
-            dicData: this.dict.type.keyword_type,
+            prop: "content",
+            // type: "select",
+            // dicData: this.dict.type.keyword_type,
           },
           {
             label: "留言",

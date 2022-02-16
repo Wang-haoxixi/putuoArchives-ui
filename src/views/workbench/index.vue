@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <basic-container>
     <div style="background-color: #ffffff; border-radius: 4px">
       <div class="title-container">
         <div class="title-text">我的任务</div>
@@ -10,7 +10,7 @@
           >制发任务清单</el-button
         >
       </div>
-      <div style="padding-left: 20px">
+      <div>
         <el-button
           type="primary"
           v-if="currentWorkbench.identity == 3"
@@ -87,14 +87,15 @@
         >
       </div>
       <hc-crud
-        not-out
         ref="hcCrud"
         :option="tableOption"
         :fetchListFun="fetchListFun"
       >
         <template v-slot:taskName="scope">
           <div>{{ scope.row.taskName }}</div>
-          <div style="color:#999999;font-size:12px;line-height:17px">所属清单：{{ scope.row.taskListName }}</div>
+          <div style="color: #999999; font-size: 12px; line-height: 17px">
+            所属清单：{{ scope.row.taskListName }}
+          </div>
         </template>
         <template v-slot:loop="scope">
           <span>{{
@@ -118,7 +119,7 @@
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="scope.row.pageStatus == 18"
+              v-if="scope.row.pageStatus == 0"
               @click="edit(scope.row.taskId)"
               >编辑</el-button
             >
@@ -126,7 +127,7 @@
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="scope.row.pageStatus == 18"
+              v-if="scope.row.pageStatus == 0"
               @click="del(scope.row.taskId)"
               >删除</el-button
             >
@@ -167,31 +168,36 @@
         ></text-tooltip>
       </div>
     </div>
-    <el-dialog
-      title="领取任务"
-      :visible.sync="dialogVisible"
-      width="33.61%">
+    <el-dialog title="领取任务" :visible.sync="dialogVisible" width="33.61%">
       <div>
-        <span>您可以设置时间节点来提醒完成任务，默认在任务结束前1天会提醒您检查任务是否完成。</span>
+        <span
+          >您可以设置时间节点来提醒完成任务，默认在任务结束前1天会提醒您检查任务是否完成。</span
+        >
         <p>设置提醒时间</p>
         <el-date-picker
           v-model="warnTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="选择日期">
+          placeholder="选择日期"
+        >
         </el-date-picker>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="finish">完成</el-button>
       </span>
     </el-dialog>
-  </div>
+  </basic-container>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import { timeInterval } from "@/utils/index";
-import { getList, getTaskCount, getArchiveList, receiveTask } from "@/api/workbench";
+import {
+  getList,
+  getTaskCount,
+  getArchiveList,
+  receiveTask,
+} from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
   name: "Workbench",
@@ -206,6 +212,32 @@ export default {
   components: { HcCrud },
   computed: {
     ...mapGetters(["noticeList", "currentWorkbench"]),
+    searchQuery() {
+      return [
+        {
+          label: "任务/清单名称",
+          prop: "taskName",
+        },
+        {
+          label: "任务类型",
+          prop: "type",
+          type: "select",
+          dicData: this.dict.type.task_type,
+        },
+        {
+          label: "任务状态",
+          prop: "pageStatus",
+          type: "select",
+          dicData: this.dict.type.task_page_status,
+        },
+        {
+          label: "截止日期",
+          prop: "endTime",
+          type: "daterange",
+          valueFormat: "yyyy-MM-dd",
+        },
+      ];
+    },
     tableOption() {
       return {
         index: true,
@@ -250,17 +282,17 @@ export default {
             prop: "status",
             type: "select",
             dicData: this.dict.type.task_audit_type,
-            hidden: this.currentWorkbench.identity != 4,
+            hidden: this.currentWorkbench.identity != 4 || this.statusFlag == 0,
           },
           {
             label: "申请人",
             prop: "applyUserName",
-            hidden: this.currentWorkbench.identity != 4,
+            hidden: this.currentWorkbench.identity != 4 || this.statusFlag == 0,
           },
           {
             label: "申请理由",
             prop: "applyRemark",
-            hidden: this.currentWorkbench.identity != 4,
+            hidden: this.currentWorkbench.identity != 4 || this.statusFlag == 0,
           },
           // TODO:辜鹏
           {
@@ -277,14 +309,15 @@ export default {
               this.currentWorkbench.identity != 1 &&
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
-              this.currentWorkbench.identity != 7,
+              this.currentWorkbench.identity != 7 &&
+              (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           {
             label: "归集人",
             prop: "liableName",
             hidden:
               this.currentWorkbench.identity != 1 &&
-              this.currentWorkbench.identity != 3,
+              this.currentWorkbench.identity != 3 && (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           // TODO:辜鹏
           {
@@ -303,7 +336,7 @@ export default {
               this.currentWorkbench.identity != 2 &&
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
-              this.currentWorkbench.identity != 7,
+              this.currentWorkbench.identity != 7 && (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           {
             label: "任务循环",
@@ -312,7 +345,7 @@ export default {
             hidden:
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
-              this.currentWorkbench.identity != 7,
+              this.currentWorkbench.identity != 7 && (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           {
             label: "任务状态",
@@ -323,12 +356,12 @@ export default {
               this.currentWorkbench.identity != 2 &&
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
-              this.currentWorkbench.identity != 7,
+              this.currentWorkbench.identity != 7 && (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           {
             label: "申请时间",
             prop: "applyTime",
-            hidden: this.currentWorkbench.identity != 4,
+            hidden: this.currentWorkbench.identity != 4 || this.statusFlag == 0,
           },
           {
             label: "创建日期",
@@ -336,7 +369,7 @@ export default {
             hidden:
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
-              this.currentWorkbench.identity != 7,
+              this.currentWorkbench.identity != 7 && (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           {
             label: "截止日期",
@@ -345,7 +378,7 @@ export default {
               this.currentWorkbench.identity != 2 &&
               this.currentWorkbench.identity != 3 &&
               this.currentWorkbench.identity != 5 &&
-              this.currentWorkbench.identity != 7,
+              this.currentWorkbench.identity != 7 && (this.currentWorkbench.identity != 4 || this.statusFlag !=0),
           },
           {
             label: "操作",
@@ -367,8 +400,8 @@ export default {
       statusFlag: 0,
 
       dialogVisible: false,
-      warnTime:'',
-      taskId:'',
+      warnTime: "",
+      taskId: "",
     };
   },
   // watch: {
@@ -387,12 +420,12 @@ export default {
     },
     receive(taskId) {
       this.dialogVisible = true;
-      this.taskId = taskId
+      this.taskId = taskId;
     },
     del() {},
     edit() {},
     detail(id) {
-      this.$router.push({ path: "taskDetail",query:{id:id}})
+      this.$router.push({ path: "taskDetail", query: { id: id } });
     },
     agree() {},
     timeInterval,
@@ -453,17 +486,17 @@ export default {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type];
     },
-    finish(){
+    finish() {
       receiveTask({
         remindTime: this.warnTime,
         taskId: this.taskId,
-      }).then(res=>{
-        if(res.code == 200){
-          this.$message.success('领取成功');
+      }).then((res) => {
+        if (res.code == 200) {
+          this.$message.success("领取成功");
           this.dialogVisible = false;
           this.$refs.hcCrud.refresh();
         }
-      })
+      });
     },
   },
   created() {
@@ -477,7 +510,7 @@ export default {
 
 <style lang="scss" scoped>
 .title-container {
-  padding: 16px 20px;
+  padding: 16px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

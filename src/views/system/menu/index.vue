@@ -265,7 +265,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item v-if="form.menuType != 'F'">
+            <el-form-item v-if="form.menuType == 'C'">
               <span slot="label">
                 <el-tooltip content="选择停用则路由将不会出现在工作台，也不能被访问" placement="top">
                 <i class="el-icon-question"></i>
@@ -278,9 +278,14 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="form.menuType == 'C'">
             <el-form-item label="工作台排序" prop="workOrderNum">
               <el-input-number v-model="form.workOrderNum" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="form.menuType == 'C'">
+            <el-form-item label="工作台图标" prop="workIcon">
+              <el-input v-model="form.workIcon" placeholder="请输入工作台图标" />
             </el-form-item>
           </el-col>
         </el-row>

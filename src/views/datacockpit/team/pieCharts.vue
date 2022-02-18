@@ -12,13 +12,25 @@ export default {
     enum: {
       type: String,
       // required: true,
+    },
+    fileType: {
+      type: String,
     }
   },
+  created() {
+    console.log(this.enum, this.fileType);
+  },
   methods:{
-    handleClick(data){
-      console.log(data,this.enum)
-      this.$router.push({ path: "/datacockpit/detail" });
-    }
+    handleClick(data) {
+      console.log(data, this.enum);
+      this.$router.push({
+        path: "/datacockpit/detail",
+        query: {
+          enums: this.enum,
+          fileType: this.fileType,
+        }
+      });
+    },
   },
   computed: {
     option () {

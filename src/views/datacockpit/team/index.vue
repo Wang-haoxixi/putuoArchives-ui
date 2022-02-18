@@ -4,7 +4,7 @@
       <div class="title">队伍人员登记情况</div>
       <div class="content">
         <div style="height: 150px; width: 600px">
-          <PieCharts v-if="bigData.is_dispose" :chart-data="bigData.is_dispose"></PieCharts>
+          <PieCharts v-if="bigData.is_dispose" :enum='teamData.is_dispose.key' file-type='isDispose' :chart-data="bigData.is_dispose"></PieCharts>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts v-if="bigData.yw_study" :chart-data="bigData.yw_study"></BarCharts>
+          <BarCharts v-if="bigData.yw_study" :enum='teamData.yw_study.key' file-type='ywStudy' :chart-data="bigData.yw_study"></BarCharts>
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts v-if="bigData.work_year" :chart-data="bigData.work_year"></BarCharts>
+          <BarCharts v-if="bigData.work_year" :enum='teamData.work_year.key' file-type='workYear' :chart-data="bigData.work_year"></BarCharts>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts v-if="bigData.education" :chart-data="bigData.education"></BarCharts>
+          <BarCharts v-if="bigData.education" :enum='teamData.education.key' file-type='education' :chart-data="bigData.education"></BarCharts>
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts v-if="bigData.post" :chart-data="bigData.post"></BarCharts>
+          <BarCharts v-if="bigData.post" :enum='teamData.post.key' file-type='post' :chart-data="bigData.post"></BarCharts>
         </div>
       </div>
     </div>
@@ -102,7 +102,7 @@
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts v-if="bigData.training" :chart-data="bigData.training"></BarCharts>
+          <BarCharts v-if="bigData.training" :enum='teamData.training.key' file-type='training' :chart-data="bigData.training"></BarCharts>
         </div>
       </div>
     </div>
@@ -117,7 +117,7 @@
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts v-if="bigData.reward_punish" :chart-data="bigData.reward_punish"></BarCharts>
+          <BarCharts v-if="bigData.reward_punish" :enum='teamData.reward_punish.key' file-type='rewardPunish' :chart-data="bigData.reward_punish"></BarCharts>
         </div>
       </div>
     </div>
@@ -167,6 +167,8 @@ export default {
       // ],
       // 图表数据
       bigData: {},
+      // team数据
+      teamData: {},
       // 开展情况列表参数
       paramsLaunch: {
         current: 1,
@@ -200,6 +202,8 @@ export default {
     // 获取监管对象归集队伍建设情况数据
     getTeam() {
       getTeam().then(({ data }) => {
+        console.log('team..', data)
+        this.teamData = data
         for (const key in data) {
           this.$set(this.bigData, key, data[key].data);
           // data[key].data.push({ key: data[key].key });

@@ -1,5 +1,12 @@
 import request from '@/utils/request'
 
+export function getNavigation() {
+  return request({
+    url: '/work',
+    method: 'get',
+  })
+}
+
 export function getList(query) {
   return request({
     url: '/task/page',

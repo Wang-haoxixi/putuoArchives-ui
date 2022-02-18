@@ -264,6 +264,25 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item v-if="form.menuType != 'F'">
+              <span slot="label">
+                <el-tooltip content="选择停用则路由将不会出现在工作台，也不能被访问" placement="top">
+                <i class="el-icon-question"></i>
+                </el-tooltip>
+                工作台展示
+              </span>
+              <el-radio-group v-model="form.isWork">
+                <el-radio :label=true>显示</el-radio>
+                <el-radio :label=false>隐藏</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工作台排序" prop="workOrderNum">
+              <el-input-number v-model="form.workOrderNum" controls-position="right" :min="0" />
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -376,7 +395,8 @@ export default {
         isFrame: "1",
         isCache: "0",
         visible: "0",
-        status: "0"
+        status: "0",
+        isWork: false,
       };
       this.resetForm("form");
     },

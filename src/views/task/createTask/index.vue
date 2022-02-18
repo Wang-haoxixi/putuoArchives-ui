@@ -169,7 +169,11 @@
         新增任务
       </div>
     </div>
-    <el-dialog title="新增/编辑任务" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="新增/编辑任务"
+      :visible.sync="dialogFormVisible"
+      destroy-on-close
+    >
       <el-form
         :model="subform"
         class="taskForm"
@@ -409,6 +413,7 @@ export default {
         materialType: "",
         startTime: "",
         endTime: "",
+        liableDeptId: "",
         pageStatus: "",
         fileList: [],
       },
@@ -479,7 +484,7 @@ export default {
     this.getLiable();
   },
   methods: {
-    subformInitialization(){
+    subformInitialization() {
       this.subform = {
         taskName: "",
         keywordTagList: [],
@@ -492,8 +497,10 @@ export default {
         startTime: "",
         endTime: "",
         pageStatus: "",
+        liableDeptId: "",
         fileList: [],
-      }
+      };
+      this.dialogFormVisible = false;
     },
     //添加清单模板
     addTemplate() {
@@ -520,6 +527,7 @@ export default {
     handleNodeClick(data, node) {
       if (node.isLeaf) {
         this.subform.liableObj = data;
+        this.subform.liableDeptId= node.parent.data.value;
       }
     },
     cancel() {
@@ -571,9 +579,7 @@ export default {
           this.subform.liable = this.subform.liableObj.value;
           this.subform.pageStatus = "0";
           this.form.taskList.push(this.subform);
-          this.$refs['subform'].resetFields();
-          this.dialogFormVisible = false;
-          // this.subformInitialization();
+          this.subformInitialization();
         } else {
           this.$message.error("请检查输入内容");
           return false;

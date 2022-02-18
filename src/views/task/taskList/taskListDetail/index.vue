@@ -16,7 +16,7 @@
           ><div class="subtitle">任务开始日期</div>
           <div class="info">{{ data.startTime }}</div>
           <div class="subtitle">创建日期</div>
-          <div class="info">{{ data.creteTime }}</div></el-col
+          <div class="info">{{ data.createTime }}</div></el-col
         >
         <el-col :span="6"
           ><div class="subtitle">任务截止日期</div>
@@ -35,7 +35,7 @@
             </span>
           </div>
           <div class="subtitle">创建科室</div>
-          <div class="info">办公室</div></el-col
+          <div class="info">{{ data.deptName }}</div></el-col
         >
       </el-row>
       <div class="data-container">

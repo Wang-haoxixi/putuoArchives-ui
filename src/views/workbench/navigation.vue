@@ -3,7 +3,9 @@
     <div style="background-color: #ffffff; border-radius: 4px;padding-bottom:40px;">
       <div style="display:flex;flex-wrap:wrap;margin: 0 20px 0 -20px">
       <div class="nav-item" v-for="(item, index) in navigation" :key="index">
-        <div class="nav-icon"></div>
+        <div class="nav-icon" @click="navigationr(item)">
+          <img v-if="item.workIcon" :src="require('@/assets/images/icons/' + item.workIcon + '.png')"  style="width:42px;height:42px;margin:19px"/>
+        </div>
         <div class="nav-text">{{item.menuName}}</div>
       </div>
       </div>
@@ -67,6 +69,9 @@ export default {
     };
   },
   methods: {
+    navigationr(item) {
+      this.$router.push({ path: item.path})
+    },
     goNoticeList() {
       this.$router.push({ path: "noticeList" });
     },

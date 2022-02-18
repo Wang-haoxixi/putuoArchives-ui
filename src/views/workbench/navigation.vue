@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     navigationr(item) {
-      this.$router.push({ path: item.path})
+      this.$router.push({ name: item.name})
     },
     goNoticeList() {
       this.$router.push({ path: "noticeList" });

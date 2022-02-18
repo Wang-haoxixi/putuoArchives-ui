@@ -1,5 +1,5 @@
 <template>
-  <v-chart :option="option"></v-chart>
+  <v-chart :option="option" @click="handleClick"></v-chart>
 </template>
 
 <script>
@@ -9,6 +9,16 @@ export default {
       type: Array,
       required: true,
     },
+    enum: {
+      type: String,
+      // required: true,
+    },
+    fileType: {
+      type: String,
+    }
+  },
+  created() {
+    console.log(this.enum, this.fileType);
   },
   computed: {
     option() {
@@ -99,6 +109,19 @@ export default {
       };
     },
   },
+  methods: {
+    handleClick(data) {
+      // console.log(data, this.enum);
+      console.log(this.enum, this.fileType);
+      this.$router.push({
+        path: "/datacockpit/collectionCan",
+        query: {
+          enums: this.enum,
+          fileType: this.fileType,
+        }
+      });
+    },
+  }
 };
 </script>
 

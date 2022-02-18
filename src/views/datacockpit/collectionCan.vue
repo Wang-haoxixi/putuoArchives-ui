@@ -1,11 +1,11 @@
 <template>
   <div>
     <basic-container>
-      <content-box title="档案室达标数占比详情">
+      <content-box title="归集人员能力">
         <div class="warp">
           <div class="search-row">
             <el-row class="search" :gutter="20">
-              <el-col :span="10"><el-input v-model="queryParams.unitName" placeholder="请输入单位名称进行检索"></el-input></el-col>
+              <el-col :span="10"><el-input v-model="queryParams.unitName" placeholder="请输入姓名进行检索"></el-input></el-col>
               <el-col :span="10">
                 <el-select v-model="queryParams[$route.query.fileType]" placeholder="请选择">
                   <el-option
@@ -27,12 +27,20 @@
             label="序号">
           </el-table-column>
           <el-table-column
-            prop="unitQzh"
+            prop="qzh"
             label="全宗号">
           </el-table-column>
           <el-table-column
             prop="unitName"
             label="单位名称">
+          </el-table-column>
+          <el-table-column
+            prop="unitName"
+            label="科室">
+          </el-table-column>
+          <el-table-column
+            prop="userName"
+            label="姓名">
           </el-table-column>
           <el-table-column
             :prop="$route.query.fileType"
@@ -55,7 +63,7 @@
 import { fileContent } from "@/api/cockpitManage";
 import Pagination from "@/components/Pagination/index";
 import ContentBox from "@/views/components/ContentBox/index";
-import { columns } from "./workCol";
+import { columns } from "./canCol";
 export default {
   components: { ContentBox, Pagination },
   data() {

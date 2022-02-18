@@ -1,5 +1,5 @@
 <template>
-  <v-chart :option="option"></v-chart>
+  <v-chart :option="option" @click="handleClick"></v-chart>
 </template>
 
 <script>
@@ -8,12 +8,22 @@ export default {
     chartData: {
       type: Array,
       required: true,
+    },
+    enum: {
+      type: String,
+      // required: true,
+    }
+  },
+  methods:{
+    handleClick(data){
+      console.log(data,this.enum)
+      this.$router.push({ path: "/datacockpit/detail" });
     }
   },
   computed: {
     option () {
       return {
-        silent: true,
+        color:['#6DD993', '#F95D60'],
         avoidLabelOverlap: false,
         legend: {
           padding: 0,
@@ -24,7 +34,7 @@ export default {
           itemHeight: 9,
           borderRadius: 0,
           borderWidth: 0,
-          selectedMode: false,
+          selectedMode: true,
           orient: 'vertical',
           bottom: 10,
           right: 10,
@@ -32,6 +42,9 @@ export default {
             color: "#999999",
             fontSize: 12
           }
+        },
+        tooltip: {
+          trigger: 'item'
         },
         series: [
           {

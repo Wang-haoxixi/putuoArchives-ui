@@ -1,5 +1,5 @@
 <template>
-  <v-chart :option="option"></v-chart>
+  <v-chart :option="option" @click="handleClick"></v-chart>
 </template>
 
 <script>
@@ -8,12 +8,34 @@ export default {
     chartData: {
       type: Array,
       required: true,
+    },
+    enum: {
+      type: String,
+      // required: true,
+    },
+    fileType: {
+      type: String,
     }
   },
+  created() {
+    console.log(this.enum, this.fileType);
+  },
+  methods: {
+    handleClick(data) {
+      console.log(data, this.enum);
+      this.$router.push({
+        path: "/datacockpit/detail",
+        query: {
+          enums: this.enum,
+          fileType: this.fileType,
+        }
+      });
+    },
+  },
   computed: {
-    option () {
+    option() {
       return {
-        silent: true,
+        color: ["#6DD993", "#F95D60"],
         avoidLabelOverlap: false,
         legend: {
           padding: 0,
@@ -24,14 +46,17 @@ export default {
           itemHeight: 9,
           borderRadius: 0,
           borderWidth: 0,
-          selectedMode: false,
-          orient: 'vertical',
+          selectedMode: true,
+          orient: "vertical",
           bottom: 10,
           right: 10,
           textStyle: {
             color: "#999999",
-            fontSize: 12
-          }
+            fontSize: 12,
+          },
+        },
+        tooltip: {
+          trigger: "item",
         },
         series: [
           {
@@ -40,38 +65,38 @@ export default {
             left: 0,
             radius: ["26", "52"],
             label: {
-              formatter: function(param) {
-                return `{a|${param.name}}{b|${Math.round(param.percent)}%}`
+              formatter: function (param) {
+                return `{a|${param.name}}{b|${Math.round(param.percent)}%}`;
               },
               rich: {
                 a: {
-                  color: "#999999"
+                  color: "#999999",
                 },
                 b: {
-                  color: "#6DD993"
-                }
+                  color: "#6DD993",
+                },
               },
               fontSize: "12",
               color: "red",
-              padding: [0, -70, 20, -70]
+              padding: [0, -70, 20, -70],
             },
             labelLine: {
               show: true,
               length: 6,
               length2: 70,
               lineStyle: {
-                color: "#DDDDDD"
+                color: "#DDDDDD",
               },
               minTurnAngle: "60",
-              maxSurfaceAngle: "60"
+              maxSurfaceAngle: "60",
             },
             data: this.chartData,
           },
         ],
-      }
-    }
-  }
-}
+      };
+    },
+  },
+};
 </script>
 
 <style lang="" scoped>

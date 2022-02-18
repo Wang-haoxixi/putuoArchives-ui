@@ -4,11 +4,11 @@
       <div class="title">档案归集各门类总数</div>
       <div class="content">
         <div class="card-list">
-          <div class="card-item">
+          <div class="card-item" v-for="(item,index) in otherData.mlzs" :key="index">
             <div class="number">887</div>
             <div class="name">门类1</div>
           </div>
-          <div class="card-item">
+          <!-- <div class="card-item">
             <div class="number">654</div>
             <div class="name">门类2</div>
           </div>
@@ -27,7 +27,7 @@
           <div class="card-item">
             <div class="number">85</div>
             <div class="name">门类6</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -35,18 +35,18 @@
       <div class="title">监管数据源头使用情况</div>
       <div class="content">
         <div class="circle-card-list">
-          <div class="card-item">
-            <div class="number">9999</div>
-            <div class="name">OA系统</div>
+          <div class="card-item" v-for="(item,index) in otherData.sjyt" :key="index">
+            <div class="number">{{ item.value }}</div>
+            <div class="name">{{ item.name }}</div>
           </div>
-          <div class="card-item">
+          <!-- <div class="card-item">
             <div class="number">654</div>
             <div class="name">业务系统</div>
           </div>
           <div class="card-item">
             <div class="number">345</div>
             <div class="name">博通系统</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -55,32 +55,45 @@
       <div class="content">
         <div class="circle-card-list">
           <div class="card-item">
-            <div class="number">9999</div>
-            <div class="name" style="color: #FF6B00">进行中</div>
+            <div class="number">{{ otherData.kzqk.taskNum - otherData.kzqk.finishNum - otherData.kzqk.shouldNotNum }}</div>
+            <div class="name" style="color: #ff6b00">进行中</div>
           </div>
           <div class="card-item">
-            <div class="number">654</div>
-            <div class="name" style="color: #15BE50">已完成</div>
+            <div class="number">{{ otherData.kzqk.finishNum }}</div>
+            <div class="name" style="color: #15be50">已完成</div>
           </div>
           <div class="card-item">
-            <div class="number">345</div>
-            <div class="name" style="color: #D40000">未完成</div>
+            <div class="number">{{ otherData.kzqk.shouldNotNum }}</div>
+            <div class="name" style="color: #d40000">未完成</div>
           </div>
         </div>
       </div>
     </div>
     <div class="data-wrapper">
-      <div class="title">档案归集各门类总数</div>
+      <div class="title-place">
+        <div class="title">各单位开展情况</div>
+        <div>
+          <el-select v-model="value" placeholder="请选择" size="mini" @change="change">
+            <el-option
+              v-for="(item,index) in units"
+              :key="index"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+        </div>
+      </div>
       <div class="content">
         <div class="large-card-list">
-          <div class="card-item">
+          <div class="card-item" v-for="(item,index) in typeData" :key="index">
             <div class="status success">
               <img :src="require('@/assets/images/icons/success.png')" />
               <span>已收集</span>
             </div>
-            <div class="name">门类1</div>
+            <div class="name">{{ item }}</div>
           </div>
-          <div class="card-item">
+          <!-- <div class="card-item">
             <div class="status success">
               <img :src="require('@/assets/images/icons/success.png')" />
               <span>已收集</span>
@@ -114,21 +127,21 @@
               <span>未收集</span>
             </div>
             <div class="name">门类6</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
-    <div class="data-wrapper">
-      <div class="title">专项归集名称xxx</div>
+    <div class="data-wrapper" v-for="(item1,index1) in specialData.records" :key="index1">
+      <div class="title">{{ item1.specialName }}</div>
       <div class="content">
         <div>
           <div class="sub-title">档案归集各门类总数</div>
-          <div class="card-list">
-            <div class="card-item">
-              <div class="number">887</div>
-              <div class="name">门类1</div>
+          <div class="card-list" v-if="item1.mlzs">
+            <div class="card-item" v-for="(item2,index2) in item1.mlzs.slice(0, 6)" :key="index2">
+              <div class="number">{{ item2.value }}</div>
+              <div class="name">{{ item2.name }}</div>
             </div>
-            <div class="card-item">
+            <!-- <div class="card-item">
               <div class="number">654</div>
               <div class="name">门类2</div>
             </div>
@@ -147,56 +160,112 @@
             <div class="card-item">
               <div class="number">85</div>
               <div class="name">门类6</div>
-            </div>
+            </div> -->
           </div>
         </div>
 
         <div>
           <div class="sub-title">监管数据源头使用情况</div>
           <div class="circle-card-list">
-          <div class="card-item">
-            <div class="number">9999</div>
-            <div class="name">OA系统</div>
+            <div class="card-item" v-for="(item3,index3) in item1.syqk" :key="index3">
+              <div class="number">{{ item3.value }}</div>
+              <div class="name">{{ item3.name }}</div>
+            </div>
+            <!-- <div class="card-item">
+              <div class="number">654</div>
+              <div class="name">业务系统</div>
+            </div>
+            <div class="card-item">
+              <div class="number">345</div>
+              <div class="name">博通系统</div>
+            </div> -->
           </div>
-          <div class="card-item">
-            <div class="number">654</div>
-            <div class="name">业务系统</div>
-          </div>
-          <div class="card-item">
-            <div class="number">345</div>
-            <div class="name">博通系统</div>
-          </div>
-        </div>
         </div>
 
         <div>
           <div class="sub-title">归集工作开展情况</div>
           <div class="circle-card-list">
-          <div class="card-item">
-            <div class="number">9999</div>
-            <div class="name" style="color: #FF6B00">进行中</div>
-          </div>
-          <div class="card-item">
-            <div class="number">654</div>
-            <div class="name" style="color: #15BE50">已完成</div>
-          </div>
-          <div class="card-item">
-            <div class="number">345</div>
-            <div class="name" style="color: #D40000">未完成</div>
+            <div class="card-item" v-for="(item4,index4) in item1.kzqk" :key="index4">
+              <div class="number">{{ item4.value }}</div>
+              <div class="name" style="color: #ff6b00">{{ item4.name }}</div>
+            </div>
+            <!-- <div class="card-item">
+              <div class="number">654</div>
+              <div class="name" style="color: #15be50">已完成</div>
+            </div>
+            <div class="card-item">
+              <div class="number">345</div>
+              <div class="name" style="color: #d40000">未完成</div>
+            </div> -->
           </div>
         </div>
-        </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getOther, getUnitList, development, specialPro } from "@/api/datacockpit";
 export default {
   data() {
-    return {};
+    return {
+      // 单位名称
+      value: "",
+      // 监管对象归集工作开展情况-其他(门类总数、使用情况、开展情况)数据
+      otherData: {
+        // 档案归集各门类总数
+        mlzs: [],
+        // 监管数据源头使用情况
+        sjyt: [],
+        // 归集工作开展情况
+        kzqk: [],
+      },
+      // 开展情况单位集合
+      units: [],
+      // 门类
+      typeData: [],
+      // 专项数据
+      specialData: [],
+    };
   },
+  created(){
+    this.getOther();
+    this.getUnitList();
+    this.development(this.units[0]);
+    this.specialPro()
+  },
+  methods:{
+    // 监管对象归集工作开展情况-其他(门类总数、使用情况、开展情况)
+    getOther(){
+      getOther().then(({ data })=>{
+        this.otherData = data
+      })
+    },
+    // 获取开展情况单位集合
+    getUnitList(){
+      getUnitList().then(({ data })=>{
+        // console.log('data..', data)
+        this.units = data
+      })
+    },
+    // 监管对象归集工作开展情况--各单位开展情况
+    development(data){
+      development({ unitName: data }).then(({ data })=>{
+        this.typeData = data
+      })
+    },
+    // 切换单位
+    change(data){
+      this.development(data);
+    },
+    // 获取监管对象归集工作开展情况-专项归集
+    specialPro(){
+      specialPro().then(({ data })=>{
+        console.log('data..',data)
+        this.specialData = data
+      })
+    }
+  }
 };
 </script>
 
@@ -234,8 +303,8 @@ export default {
   grid-gap: 12px 12px;
   .card-item {
     border-radius: 2px;
-    border: 1px solid #DDDDDD;
-    background: #FFFFFF;
+    border: 1px solid #dddddd;
+    background: #ffffff;
     text-align: center;
     .number {
       padding-top: 4px;
@@ -267,8 +336,8 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    border: 1px solid #DDDDDD;
-    background: #FFFFFF;
+    border: 1px solid #dddddd;
+    background: #ffffff;
     .number {
       height: 28px;
       line-height: 28px;
@@ -298,8 +367,8 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 2px;
-    border: 1px solid #DDDDDD;
-    background: #FFFFFF;
+    border: 1px solid #dddddd;
+    background: #ffffff;
     text-align: center;
     .status {
       display: flex;
@@ -309,10 +378,10 @@ export default {
       line-height: 22px;
       font-size: 16px;
       &.success {
-        color: #15BE50;
+        color: #15be50;
       }
       &.error {
-        color: #D40000;
+        color: #d40000;
       }
       img {
         height: 17px;
@@ -335,5 +404,11 @@ export default {
   height: 20px;
   line-height: 20px;
   font-size: 14px;
+}
+
+.title-place {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

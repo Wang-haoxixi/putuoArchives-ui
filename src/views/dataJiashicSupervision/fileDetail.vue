@@ -173,7 +173,7 @@ export default {
       selectFile().then((fileList) => {
         this.btnLoading = true;
         fileUpload({
-          cockpitDictId: params.inId,
+          cockpitDictId: this.$route.query.outId,
           specialId: this.$route.query.outId,
           enums: params.dict,
           file: fileList[0],
@@ -181,8 +181,8 @@ export default {
           if (res.code === 200) {
             this.$message.success("文件上传成功！");
             this.getFileContent();
-            this.btnLoading = false;
           }
+          this.btnLoading = false;
         });
       });
     },

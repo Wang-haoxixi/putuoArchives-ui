@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="data-wrapper">
-      <div class="title">档案归集各门类总数</div>
+      <div class="title">队伍人员登记情况</div>
       <div class="content">
         <div style="height: 150px; width: 600px">
-          <PieCharts :chart-data="chartData"></PieCharts>
+          <PieCharts v-if="bigData.is_dispose" :chart-data="bigData.is_dispose"></PieCharts>
         </div>
       </div>
     </div>
@@ -12,18 +12,22 @@
       <div class="title-btn">
         <div class="title">队伍开展工作情况</div>
         <div class="btn-list">
-          <el-button style="font-size: 14px" type="text" @click="prePage">上一页</el-button>
-          <el-button style="font-size: 14px" type="text" @click="nextPage">下一页</el-button>
+          <el-button style="font-size: 14px" type="text" @click="prePage"
+            >上一页</el-button
+          >
+          <el-button style="font-size: 14px" type="text" @click="nextPage"
+            >下一页</el-button
+          >
         </div>
       </div>
       <div class="content">
-        <el-table>
-          <el-table-column label="序号" width="60"></el-table-column>
-          <el-table-column label="全宗号" width="100"></el-table-column>
-          <el-table-column label="单位名称" width="100"></el-table-column>
-          <el-table-column label="有无档案室" width="100"></el-table-column>
-          <el-table-column label="有无队伍" width="100"></el-table-column>
-          <el-table-column label="有无开展工作" width="110"></el-table-column>
+        <el-table :data="launchTableData">
+          <el-table-column label="序号" width="60" prop="orderNum"></el-table-column>
+          <el-table-column label="全宗号" width="100" prop="qzh"></el-table-column>
+          <el-table-column label="单位名称" width="100" prop="unitName"></el-table-column>
+          <el-table-column label="有无档案室" width="100" prop="isArchives"></el-table-column>
+          <el-table-column label="有无队伍" width="100" prop="isArmy"></el-table-column>
+          <el-table-column label="有无开展工作" width="110" prop="isWork"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -31,12 +35,14 @@
       <div class="title-btn">
         <div class="title mini">
           <span>归集人员能力：</span>
-          <span class="tag" style="color: #59AAF5;border-color: #59AAF5">业务学习</span>
+          <span class="tag" style="color: #59aaf5; border-color: #59aaf5"
+            >业务学习</span
+          >
         </div>
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts :chart-data="chartDataBar"></BarCharts>
+          <BarCharts v-if="bigData.yw_study" :chart-data="bigData.yw_study"></BarCharts>
         </div>
       </div>
     </div>
@@ -44,12 +50,14 @@
       <div class="title-btn">
         <div class="title mini">
           <span>归集人员能力：</span>
-          <span class="tag" style="color: #F1924E;border-color: #F1924E">工作年限</span>
+          <span class="tag" style="color: #f1924e; border-color: #f1924e"
+            >工作年限</span
+          >
         </div>
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts :chart-data="chartDataBar"></BarCharts>
+          <BarCharts v-if="bigData.work_year" :chart-data="bigData.work_year"></BarCharts>
         </div>
       </div>
     </div>
@@ -57,12 +65,14 @@
       <div class="title-btn">
         <div class="title mini">
           <span>归集人员能力：</span>
-          <span class="tag" style="color: #6DD993;border-color: #6DD993">学历</span>
+          <span class="tag" style="color: #6dd993; border-color: #6dd993"
+            >学历</span
+          >
         </div>
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts :chart-data="chartDataBar"></BarCharts>
+          <BarCharts v-if="bigData.education" :chart-data="bigData.education"></BarCharts>
         </div>
       </div>
     </div>
@@ -70,12 +80,14 @@
       <div class="title-btn">
         <div class="title mini">
           <span>归集人员能力：</span>
-          <span class="tag" style="color: #FC5C5C;border-color: #FC5C5C">职称</span>
+          <span class="tag" style="color: #fc5c5c; border-color: #fc5c5c"
+            >职称</span
+          >
         </div>
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts :chart-data="chartDataBar"></BarCharts>
+          <BarCharts v-if="bigData.post" :chart-data="bigData.post"></BarCharts>
         </div>
       </div>
     </div>
@@ -83,12 +95,14 @@
       <div class="title-btn">
         <div class="title mini">
           <span>归集人员能力：</span>
-          <span class="tag" style="color: #59AAF5;border-color: #59AAF5">培训情况</span>
+          <span class="tag" style="color: #59aaf5; border-color: #59aaf5"
+            >培训情况</span
+          >
         </div>
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts :chart-data="chartDataBar"></BarCharts>
+          <BarCharts v-if="bigData.training" :chart-data="bigData.training"></BarCharts>
         </div>
       </div>
     </div>
@@ -96,12 +110,14 @@
       <div class="title-btn">
         <div class="title mini">
           <span>归集人员能力：</span>
-          <span class="tag" style="color: #F1924E;border-color: #F1924E">奖惩荣誉</span>
+          <span class="tag" style="color: #f1924e; border-color: #f1924e"
+            >奖惩荣誉</span
+          >
         </div>
       </div>
       <div class="content">
         <div style="height: 130px; width: 600px">
-          <BarCharts :chart-data="chartDataBar"></BarCharts>
+          <BarCharts v-if="bigData.reward_punish" :chart-data="bigData.reward_punish"></BarCharts>
         </div>
       </div>
     </div>
@@ -109,48 +125,97 @@
 </template>
 
 <script>
+import { getTeam, getLaunch } from "@/api/datacockpit";
 import PieCharts from "./pieCharts";
 import BarCharts from "./barCharts";
 export default {
   components: { PieCharts, BarCharts },
-  data () {
+  data() {
     return {
-      chartData: [
-        {
-          value: 30,
-          name: "配备齐全",
-          itemStyle: {
-            color: "#6DD993",
-          },
-        },
-        {
-          value: 100,
-          name: "配备不齐",
-          itemStyle: {
-            color: "#F95D60",
-          },
-        },
-      ],
-      chartDataBar: [
-        {
-          value: 20,
-          name: "完成",
-          itemStyle: {
-            color: "#6DD993"
-          }
-        },
+      // chartData: [
+      //   {
+      //     value: 30,
+      //     name: "配备齐全",
+      //     itemStyle: {
+      //       color: "#6DD993",
+      //     },
+      //   },
+      //   {
+      //     value: 100,
+      //     name: "配备不齐",
+      //     itemStyle: {
+      //       color: "#F95D60",
+      //     },
+      //   },
+      // ],
+      // chartDataBar: [
+      //   {
+      //     value: 20,
+      //     name: "完成",
+      //     itemStyle: {
+      //       color: "#6DD993",
+      //     },
+      //   },
 
-        {
-          value: 50,
-          name: "未完成",
-          itemStyle: {
-            color: "#FC5C5C"
-          }
+      //   {
+      //     value: 50,
+      //     name: "未完成",
+      //     itemStyle: {
+      //       color: "#FC5C5C",
+      //     },
+      //   },
+      // ],
+      // 图表数据
+      bigData: {},
+      // 开展情况列表参数
+      paramsLaunch: {
+        current: 1,
+        size: 5,
+      },
+      // 开展情况表格数据
+      launchTableData: [],
+      // 总页数
+      pages: undefined,
+    };
+  },
+  created() {
+    this.getTeam();
+    this.getLaunch();
+  },
+  methods: {
+    // 上一页
+    prePage() {
+      if(this.paramsLaunch.current > 1){
+        this.paramsLaunch.current -= 1
+        this.getLaunch()
+      }
+    },
+    // 下一页
+    nextPage() {
+      if(this.paramsLaunch.current < this.pages){
+        this.paramsLaunch.current += 1
+        this.getLaunch()
+      }
+    },
+    // 获取监管对象归集队伍建设情况数据
+    getTeam() {
+      getTeam().then(({ data }) => {
+        for (const key in data) {
+          this.$set(this.bigData, key, data[key].data);
+          // data[key].data.push({ key: data[key].key });
         }
-      ]
+      });
+    },
+    /** 监管对象归集队伍建设情况--队伍开展情况表 **/
+    getLaunch(){
+      getLaunch(this.paramsLaunch).then(({data})=>{
+        this.launchTableData = data.records
+        this.pages = data.pages
+        this.paramsLaunch.current = data.current
+      })
     }
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

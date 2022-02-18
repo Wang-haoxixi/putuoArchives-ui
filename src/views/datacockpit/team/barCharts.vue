@@ -12,18 +12,19 @@ export default {
   },
   computed: {
     option() {
-      const chartData = this.chartData
-      let xAxisData = []
+      const chartData = this.chartData;
+      let xAxisData = [];
       for (let i = 0; i < chartData.length; i++) {
-        xAxisData.push(chartData[i].name)
+        xAxisData.push(chartData[i].name);
       }
       return {
+        // color:['#6DD993', '#F95D60'],
         grid: {
           top: 8,
           left: 9,
           right: 9,
           bottom: 0,
-          containLabel: true
+          containLabel: true,
         },
         xAxis: {
           type: "category",
@@ -35,12 +36,12 @@ export default {
             show: true,
             lineStyle: {
               color: "#DDDDDD",
-            }
+            },
           },
           axisLabel: {
             margin: 11,
-            color: "#999999"
-          }
+            color: "#999999",
+          },
         },
         yAxis: {
           type: "value",
@@ -53,10 +54,10 @@ export default {
             symbolSize: [7, 10],
             lineStyle: {
               color: "#DDDDDD",
-            }
+            },
           },
           axisLabel: {
-            show: false
+            show: false,
           },
           splitLine: {
             show: false,
@@ -68,11 +69,11 @@ export default {
             lineHeight: 18,
             fontSize: 12,
             color: "#999999",
-            padding: [0, 0, -24, 8]
+            padding: [0, 0, -24, 8],
           },
           max: function (value) {
-            return value.max * 1.1
-          }
+            return value.max * 1.1;
+          },
         },
         series: [
           {
@@ -80,7 +81,16 @@ export default {
             type: "bar",
             barWidth: "24",
             barCategoryGap: 21,
-            barGap: 21
+            barGap: 21,
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  //注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
+                  var colorList = ["#6DD993", "#F95D60", '#749f83', '#ca8622'];
+                  return colorList[params.dataIndex];
+                },
+              },
+            },
           },
         ],
         tooltip: {

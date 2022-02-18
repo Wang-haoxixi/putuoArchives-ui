@@ -3,15 +3,15 @@
     <div class="card-list">
       <div class="card-item">
         <span class="name">区属单位总数</span>
-        <span class="number">887</span>
+        <span class="number">{{ bigData.dwzs_num }}</span>
       </div>
       <div class="card-item">
         <span class="name">纳入监管单位总数</span>
-        <span class="number">23345</span>
+        <span class="number">{{ bigData.nrjg_num }}</span>
       </div>
       <div class="card-item">
         <span class="name">建成档案室总数</span>
-        <span class="number">887</span>
+        <span class="number">{{ bigData.jcda_num }}</span>
       </div>
     </div>
     <div class="chart-list">
@@ -19,7 +19,7 @@
         <div class="title">档案室达标数占比</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.db_num" :enum='bigData.db_num[2].key' file-type='isStandard' :chart-data="bigData.db_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
         <div class="title">全宗建设情况：大事记</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.dsj_num" :enum='bigData.dsj_num[2].key' file-type='bigEvent' :chart-data="bigData.dsj_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -35,7 +35,7 @@
         <div class="title">全宗建设情况：年鉴</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.nj_num" :enum='bigData.nj_num[2].key' file-type='yearBook' :chart-data="bigData.nj_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
         <div class="title">全宗建设情况：归档范围和保管期限表</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.gdfw_bgqx_num" :enum='bigData.gdfw_bgqx_num[2].key' file-type='scopePeriod' :chart-data="bigData.gdfw_bgqx_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
         <div class="title">全宗建设情况：组织变革</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.zzyg_num" :enum='bigData.zzyg_num[2].key' file-type='administrativeHistory' :chart-data="bigData.zzyg_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -59,7 +59,7 @@
         <div class="title">全宗建设情况：全宗介绍</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.qzjs_num" :enum='bigData.qzjs_num[2].key' file-type='qzIntroduce' :chart-data="bigData.qzjs_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
         <div class="title">全宗建设情况：分类方案</div>
         <div class="content">
           <div style="height: 150px; width: 500px">
-            <PieCharts :chart-data="chartData"></PieCharts>
+            <PieCharts v-if="bigData.flfa_num" :enum='bigData.flfa_num[2].key' file-type='schemeType' :chart-data="bigData.flfa_num"></PieCharts>
           </div>
         </div>
       </div>
@@ -77,27 +77,57 @@
 
 <script>
 import PieCharts from "./pieCharts";
+import { getArchives } from "@/api/datacockpit";
 export default {
   components: { PieCharts },
   data() {
     return {
-      chartData: [
-        {
-          value: 30,
-          name: "已建设",
-          itemStyle: {
-            color: "#6DD993",
-          },
-        },
-        {
-          value: 100,
-          name: "未建设",
-          itemStyle: {
-            color: "#F95D60",
-          },
-        },
-      ],
+      // chartData: [
+      //   {
+      //     value: 30,
+      //     name: "已建设",
+      //     itemStyle: {
+      //       color: "#6DD993",
+      //     },
+      //   },
+      //   {
+      //     value: 100,
+      //     name: "未建设",
+      //     itemStyle: {
+      //       color: "#F95D60",
+      //     },
+      //   },
+      // ],
+      // 监管对象档案工作数据
+      bigData: {},
     };
+  },
+  created() {
+    this.getArchives();
+  },
+  methods: {
+    // 获取监管对象档案工作数据
+    getArchives() {
+      getArchives().then(({ data }) => {
+        for (const key in data) {
+          if (key !== "dwzs_num" && key !== "nrjg_num" && key !== "jcda_num") {
+            this.$nextTick(() => {
+              this.$set(this.bigData, key, data[key].data);
+              data[key].data.push({ key: data[key].key })
+            });
+          }else{
+            if(key === 'dwzs_num'){
+              this.$set(this.bigData, "dwzs_num", data[key]);
+            }else if(key === 'nrjg_num'){
+              this.$set(this.bigData, "nrjg_num", data[key]);
+            }else if(key === 'jcda_num'){
+              this.$set(this.bigData, "jcda_num", data[key]);
+            }
+          }
+        }
+        console.log(111, this.bigData)
+      });
+    },
   },
 };
 </script>

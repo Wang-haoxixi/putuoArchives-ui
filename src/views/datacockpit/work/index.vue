@@ -5,8 +5,8 @@
       <div class="content">
         <div class="card-list">
           <div class="card-item" v-for="(item,index) in otherData.mlzs" :key="index">
-            <div class="number">887</div>
-            <div class="name">门类1</div>
+            <div class="number">{{ item.value }}</div>
+            <div class="name">{{ item.name }}</div>
           </div>
           <!-- <div class="card-item">
             <div class="number">654</div>
@@ -244,7 +244,6 @@ export default {
     // 获取开展情况单位集合
     getUnitList(){
       getUnitList().then(({ data })=>{
-        // console.log('data..', data)
         this.units = data
       })
     },
@@ -261,7 +260,6 @@ export default {
     // 获取监管对象归集工作开展情况-专项归集
     specialPro(){
       specialPro().then(({ data })=>{
-        console.log('data..',data)
         this.specialData = data
       })
     }

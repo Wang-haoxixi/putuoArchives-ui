@@ -76,7 +76,6 @@ export default {
     },
     // 查看按钮
     handleCheck(row) {
-      console.log("查看..", row, this.$route.query);
       this.$router.push({
         path: `/dataJiashicSupervision/fileDetail`,
         query: {

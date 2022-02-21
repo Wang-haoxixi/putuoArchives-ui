@@ -18,11 +18,9 @@ export default {
     }
   },
   created() {
-    console.log(this.enum, this.fileType);
   },
   methods: {
     handleClick(data) {
-      console.log(data, this.enum);
       this.$router.push({
         path: "/datacockpit/detail",
         query: {

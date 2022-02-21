@@ -148,7 +148,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.query);
     // 遍历对象获取到对应的表格数据
     for (const key in columns) {
       if (key === this.$route.query.dict) {
@@ -204,8 +203,6 @@ export default {
     },
     // 编辑按钮
     handleEdit(row) {
-      console.log("edit..", row);
-      console.log("column..", this.columnsData);
       this.editDV = true;
       this.editForm = JSON.parse(JSON.stringify(row));
     },
@@ -225,7 +222,6 @@ export default {
     save() {
       this.editForm.enums = this.$route.query.dict;
       updateFileContent(this.editForm).then((res) => {
-        console.log("updateFileContent..", res);
         if (res.code === 200) {
           this.$message.success("编辑成功");
           this.editDV = false;

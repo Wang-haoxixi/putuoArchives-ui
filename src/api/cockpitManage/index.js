@@ -134,3 +134,21 @@ export function updateFileContent(data) {
     data: data
   })
 }
+
+// 数据内容设置与管理--纳入监管单位总数Or建成档案室总数
+export function absorbAndBuildup(query) {
+  return request({
+    url: '/archive/get_cockpit/get_cockpit_data_nrjg_jcda',
+    method: 'get',
+    params: query
+  })
+}
+
+// 数据内容设置与管理--新增编辑纳入监管单位总数Or建成档案室总数
+export function updateAbsorbAndBuildup(data) {
+  return request({
+    url: '/archive/get_cockpit/update_cockpit_data_nrjg_jcda',
+    method: 'post',
+    data: data
+  })
+}

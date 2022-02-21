@@ -202,7 +202,6 @@ export default {
     // 获取监管对象归集队伍建设情况数据
     getTeam() {
       getTeam().then(({ data }) => {
-        console.log('team..', data)
         this.teamData = data
         for (const key in data) {
           this.$set(this.bigData, key, data[key].data);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <basic-container>
-      <content-box title="档案室达标数占比详情">
+      <content-box :title="labelVal">
         <div class="warp">
           <div class="search-row">
             <el-row class="search" :gutter="20">
@@ -83,7 +83,6 @@ export default {
     };
   },
   created(){
-    console.log(this.queryParams)
     for (const key in columns) {
       if(key === this.$route.query.fileType){
         this.options = columns[key].selectsOpt;
@@ -96,7 +95,6 @@ export default {
     fileContent(){
       this.loading = true;
       fileContent(this.queryParams).then(({ data })=>{
-        console.log('data..', data)
         this.tableData = data.records;
         this.total = data.total;
         this.loading = false;
@@ -104,7 +102,7 @@ export default {
     },
     // 搜索
     search(){
-      console.log(123,this.queryParams)
+      this.fileContent()
     }
   }
 };

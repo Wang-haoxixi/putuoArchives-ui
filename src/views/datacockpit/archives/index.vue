@@ -125,7 +125,6 @@ export default {
             }
           }
         }
-        console.log(111, this.bigData)
       });
     },
   },

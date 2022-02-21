@@ -1,11 +1,11 @@
 <template>
   <div>
     <basic-container>
-      <content-box title="归集人员能力">
+      <content-box :title="'归集人员能力：' + labelVal">
         <div class="warp">
           <div class="search-row">
             <el-row class="search" :gutter="20">
-              <el-col :span="10"><el-input v-model="queryParams.unitName" placeholder="请输入姓名进行检索"></el-input></el-col>
+              <el-col :span="10"><el-input v-model="queryParams.userName" placeholder="请输入姓名进行检索"></el-input></el-col>
               <el-col :span="10">
                 <el-select v-model="queryParams[$route.query.fileType]" placeholder="请选择">
                   <el-option
@@ -78,7 +78,7 @@ export default {
       queryParams: {
         enums: this.$route.query.enums,
         [this.$route.query.fileType]: '',
-        unitName: '',
+        userName: '',
         size: 10,
         current: 1,
       },
@@ -91,7 +91,6 @@ export default {
     };
   },
   created(){
-    console.log(this.queryParams)
     for (const key in columns) {
       if(key === this.$route.query.fileType){
         this.options = columns[key].selectsOpt;
@@ -104,7 +103,6 @@ export default {
     fileContent(){
       this.loading = true;
       fileContent(this.queryParams).then(({ data })=>{
-        console.log('data..', data)
         this.tableData = data.records;
         this.total = data.total;
         this.loading = false;
@@ -112,7 +110,7 @@ export default {
     },
     // 搜索
     search(){
-      console.log(123,this.queryParams)
+      this.fileContent();
     }
   }
 };

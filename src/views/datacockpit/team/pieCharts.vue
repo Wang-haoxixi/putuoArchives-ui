@@ -18,11 +18,9 @@ export default {
     }
   },
   created() {
-    console.log(this.enum, this.fileType);
   },
   methods:{
     handleClick(data) {
-      console.log(data, this.enum);
       this.$router.push({
         path: "/datacockpit/detail",
         query: {
@@ -66,7 +64,6 @@ export default {
             radius: "52",
             label: {
               formatter: function(param) {
-                console.log(param)
                 return [
                     `{a|${param.name}}{b|${Math.round(param.percent)}%}`,
                     `{c|${param.value}家}`,

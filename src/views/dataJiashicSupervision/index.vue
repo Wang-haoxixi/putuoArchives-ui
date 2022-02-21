@@ -50,11 +50,11 @@
               ref="formData"
               class="formData"
             >
-              <el-form-item label="纳入监管单位总数" prop="absorbData.dictValue">
-                <el-input-number v-model.trim="absorbData.dictValue" min='1' @change="absorb"></el-input-number>
+              <el-form-item label="纳入监管单位总数">
+                <el-input-number v-model.trim="absorbAndBuildup.nrjgNum" :min='1' @change="absorb"></el-input-number>
               </el-form-item>
-              <el-form-item label="建成档案室总数" prop="buildupData.dictValue">
-                <el-input-number v-model.trim="buildupData.dictValue" min='1' @change="buildup"></el-input-number>
+              <el-form-item label="建成档案室总数">
+                <el-input-number v-model.trim="absorbAndBuildup.jcdaNum" :min='1' @change="buildup"></el-input-number>
               </el-form-item>
             </el-form>
             <p class="p">统计数据文件上传：</p>
@@ -151,7 +151,7 @@
 <script>
 import ContentBox from "@/views/components/ContentBox/index";
 import Pagination from "@/components/Pagination/index";
-import { getList, allFile, specialCollection, specialPro, specialDel } from "@/api/cockpitManage";
+import { getList, allFile, specialCollection, specialPro, specialDel, absorbAndBuildup, updateAbsorbAndBuildup } from "@/api/cockpitManage";
 import { listData, updateData } from "@/api/system/dict/data";
 export default {
   components: { ContentBox, Pagination },
@@ -187,10 +187,13 @@ export default {
       dictData: [],
       // 专项总数据
       total2: 0,
-      // 纳入监管单位数据
-      absorbData: 0,
-      // 建成档案室数据
-      buildupData: 0,
+      // 计数器参数
+      absorbAndBuildup: {
+        // 纳入监管单位数据
+        absorbData: 0,
+        // 建成档案室数据
+        buildupData: 0,
+      },
       // 统计数据文件表格数据
       statisticsTableData: [],
       // 专项归集表格数据
@@ -216,12 +219,13 @@ export default {
 
     this.getAllFile();
     this.getSpecialData();
+
+
+    this.getAbsorbAndBuildup()
   },
   methods: {
     // tab切换按钮
-    tabClick(tab, event) {
-      console.log(tab.name);
-    },
+    tabClick(tab, event) {},
     /* 查询分页角色展示内容 */
     getList() {
       this.loading = true;
@@ -241,7 +245,6 @@ export default {
     },
     // 角色设置
     handleSet(row) {
-      console.log(row);
       this.$router.push({ path: "/dataJiashicSupervision/set/?id=" + row.id });
     },
     /** 查询所在版块数据 */
@@ -257,6 +260,14 @@ export default {
         }
       });
     },
+
+    /** 查询统计数据 */
+    getAbsorbAndBuildup(){
+      absorbAndBuildup().then(({ data })=>{
+        this.absorbAndBuildup= data
+      })
+    },
+
     // 查看按钮
     handleCheck(row) {
       this.$router.push({
@@ -273,7 +284,6 @@ export default {
     createData() {},
     // 编辑按钮
     handleEdit(row) {
-      console.log('编辑按钮..',row)
       this.$router.push({
         path: `/dataJiashicSupervision/specialCollection`,
         query: {
@@ -292,18 +302,18 @@ export default {
       })
     },
     /* 修改统计字典数据 */
-    changeStatistics(data) {
-      updateData(data).then((res) => {});
+    updateAbsorbAndBuildup(data) {
+      updateAbsorbAndBuildup(data).then((res) => {});
     },
     // 纳入监管单位总数设置
     absorb() {
-      if(this.absorbData.dictValue==undefined){ return this.$message.warning('纳入监管单位总数不能为空') }
-      this.changeStatistics(this.absorbData);
+      if(this.absorbAndBuildup.nrjgNum==undefined){ return this.$message.warning('纳入监管单位总数不能为空') }
+      this.updateAbsorbAndBuildup(this.absorbAndBuildup);
     },
     // 建成档案室总数设置
     buildup() {
-      if(this.buildupData.dictValue==undefined){ return this.$message.warning('建成档案室总数不能为空') }
-      this.changeStatistics(this.buildupData);
+      if(this.absorbAndBuildup.jcdaNum==undefined){ return this.$message.warning('建成档案室总数不能为空') }
+      this.updateAbsorbAndBuildup(this.absorbAndBuildup);
     },
     // 查询统计数据文件
     getAllFile(){

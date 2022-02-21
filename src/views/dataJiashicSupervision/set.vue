@@ -151,7 +151,6 @@ export default {
       let params = JSON.parse(JSON.stringify(this.formData));
       params.displayRole = params.displayRole.join(",");
       editCockpit(params).then((res) => {
-        console.log("editCockpit..", res);
         if(res.code === 200){
           this.$message.success('设置成功')
         }

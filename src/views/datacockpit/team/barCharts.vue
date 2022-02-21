@@ -18,7 +18,6 @@ export default {
     }
   },
   created() {
-    console.log(this.enum, this.fileType);
   },
   computed: {
     option() {

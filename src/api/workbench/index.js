@@ -124,3 +124,18 @@ export function receiveTask(data) {
     data: data
   })
 }
+
+export function getUnitAdmin() {
+  return request({
+    url: '/user/workbench/unit_admin',
+    method: 'get',
+  })
+}
+// 科室领导操作任务
+export function taskApply(data) {
+  return request({
+    url: '/task/apply',
+    method: 'post',
+    data: data
+  })
+}

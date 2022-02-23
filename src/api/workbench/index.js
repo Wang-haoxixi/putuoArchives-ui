@@ -100,8 +100,16 @@ export function getTaskListDetail(query) {
     params: query
   })
 }
-//完善人领取任务
+//领取任务
 export function taskReceive(data) {
+  return request({
+    url: '/task/receive',
+    method: 'post',
+    data: data
+  })
+}
+//领取完善任务
+export function taskCompleteReceive(data) {
   return request({
     url: '/task/perfect/receive',
     method: 'post',
@@ -116,15 +124,7 @@ export function fileUpdate(data) {
     data: data
   })
 }
-// 领取任务
-export function receiveTask(data) {
-  return request({
-    url: '/task/receive',
-    method: 'post',
-    data: data
-  })
-}
-
+//获取单位领导人
 export function getUnitAdmin() {
   return request({
     url: '/user/workbench/unit_admin',

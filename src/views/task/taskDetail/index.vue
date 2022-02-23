@@ -119,9 +119,15 @@
       <el-button
         type="primary"
         @click="taskReceive"
-        v-if="
+        v-if="data.liable == userId && this.currentWorkbench.identity == 2"
+        >领取任务</el-button
+      >
+      <el-button
+        type="primary"
+        @click="taskCompleteReceive"
+        v-else-if="
           data.perfectUserId == userId &&
-          data.status == 15 &&
+          data.pageStatus == 15 &&
           this.currentWorkbench.identity == 2
         "
         >领取任务</el-button
@@ -129,12 +135,12 @@
       <el-button
         type="primary"
         @click="taskReceive"
-        v-else-if="data.status == 1 && this.currentWorkbench.identity == 3"
+        v-else-if="data.pageStatus == 1 && this.currentWorkbench.identity == 3"
         >催一下</el-button
       >
       <div
         v-else-if="
-          (data.status == 2 || data.status == 5) &&
+          (data.pageStatus == 2 || data.pageStatus == 5) &&
           this.currentWorkbench.identity == 3
         "
       >
@@ -237,6 +243,30 @@
         >
       </div>
     </el-dialog>
+    <el-dialog
+      title="领取任务"
+      :visible.sync="receiveDialogVisible"
+      width="484px"
+    >
+      <span
+        >您可以设置时间节点来提醒完成任务，默认在任务结束前1天会提醒您检查任务是否完成。</span
+      >
+      <el-form :model="receiveForm" label-position="top" ref="receiveForm">
+        <el-form-item label="设置提醒时间">
+          <el-date-picker
+            style="width: 100%"
+            v-model="receiveForm.remindTime"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="taskReceiveFinish">完成</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -245,6 +275,7 @@ import {
   getTaskDetails,
   getTaskLifeCycle,
   taskReceive,
+  taskCompleteReceive,
   getMaterials,
   fileUpdate,
   getUnitAdmin,
@@ -262,11 +293,16 @@ export default {
       data: {},
       dialogVisible: false,
       applyDialogVisible: false,
+      receiveDialogVisible: false,
       applyForm: {
         applyFlag: 1,
         auditUserId: undefined,
         remark: undefined,
         taskId: undefined,
+      },
+      receiveForm: {
+        taskId: "",
+        remindTime: "",
       },
       applyInfo: [
         {
@@ -416,7 +452,21 @@ export default {
     //   });
     // },
     taskReceive() {
-      taskReceive([this.id]).then((res) => {
+      this.receiveDialogVisible = true;
+    },
+    taskReceiveFinish() {
+      taskReceive(this.receiveForm).then((res) => {
+        if (res.code === 200) {
+          this.$modal.msgSuccess("领取成功！");
+          this.receiveDialogVisible = false;
+          getTaskDetails({ taskId: this.id }).then((res) => {
+            this.data = res.data;
+          });
+        }
+      });
+    },
+    taskCompleteReceive() {
+      taskCompleteReceive([this.id]).then((res) => {
         if (res.code === 200) {
           this.$modal.msgSuccess("领取成功！");
           getTaskDetails({ taskId: this.id }).then((res) => {
@@ -451,6 +501,7 @@ export default {
     let id = this.$route.query.id;
     this.id = id;
     this.applyForm.taskId = id;
+    this.receiveForm.taskId = id;
     getUnitAdmin().then((res) => {
       this.unitAdmin = res.data;
     });

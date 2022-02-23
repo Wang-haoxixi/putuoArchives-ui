@@ -103,6 +103,7 @@
         </template>
         <template v-slot:fun="scope">
           <div>
+            <!-- 普通任务领取 -->
             <el-button
               size="medium"
               style="font-size: 14px"
@@ -111,11 +112,14 @@
               @click="taskReceive(scope.row.taskId)"
               >领取</el-button
             >
+            <!-- 完善任务领取 -->
             <el-button
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="currentWorkbench.identity == 2 && scope.row.pageStatus == 15"
+              v-if="
+                currentWorkbench.identity == 2 && scope.row.pageStatus == 15
+              "
               @click="taskCompleteReceive(scope.row.taskId)"
               >领取</el-button
             >
@@ -214,7 +218,7 @@ import {
   getTaskCount,
   getArchiveList,
   taskReceive,
-  taskCompleteReceive
+  taskCompleteReceive,
 } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {

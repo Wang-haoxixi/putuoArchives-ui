@@ -34,28 +34,31 @@
             >导出数据</el-button
           >
         </el-row>
-        <el-table :data="tableData" v-loading="loading" style="width: 100%">
-          <el-table-column
-            v-for="(item, index) in columnsData"
-            :key="index"
-            :prop="item.prop"
-            :label="item.label"
-          >
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button size="small" type="text" @click="handleEdit(scope.row)"
-                >编辑</el-button
-              >
-              <el-button
-                size="small"
-                type="text"
-                @click="handleDelete(scope.row)"
-                >删除</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
+        <div style="margin: 0 -20px">
+          <el-table :data="tableData" v-loading="loading" style="width: 100%;" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}">
+            <el-table-column
+              v-for="(item, index) in columnsData"
+              :key="index"
+              :prop="item.prop"
+              :label="item.label"
+              :width="item.prop === 'orderNum' ? '50px' : ''"
+            >
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button size="small" type="text" @click="handleEdit(scope.row)"
+                  >编辑</el-button
+                >
+                <el-button
+                  size="small"
+                  type="text"
+                  @click="handleDelete(scope.row)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -240,5 +243,9 @@ export default {
 .btn-item {
   margin-right: 20px;
   margin-bottom: 20px;
+}
+.pagination-container{
+  margin-top: 0px;
+  padding: 30px 20px !important;
 }
 </style>

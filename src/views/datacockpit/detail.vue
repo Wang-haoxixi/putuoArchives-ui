@@ -21,24 +21,26 @@
             </el-row>
           </div>
         </div>
-        <el-table :data="tableData" v-loading="loading">
-          <el-table-column
-            prop="orderNum"
-            label="序号">
-          </el-table-column>
-          <el-table-column
-            prop="unitQzh"
-            label="全宗号">
-          </el-table-column>
-          <el-table-column
-            prop="unitName"
-            label="单位名称">
-          </el-table-column>
-          <el-table-column
-            :prop="$route.query.fileType"
-            :label="labelVal">
-          </el-table-column>
-        </el-table>
+        <div style="margin: 0 -20px">
+          <el-table :data="tableData" v-loading="loading" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}">
+            <el-table-column
+              prop="orderNum"
+              label="序号" width="50px">
+            </el-table-column>
+            <el-table-column
+              prop="unitQzh"
+              label="全宗号">
+            </el-table-column>
+            <el-table-column
+              prop="unitName"
+              label="单位名称">
+            </el-table-column>
+            <el-table-column
+              :prop="$route.query.fileType"
+              :label="labelVal">
+            </el-table-column>
+          </el-table>
+        </div>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -118,5 +120,9 @@ export default {
       width: 50%;
     }
   }
+}
+.pagination-container{
+  margin-top: 0px;
+  padding: 30px 20px !important;
 }
 </style>

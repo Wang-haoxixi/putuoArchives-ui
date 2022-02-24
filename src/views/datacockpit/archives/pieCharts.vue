@@ -33,7 +33,7 @@ export default {
   computed: {
     option() {
       return {
-        color: ["#6DD993", "#F95D60"],
+        color: ["#6DD993", "#F95D60", '#749f83', '#ca8622'],
         avoidLabelOverlap: false,
         legend: {
           padding: 0,

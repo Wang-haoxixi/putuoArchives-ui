@@ -17,7 +17,7 @@
         >
         </el-input>
         <p class="p">专项归集数据上传：</p>
-        <el-table :data="specialTableData" style="width: 100%">
+        <el-table :data="specialTableData" v-loading="loading" style="width: 100%">
           <el-table-column type="index" width="50" label="序号">
           </el-table-column>
           <el-table-column prop="fileName" label="文件名称"> </el-table-column>
@@ -58,6 +58,7 @@ export default {
   components: { ContentBox },
   data() {
     return {
+      loading: true,
       // 专项归集数据表格数据
       specialTableData: [],
     };
@@ -67,11 +68,13 @@ export default {
   },
   methods: {
     getAllFile() {
+      this.loading = true;
       allFile({
         type: 1,
         specialId: this.$route.query.outId,
       }).then(({ data }) => {
         this.specialTableData = data;
+        this.loading = false;
       });
     },
     // 查看按钮

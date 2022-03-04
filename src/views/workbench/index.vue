@@ -1,6 +1,6 @@
 <template>
-  <basic-container>
-    <div style="background-color: #ffffff; border-radius: 4px">
+  <basic-container style="background-color:#F2F3F5;padding:0">
+    <div style="background-color: #ffffff; border-radius: 4px;padding:20px">
       <div class="title-container">
         <div class="title-text">我的任务</div>
         <el-button
@@ -159,7 +159,7 @@
         </template>
       </hc-crud>
     </div>
-    <div style="background-color: #ffffff; border-radius: 4px">
+    <div style="background-color: #ffffff; border-radius: 4px;margin-top:20px;padding:0 20px">
       <div class="title-container">
         <div class="title-text">通知消息</div>
         <el-button type="text" style="font-size: 14px" @click="goNoticeList"

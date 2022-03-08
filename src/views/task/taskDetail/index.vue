@@ -246,6 +246,7 @@
     <el-dialog
       title="领取任务"
       :visible.sync="receiveDialogVisible"
+      destroy-on-close
       width="484px"
     >
       <span
@@ -459,6 +460,10 @@ export default {
         if (res.code === 200) {
           this.$modal.msgSuccess("领取成功！");
           this.receiveDialogVisible = false;
+          this.receiveForm = {
+            taskId: "",
+            remindTime: "",
+          };
           getTaskDetails({ taskId: this.id }).then((res) => {
             this.data = res.data;
           });

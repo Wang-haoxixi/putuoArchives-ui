@@ -3,7 +3,7 @@
     <div class="container">
       <div class="title">
         <div class="title-text">基本信息</div>
-        <el-button type="primary">导出Excel</el-button>
+        <el-button type="primary" @click="exportExcel">导出Excel</el-button>
       </div>
       <el-row :gutter="20">
         <el-col :span="6">
@@ -73,7 +73,7 @@
             status.content
           }}</span>
         </div>
-        <el-button type="text" @click="taskListLog" >查看状态详情</el-button>
+        <el-button type="text" @click="taskListLog">查看状态详情</el-button>
       </div>
     </div>
     <div class="container">
@@ -88,7 +88,12 @@
 </template>
 
 <script>
-import { getTaskListDetail, getList, getTaskLifeCycle } from "@/api/workbench";
+import {
+  getTaskListDetail,
+  getList,
+  getTaskLifeCycle,
+  exportExcel,
+} from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 
 export default {
@@ -137,8 +142,27 @@ export default {
     return { id: 0, data: "", status: "" };
   },
   methods: {
-    taskListLog(){
-      this.$router.push({ path: '/taskListLog', query: { id: this.id } })
+    exportExcel() {
+      exportExcel(this.id).then((res) => {
+        console.log(res)
+        let blob = new Blob([res], {
+        type: "application/vnd.ms-excel",
+      });
+      // 2.获取请求返回的response对象中的blob 设置文件类型，这里以excel为例
+      let url = window.URL.createObjectURL(blob); // 3.创建一个临时的url指向blob对象
+
+      // 4.创建url之后可以模拟对此文件对象的一系列操作，例如：预览、下载
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = this.data.taskListName+".xlsx";
+      a.click();
+      // 5.释放这个临时的对象url
+      window.URL.revokeObjectURL(url);
+      this.diaShow = !this.diaShow;
+      });
+    },
+    taskListLog() {
+      this.$router.push({ path: "/taskListLog", query: { id: this.id } });
     },
     fetchListFun(params) {
       return new Promise((resolve, reject) => {

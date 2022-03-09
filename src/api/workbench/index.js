@@ -131,11 +131,21 @@ export function getUnitAdmin() {
     method: 'get',
   })
 }
-// 科室领导操作任务
+//科室领导操作任务
 export function taskApply(data) {
   return request({
     url: '/task/apply',
     method: 'post',
+    data: data
+  })
+}
+
+//导出Excel
+export function exportExcel(data) {
+  return request({
+    url: '/task/download',
+    method: 'post',
+    responseType: "blob",
     data: data
   })
 }

@@ -118,7 +118,7 @@
               style="font-size: 14px"
               type="text"
               v-if="
-                currentWorkbench.identity == 2 && scope.row.pageStatus == 15
+                currentWorkbench.identity == 2 && scope.row.pageStatus == 14
               "
               @click="taskCompleteReceive(scope.row.taskId)"
               >领取</el-button

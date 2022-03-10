@@ -118,16 +118,10 @@
     <div class="bottom">
       <el-button
         type="primary"
-        @click="taskReceive"
-        v-if="data.liable == userId && this.currentWorkbench.identity == 2"
-        >领取任务</el-button
-      >
-      <el-button
-        type="primary"
         @click="taskCompleteReceive"
-        v-else-if="
+        v-if="
           data.perfectUserId == userId &&
-          data.pageStatus == 15 &&
+          data.pageStatus == 14 &&
           this.currentWorkbench.identity == 2
         "
         >领取任务</el-button
@@ -135,7 +129,17 @@
       <el-button
         type="primary"
         @click="taskReceive"
-        v-else-if="data.pageStatus == 1 && this.currentWorkbench.identity == 3"
+        v-else-if="
+          data.liable == userId &&
+          data.pageStatus == 1 &&
+          this.currentWorkbench.identity == 2
+        "
+        >领取任务</el-button
+      >
+      <el-button
+        type="primary"
+        @click="sendMessage"
+        v-else-if="(data.pageStatus == 1 || data.pageStatus ==14) && this.currentWorkbench.identity == 3"
         >催一下</el-button
       >
       <div
@@ -144,9 +148,9 @@
           this.currentWorkbench.identity == 3
         "
       >
-        <el-button type="primary" @click="apply(2)">延期</el-button>
-        <el-button type="primary" @click="apply(3)">申请取消</el-button>
-        <el-button type="primary" @click="apply(1)">申请完成</el-button>
+        <el-button type="primary" @click="applyDetail(2)">延期</el-button>
+        <el-button type="primary" @click="applyDetail(3)">申请取消</el-button>
+        <el-button type="primary" @click="applyDetail(1)">申请完成</el-button>
       </div>
       <el-button div v-else type="primary" disabled
         >{{ selectDictLabel(dict.type.task_page_status, data.pageStatus) }}
@@ -281,6 +285,7 @@ import {
   fileUpdate,
   getUnitAdmin,
   taskApply,
+  sendMessage,
 } from "@/api/workbench";
 import { trainDownloadUrl, trainPreviewUrl } from "@/api/file/index";
 import { mapState, mapGetters } from "vuex";
@@ -365,6 +370,21 @@ export default {
     },
   },
   methods: {
+    sendMessage() {
+      //提醒
+      let messageFlag;
+      if (this.data.pageStatus == 1) {
+        messageFlag = 1;
+      }
+      if (this.data.pageStatus == 14) {
+        messageFlag = 2;
+      }
+      sendMessage({ messageFlag: messageFlag, taskId: this.id }).then((res) => {
+        if (res.code === 200) {
+          this.$message.success("成功");
+        }
+      });
+    },
     applyCancel() {
       this.applyDialogVisible = false;
     },

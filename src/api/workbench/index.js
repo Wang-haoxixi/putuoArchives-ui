@@ -149,3 +149,12 @@ export function exportExcel(data) {
     data: data
   })
 }
+
+//发送提醒消息
+export function sendMessage(data) {
+  return request({
+    url: '/task/send/message',
+    method: 'post',
+    data: data
+  })
+}

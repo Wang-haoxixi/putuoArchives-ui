@@ -82,6 +82,26 @@
         <template v-slot:status="scope">
           <color-tag :value="scope.row.status" :tags="statusTags"></color-tag>
         </template>
+        <template v-slot:fun="scope">
+          <el-button
+            size="medium"
+            style="font-size: 14px"
+            type="text"
+            @click="detail(scope.row)"
+            >查看</el-button
+          >
+          <el-button
+            size="medium"
+            style="font-size: 14px"
+            type="text"
+            v-if="
+              (scope.row.pageStatus == 1 || scope.row.pageStatus == 14) &&
+              this.currentWorkbench.identity == 3
+            "
+            @click="sendMessage(scope.row)"
+            >提醒
+          </el-button>
+        </template>
       </hc-crud>
     </div>
   </div>
@@ -93,6 +113,7 @@ import {
   getList,
   getTaskLifeCycle,
   exportExcel,
+  sendMessage,
 } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 
@@ -106,7 +127,7 @@ export default {
         columns: [
           {
             label: "题名",
-            prop: "archivesName",
+            prop: "taskName",
           },
           {
             label: "材料类型",
@@ -124,15 +145,26 @@ export default {
           },
           {
             label: "状态",
-            prop: "remark",
+            prop: "pageStatus",
+            type: "select",
+            dicData: this.dict.type.task_page_status,
           },
           {
             label: "领取时间",
-            prop: "remark",
+            prop: "receiveTime",
           },
           {
             label: "完成时间",
-            prop: "remark",
+            prop: "finishTime",
+          },
+          {
+            label: "档案系统题名",
+            prop: "subjectName",
+          },
+          {
+            label: "操作",
+            prop: "fun",
+            slot: true,
           },
         ],
       };
@@ -142,23 +174,41 @@ export default {
     return { id: 0, data: "", status: "" };
   },
   methods: {
+    sendMessage(item) {
+      //提醒
+      let messageFlag;
+      if (item.pageStatus == 1) {
+        messageFlag = 1;
+      }
+      if (item.pageStatus == 14) {
+        messageFlag = 2;
+      }
+      sendMessage({ messageFlag: messageFlag, taskId: item.id }).then((res) => {
+        if (res.code === 200) {
+          this.$message.success("成功");
+        }
+      });
+    },
+    detail(data) {
+      this.$router.push({ path: "/taskDetail", query: { id: data.taskId } });
+    },
     exportExcel() {
       exportExcel(this.id).then((res) => {
-        console.log(res)
+        console.log(res);
         let blob = new Blob([res], {
-        type: "application/vnd.ms-excel",
-      });
-      // 2.获取请求返回的response对象中的blob 设置文件类型，这里以excel为例
-      let url = window.URL.createObjectURL(blob); // 3.创建一个临时的url指向blob对象
+          type: "application/vnd.ms-excel",
+        });
+        // 2.获取请求返回的response对象中的blob 设置文件类型，这里以excel为例
+        let url = window.URL.createObjectURL(blob); // 3.创建一个临时的url指向blob对象
 
-      // 4.创建url之后可以模拟对此文件对象的一系列操作，例如：预览、下载
-      let a = document.createElement("a");
-      a.href = url;
-      a.download = this.data.taskListName+".xlsx";
-      a.click();
-      // 5.释放这个临时的对象url
-      window.URL.revokeObjectURL(url);
-      this.diaShow = !this.diaShow;
+        // 4.创建url之后可以模拟对此文件对象的一系列操作，例如：预览、下载
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = this.data.taskListName + ".xlsx";
+        a.click();
+        // 5.释放这个临时的对象url
+        window.URL.revokeObjectURL(url);
+        this.diaShow = !this.diaShow;
       });
     },
     taskListLog() {

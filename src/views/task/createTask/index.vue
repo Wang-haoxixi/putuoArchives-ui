@@ -166,7 +166,6 @@
           <template slot-scope="scope">
           <el-button type="text" v-if="scope.row.pageStatus == 0" @click="subFormEdit(scope.row,scope.$index)">编辑</el-button>
           <el-button type="text" v-if="scope.row.pageStatus == 0" @click="subFormDel(scope.row,scope.$index)">删除</el-button>
-          <!-- <el-button type="text">催一下</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -409,7 +408,7 @@ import {
   getMaterials,
   getLiable,
   getUnit,
-  taskListCreate,
+  taskListCreate
 } from "@/api/workbench/index";
 import { addTemplate } from "@/api/task/template";
 export default {

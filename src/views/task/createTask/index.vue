@@ -162,7 +162,13 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column prop="fun" label="操作"> </el-table-column>
+        <el-table-column prop="fun" label="操作">
+          <template slot-scope="scope">
+          <el-button type="text" v-if="scope.row.pageStatus == 0" @click="subFormEdit(scope.row,scope.$index)">编辑</el-button>
+          <el-button type="text" v-if="scope.row.pageStatus == 0" @click="subFormDel(scope.row,scope.$index)">删除</el-button>
+          <!-- <el-button type="text">催一下</el-button> -->
+          </template>
+        </el-table-column>
       </el-table>
       <div class="add" @click="dialogFormVisible = true">
         <i class="el-icon-plus" style="margin-right: 8px" />
@@ -351,6 +357,25 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item
+          label="协同完善人"
+          :label-width="formLabelWidth"
+          prop="perfectUserObj"
+        >
+          <el-select :value="subform.perfectUserObj.label">
+            <el-option
+              style="height: auto; padding: 0"
+              :value="subform.perfectUserObj"
+            >
+              <el-tree
+                :data="liableList"
+                @node-click="handlePerfectNodeClick"
+                :props="defaultProps"
+              >
+              </el-tree>
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -402,6 +427,8 @@ export default {
         perfectUserId: "",
         taskList: [],
       },
+      subFormStatus: "add",
+      editIndex: undefined,
       subform: {
         taskName: "",
         keywordTagList: [],
@@ -415,6 +442,8 @@ export default {
         endTime: "",
         liableDeptId: "",
         pageStatus: "",
+        perfectUserObj:"",
+        perfectUserId: "",
         fileList: [],
       },
       fileOptions: [],
@@ -493,6 +522,8 @@ export default {
         formTime: "",
         liable: "",
         liableObj: "",
+        perfectUserObj:"",
+        perfectUserId: "",
         materialType: "",
         startTime: "",
         endTime: "",
@@ -501,6 +532,16 @@ export default {
         fileList: [],
       };
       this.dialogFormVisible = false;
+    },
+    //编辑子任务
+    subFormEdit(data,index){
+      this.subFormStatus = 'edit';
+      this.dialogFormVisible = true;
+      this.subform = data;
+      this.editIndex = index;
+    },
+    subFormDel(data,index){
+      this.form.taskList.splice(index,1)
     },
     //添加清单模板
     addTemplate() {
@@ -528,6 +569,13 @@ export default {
       if (node.isLeaf) {
         this.subform.liableObj = data;
         this.subform.liableDeptId= node.parent.data.value;
+      }
+    },
+    handlePerfectNodeClick(data, node){
+      if (node.isLeaf) {
+        console.log(data)
+        this.subform.perfectUserObj = data;
+        this.subform.perfectUserId= data.value;
       }
     },
     cancel() {
@@ -578,7 +626,12 @@ export default {
           this.subform.responsibleDept = responsibleLabelList.join(",");
           this.subform.liable = this.subform.liableObj.value;
           this.subform.pageStatus = "0";
+          if(this.subFormStatus == "edit"){
+              this.form.taskList[this.editIndex] = this.subform;
+          }
+          else{
           this.form.taskList.push(this.subform);
+          }
           this.subformInitialization();
         } else {
           this.$message.error("请检查输入内容");

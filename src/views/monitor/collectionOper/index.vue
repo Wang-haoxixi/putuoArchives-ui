@@ -7,6 +7,7 @@
 <script>
 import {
   list,
+  collectionOperList
 } from "@/api/monitor/operlog";
 import HcCrud from "@/views/components/HcCrud/index"
 
@@ -96,7 +97,7 @@ export default {
   methods: {
     fetchListFun (params) {
       return new Promise((resolve, reject) => {
-        list(params).then(({data}) => {
+        collectionOperList(params).then(({data}) => {
           resolve({
             records: data.records,
             page: {

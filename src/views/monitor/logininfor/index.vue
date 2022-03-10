@@ -88,9 +88,10 @@ export default {
       return new Promise((resolve, reject) => {
         list(params).then((data) => {
           resolve({
-            records: data.rows,
+            // records: data.rows,
+            records: data.data.records,
             page: {
-              total: data.total
+              total: data.data.total
             }
           })
         })

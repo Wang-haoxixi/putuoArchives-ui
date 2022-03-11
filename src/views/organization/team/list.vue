@@ -107,6 +107,10 @@ export default {
             prop: "deptName"
           },
           {
+            label: "任职类型",
+            prop: "jobAttributes"
+          },
+          {
             label: "职务",
             prop: "govEmpPosJob"
           },

@@ -6,9 +6,10 @@
 
 <script>
 import {
-  list,
-  collectionOperList
+  collectionOperList,
+  exportCollection
 } from "@/api/monitor/operlog";
+import { downLoadBlob } from "@/utils/file";
 import HcCrud from "@/views/components/HcCrud/index"
 
 export default {
@@ -17,6 +18,7 @@ export default {
   dicts: ["sys_oper_type", "sys_common_status"],
   data() {
     return {
+      paramsData: {},
       searchQuery: [
         {
           label: "操作人",
@@ -50,7 +52,11 @@ export default {
           type: "primary",
           label: "导出",
           fun: () => {
-            alert(1)
+            exportCollection().then(({ headers, data }) => {
+              let disposition = headers['content-disposition']
+              let fileName = decodeURIComponent(disposition.split("fileName=")[1])
+              downLoadBlob(data, fileName)
+            })
           }
         }
       ]
@@ -96,6 +102,7 @@ export default {
   },
   methods: {
     fetchListFun (params) {
+      this.paramsData = params
       return new Promise((resolve, reject) => {
         collectionOperList(params).then(({data}) => {
           resolve({

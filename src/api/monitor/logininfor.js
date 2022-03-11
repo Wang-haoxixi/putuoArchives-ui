@@ -29,7 +29,7 @@ export function cleanLogininfor() {
 export function exportLogininfor(query) {
   return request({
     url: '/monitor/logininfor/export',
-    method: 'get',
-    params: query
+    responseType: "blob",
+    showHeaders: true,
   })
 }

@@ -125,7 +125,8 @@ export default {
       getStatistics().then(({data}) => {
         const statistics = {}
         for (let i = 0; i < data.length; i++) {
-          statistics[data[i].TYPE] = data[i].COUNT
+          // statistics[data[i].TYPE] = data[i].COUNT
+          statistics[data[i].type] = data[i].count
         }
         this.statistics = [
           {

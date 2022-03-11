@@ -120,6 +120,7 @@ export default {
         menu: [
           {
             label: "管理角色",
+            permissions: ["team:role"],
             fun: (row) => {
               this.dialogVisible = true
               this.handleUser = row

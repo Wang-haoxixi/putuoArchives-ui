@@ -7,7 +7,9 @@
 <script>
 import {
   list,
+  exportLogininfor
 } from "@/api/monitor/logininfor";
+import { downLoadBlob } from "@/utils/file";
 import HcCrud from "@/views/components/HcCrud/index"
 
 export default {
@@ -16,6 +18,7 @@ export default {
   dicts: ["sys_common_status"],
   data() {
     return {
+      paramsData: {},
       searchQuery: [
         {
           label: "用户名",
@@ -43,7 +46,11 @@ export default {
           type: "primary",
           label: "导出",
           fun: () => {
-            alert(1)
+            exportLogininfor().then(({ headers, data }) => {
+              let disposition = headers['content-disposition']
+              let fileName = decodeURIComponent(disposition.split("fileName=")[1])
+              downLoadBlob(data, fileName)
+            })
           }
         }
       ]
@@ -85,6 +92,7 @@ export default {
   },
   methods: {
     fetchListFun (params) {
+      this.paramsData = params
       return new Promise((resolve, reject) => {
         list(params).then((data) => {
           resolve({

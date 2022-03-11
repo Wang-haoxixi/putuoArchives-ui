@@ -11,7 +11,7 @@
             <el-input v-model="formData.name" style="width: 600px;" maxlength="50" placeholder="请输入文件标题"></el-input>
           </el-form-item>
           <el-form-item label="关键词类型：" prop="type">
-            <el-radio-group v-model="formData.keyType">
+            <el-radio-group v-model="formData.keyType" @change="changeRadio">
               <el-radio :label="1">中心词<tip style="margin-left: 4px" content="指最标准最具代表性的关键词"></tip></el-radio>
               <el-radio :label="2">近义词<tip style="margin-left: 4px" content="指与中心词具有相近意思的关键词"></tip></el-radio>
             </el-radio-group>
@@ -62,7 +62,8 @@ export default {
           name: data.name,
           keyType: data.keyType,
           status: data.status,
-          parent: data.parent
+          parent: data.parent,
+          parentName: data.parentName
         }
         if (data.keyType == 2) {
           this.$nextTick(() => {
@@ -106,6 +107,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           const fun =  this.formData.id ? updateKeyword : addKeyword
+          delete this.formData.parentName
           fun(this.formData).then(res => {
             this.$modal.msgSuccess("保存成功！")
             this.$router.back()
@@ -115,6 +117,16 @@ export default {
     },
     cancel () {
       this.$router.back()
+    },
+    changeRadio(){
+      if (this.formData.keyType == 2) {
+        this.$nextTick(() => {
+          this.$refs.parent.initData(this.formData.parent, [{
+            label: this.formData.parentName,
+            value: this.formData.parent
+          }])
+        })
+      }
     }
   },
 };

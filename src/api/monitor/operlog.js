@@ -35,10 +35,19 @@ export function cleanOperlog() {
 }
 
 // 导出操作日志
-export function exportOperlog(query) {
+export function exportOperlog() {
   return request({
     url: '/monitor/operlog/export',
-    method: 'get',
-    params: query
+    responseType: "blob",
+    showHeaders: true,
+  })
+}
+
+// 导出归集操作日志
+export function exportCollection(query) {
+  return request({
+    url: '/monitor/operlog/archive/export',
+    responseType: "blob",
+    showHeaders: true,
   })
 }

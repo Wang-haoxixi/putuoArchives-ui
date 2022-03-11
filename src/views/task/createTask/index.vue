@@ -213,7 +213,7 @@
           <tags-input
             :autocomplete="true"
             v-model="subform.keywordTagList"
-            style="width: 600px"
+            style="width: 100%"
             @change="tagsChange"
           ></tags-input>
         </el-form-item>
@@ -592,11 +592,15 @@ export default {
       let modelList = [];
       getTemplateDetail({ taskListTemplateId }).then((res) => {
         res.data.taskTemplateList.forEach((item) => {
+                // data.perfectUserObj = { label: "", value: undefined };
+      // data.liableObj = { label: "", value: undefined };
           let key = {
             taskName: item.taskName,
             keywordTagList: item.keywordTag.split(","),
             materialType: item.materialType,
             fileList: item.fileRelationList,
+            perfectUserObj: { label: "", value: undefined },
+            liableObj : { label: "", value: undefined },
             pageStatus: "0",
           };
           modelList.push(key);
@@ -630,9 +634,6 @@ export default {
     subFormEdit(data, index) {
       this.subFormStatus = "edit";
       this.dialogFormVisible = true;
-      console.log(data);
-      data.perfectUserObj = { label: "", value: undefined };
-      data.liableObj = { label: "", value: undefined };
       this.subform = data;
       this.editIndex = index;
     },
@@ -854,7 +855,7 @@ export default {
   ::v-deep .el-form-item__content {
     padding-left: 16px;
     .el-input {
-      width: 600px;
+      width: 100%;
     }
   }
 }

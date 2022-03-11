@@ -89,7 +89,10 @@
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
         <template v-slot:taskName="scope">
           <div>{{ scope.row.taskName }}</div>
-          <div style="color: #999999; font-size: 12px; line-height: 17px">
+          <div
+            v-if="scope.row.taskType == 2"
+            style="color: #999999; font-size: 12px; line-height: 17px"
+          >
             所属清单：{{ scope.row.taskListName }}
           </div>
         </template>
@@ -108,7 +111,9 @@
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="currentWorkbench.identity == 2 && scope.row.pageStatus == 1"
+              v-if="
+                currentWorkbench.identity == 2 && scope.row.pageStatus === '1'
+              "
               @click="taskReceive(scope.row.taskId)"
               >领取</el-button
             >
@@ -118,7 +123,7 @@
               style="font-size: 14px"
               type="text"
               v-if="
-                currentWorkbench.identity == 2 && scope.row.pageStatus == 14
+                currentWorkbench.identity == 2 && scope.row.pageStatus === '14'
               "
               @click="taskCompleteReceive(scope.row.taskId)"
               >领取</el-button
@@ -127,15 +132,19 @@
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="scope.row.pageStatus == 0"
-              @click="edit(scope.row.taskId)"
+              v-if="
+                scope.row.pageStatus === '0' || scope.row.pageStatus === '100'
+              "
+              @click="edit(scope.row)"
               >编辑</el-button
             >
             <el-button
               size="medium"
               style="font-size: 14px"
               type="text"
-              v-if="scope.row.pageStatus == 0"
+              v-if="
+                scope.row.pageStatus === '0' || scope.row.pageStatus === '100'
+              "
               @click="del(scope.row.taskId)"
               >删除</el-button
             >
@@ -152,7 +161,7 @@
               style="font-size: 14px"
               type="text"
               v-if="scope.row.taskId"
-              @click="detail(scope.row.taskId)"
+              @click="detail(scope.row)"
               >查看</el-button
             >
           </div>
@@ -223,6 +232,8 @@ import { mapGetters } from "vuex";
 import { timeInterval } from "@/utils/index";
 import {
   getList,
+  getSingleList,
+  getMixList,
   getTaskCount,
   getArchiveList,
   taskReceive,
@@ -483,11 +494,22 @@ export default {
         })
         .catch(() => {});
     },
-    edit(id) {
+    edit(item) {
+      if(item.taskType == "1"){
+
+      }else{
       this.$router.push({ path: "taskEdit", query: { id: id } });
+      }
     },
-    detail(id) {
-      this.$router.push({ path: "taskDetail", query: { id: id } });
+    detail(item) {
+      if (item.taskType == "1") {
+        this.$router.push({
+          path: "taskListDetail",
+          query: { id: item.taskListId },
+        });
+      } else {
+        this.$router.push({ path: "taskDetail", query: { id: item.taskId } });
+      }
     },
     agree() {},
     timeInterval,
@@ -502,8 +524,32 @@ export default {
               },
             });
           });
-        } else {
+        } else if (this.currentWorkbench.identity === 2) {
           getList({
+            statusFlag: this.statusFlag,
+            ...params,
+          }).then(({ data }) => {
+            resolve({
+              records: data.records,
+              page: {
+                total: data.total,
+              },
+            });
+          });
+        } else if (this.currentWorkbench.identity === 3) {
+          getMixList({
+            statusFlag: this.statusFlag,
+            ...params,
+          }).then(({ data }) => {
+            resolve({
+              records: data.records,
+              page: {
+                total: data.total,
+              },
+            });
+          });
+        } else {
+          getSingleList({
             statusFlag: this.statusFlag,
             ...params,
           }).then(({ data }) => {

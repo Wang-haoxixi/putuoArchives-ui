@@ -6,7 +6,7 @@ export function getNavigation() {
     method: 'get',
   })
 }
-
+//归集员工作台
 export function getList(query) {
   return request({
     url: '/task/page',
@@ -14,6 +14,24 @@ export function getList(query) {
     params: query
   })
 }
+//纯清单
+export function getSingleList(query) {
+  return request({
+    url: '/task/qd/page',
+    method: 'get',
+    params: query
+  })
+}
+//混合清单
+export function getMixList(query) {
+  return request({
+    url: '/task/hun/page',
+    method: 'get',
+    params: query
+  })
+}
+
+
 export function getTaskCount() {
   return request({
     url: '/task/statistics/count',

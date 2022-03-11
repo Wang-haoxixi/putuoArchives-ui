@@ -9,6 +9,15 @@ export function list(query) {
   })
 }
 
+// 查询归集操作日志列表
+export function collectionOperList(query) {
+  return request({
+    url: '/monitor/operlog/archive/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 删除操作日志
 export function delOperlog(operId) {
   return request({

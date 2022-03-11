@@ -107,6 +107,10 @@ export default {
             prop: "deptName"
           },
           {
+            label: "任职类型",
+            prop: "jobAttributes"
+          },
+          {
             label: "职务",
             prop: "govEmpPosJob"
           },
@@ -120,6 +124,7 @@ export default {
         menu: [
           {
             label: "管理角色",
+            permissions: ["team:role"],
             fun: (row) => {
               this.dialogVisible = true
               this.handleUser = row

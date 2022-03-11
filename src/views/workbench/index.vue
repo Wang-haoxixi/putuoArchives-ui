@@ -227,6 +227,7 @@ import {
   getArchiveList,
   taskReceive,
   taskCompleteReceive,
+  delTask,
 } from "@/api/workbench";
 import HcCrud from "@/views/components/HcCrud/index";
 export default {
@@ -466,8 +467,25 @@ export default {
       this.receiveDialogVisible = true;
       this.receiveForm.taskId = taskId;
     },
-    del() {},
-    edit() {},
+    del(taskId) {
+      this.$confirm("确定删除该任务吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          delTask([taskId]).then((res) => {
+            if (res.code == 200) {
+              this.$message.success("删除成功");
+              this.$refs.hcCrud.refresh();
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    edit(id) {
+      this.$router.push({ path: "taskEdit", query: { id: id } });
+    },
     detail(id) {
       this.$router.push({ path: "taskDetail", query: { id: id } });
     },

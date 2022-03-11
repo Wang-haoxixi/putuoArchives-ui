@@ -158,3 +158,21 @@ export function sendMessage(data) {
     data: data
   })
 }
+
+//删除任务
+export function delTask(data) {
+  return request({
+    url: '/task/delete',
+    method: 'post',
+    data: data
+  })
+}
+
+//编辑任务
+export function updateTask(data) {
+  return request({
+    url: '/task/update',
+    method: 'post',
+    data: data
+  })
+}

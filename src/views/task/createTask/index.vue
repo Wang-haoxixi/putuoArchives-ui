@@ -164,8 +164,18 @@
         </el-table-column>
         <el-table-column prop="fun" label="操作">
           <template slot-scope="scope">
-          <el-button type="text" v-if="scope.row.pageStatus == 0" @click="subFormEdit(scope.row,scope.$index)">编辑</el-button>
-          <el-button type="text" v-if="scope.row.pageStatus == 0" @click="subFormDel(scope.row,scope.$index)">删除</el-button>
+            <el-button
+              type="text"
+              v-if="scope.row.pageStatus == 0"
+              @click="subFormEdit(scope.row, scope.$index)"
+              >编辑</el-button
+            >
+            <el-button
+              type="text"
+              v-if="scope.row.pageStatus == 0"
+              @click="subFormDel(scope.row, scope.$index)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -263,30 +273,6 @@
               </el-tree>
             </el-option>
           </el-select>
-          <!-- <el-select
-            v-model="subform.liableObj"
-            filterable
-            remote
-            value-key="value"
-            reserve-keyword
-            placeholder="请选择归集档案员"
-            :remote-method="liableRemote"
-            :loading="liableLoading"
-          >
-            <el-option-group
-              v-for="group in liableOptions"
-              :key="group.value"
-              :label="group.label"
-            >
-              <el-option
-                v-for="item in group.children"
-                :key="item.value"
-                :label="item.label"
-                :value="{ label: item.nickName, value: item.userId }"
-              >
-              </el-option>
-            </el-option-group>
-          </el-select> -->
         </el-form-item>
         <el-form-item
           label="材料类型"
@@ -392,11 +378,8 @@
         @node-click="handleCollaborateNodeClick"
       ></el-tree>
     </el-dialog>
-    <el-dialog
-      title="请选择模板"
-      :visible.sync="modelDialogVisible"
-    >
-    <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
+    <el-dialog title="请选择模板" :visible.sync="modelDialogVisible">
+      <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
       </hc-crud>
     </el-dialog>
     <div class="bottom-button">
@@ -409,22 +392,21 @@
 </template>
 
 <script>
-
 import TagsInput from "@/views/components/HcForm/TagsInput";
 import HcCrud from "@/views/components/HcCrud/index";
 import SearchInput from "@/views/components/SearchInput/index";
 
-import { getTemplatePage,getTemplateDetail } from "@/api/task/template";
+import { getTemplatePage, getTemplateDetail } from "@/api/task/template";
 import {
   createTask,
   getMaterials,
   getLiable,
   getUnit,
-  taskListCreate
+  taskListCreate,
 } from "@/api/workbench/index";
 import { addTemplate } from "@/api/task/template";
 export default {
-  components: { TagsInput, SearchInput, HcCrud  },
+  components: { TagsInput, SearchInput, HcCrud },
   dicts: ["loop_type", "task_material_type", "task_page_status"],
   computed: {
     tableOption() {
@@ -506,7 +488,7 @@ export default {
         endTime: "",
         liableDeptId: "",
         pageStatus: "",
-        perfectUserObj:"",
+        perfectUserObj: "",
         perfectUserId: "",
         fileList: [],
       },
@@ -602,22 +584,26 @@ export default {
         path: "/taskTemplate/view/?id=" + row.taskListTemplateId,
       });
     },
-    modelChanceDialog(){
+    modelChanceDialog() {
       this.modelDialogVisible = true;
     },
-    modelChance(item){
-      let taskListTemplateId = item.taskListTemplateId
-      let modelList = []
-      getTemplateDetail({taskListTemplateId}).then(
-        res=>{
-          res.data.taskTemplateList.forEach(item=>{
-            let key = {taskName:item.taskName,keywordTagList:item.keywordTag.split(","),materialType:item.materialType,fileList:item.fileRelationList,pageStatus:"0"}
-            modelList.push(key)
-          })
-          this.form.taskList = modelList;
-          console.log(modelList)
-        }
-      )
+    modelChance(item) {
+      let taskListTemplateId = item.taskListTemplateId;
+      let modelList = [];
+      getTemplateDetail({ taskListTemplateId }).then((res) => {
+        res.data.taskTemplateList.forEach((item) => {
+          let key = {
+            taskName: item.taskName,
+            keywordTagList: item.keywordTag.split(","),
+            materialType: item.materialType,
+            fileList: item.fileRelationList,
+            pageStatus: "0",
+          };
+          modelList.push(key);
+        });
+        this.form.taskList = modelList;
+        console.log(modelList);
+      });
       // this.form.taskList.push(item);
     },
     subformInitialization() {
@@ -629,7 +615,7 @@ export default {
         formTime: "",
         liable: "",
         liableObj: "",
-        perfectUserObj:"",
+        perfectUserObj: "",
         perfectUserId: "",
         materialType: "",
         startTime: "",
@@ -641,14 +627,17 @@ export default {
       this.dialogFormVisible = false;
     },
     //编辑子任务
-    subFormEdit(data,index){
-      this.subFormStatus = 'edit';
+    subFormEdit(data, index) {
+      this.subFormStatus = "edit";
       this.dialogFormVisible = true;
+      console.log(data);
+      data.perfectUserObj = { label: "", value: undefined };
+      data.liableObj = { label: "", value: undefined };
       this.subform = data;
       this.editIndex = index;
     },
-    subFormDel(data,index){
-      this.form.taskList.splice(index,1)
+    subFormDel(data, index) {
+      this.form.taskList.splice(index, 1);
     },
     //添加清单模板
     addTemplate() {
@@ -675,14 +664,14 @@ export default {
     handleNodeClick(data, node) {
       if (node.isLeaf) {
         this.subform.liableObj = data;
-        this.subform.liableDeptId= node.parent.data.value;
+        this.subform.liableDeptId = node.parent.data.value;
       }
     },
-    handlePerfectNodeClick(data, node){
+    handlePerfectNodeClick(data, node) {
       if (node.isLeaf) {
-        console.log(data)
+        console.log(data);
         this.subform.perfectUserObj = data;
-        this.subform.perfectUserId= data.value;
+        this.subform.perfectUserId = data.value;
       }
     },
     cancel() {
@@ -733,11 +722,10 @@ export default {
           this.subform.responsibleDept = responsibleLabelList.join(",");
           this.subform.liable = this.subform.liableObj.value;
           this.subform.pageStatus = "0";
-          if(this.subFormStatus == "edit"){
-              this.form.taskList[this.editIndex] = this.subform;
-          }
-          else{
-          this.form.taskList.push(this.subform);
+          if (this.subFormStatus == "edit") {
+            this.form.taskList[this.editIndex] = this.subform;
+          } else {
+            this.form.taskList.push(this.subform);
           }
           this.subformInitialization();
         } else {

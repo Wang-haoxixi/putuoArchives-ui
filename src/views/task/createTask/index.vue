@@ -103,7 +103,7 @@
     <div class="table">
       <div class="table-title">
         <div class="table-title-text">子任务管理</div>
-        <el-button type="">从模板选择</el-button>
+        <el-button type="" @click="modelChanceDialog">从模板选择</el-button>
         <el-button style="margin-left: 12px" type="primary" @click="addTemplate"
           >将本清单添加为模版</el-button
         >
@@ -142,7 +142,7 @@
         <el-table-column prop="formTime" label="形成时间"> </el-table-column>
         <el-table-column prop="liableObj" label="归集档案员">
           <template slot-scope="scope">
-            <div>
+            <div v-if="scope.row.liableObj">
               {{ scope.row.liableObj.label }}
             </div>
           </template>
@@ -392,6 +392,13 @@
         @node-click="handleCollaborateNodeClick"
       ></el-tree>
     </el-dialog>
+    <el-dialog
+      title="请选择模板"
+      :visible.sync="modelDialogVisible"
+    >
+    <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
+      </hc-crud>
+    </el-dialog>
     <div class="bottom-button">
       <el-button @click="cancel">取消</el-button>
       <el-button type="primary" @click="submit(1)">保存草稿</el-button>
@@ -402,7 +409,12 @@
 </template>
 
 <script>
+
 import TagsInput from "@/views/components/HcForm/TagsInput";
+import HcCrud from "@/views/components/HcCrud/index";
+import SearchInput from "@/views/components/SearchInput/index";
+
+import { getTemplatePage,getTemplateDetail } from "@/api/task/template";
 import {
   createTask,
   getMaterials,
@@ -412,10 +424,63 @@ import {
 } from "@/api/workbench/index";
 import { addTemplate } from "@/api/task/template";
 export default {
-  components: { TagsInput },
+  components: { TagsInput, SearchInput, HcCrud  },
   dicts: ["loop_type", "task_material_type", "task_page_status"],
+  computed: {
+    tableOption() {
+      return {
+        indexLabel: "序号",
+        columns: [
+          {
+            label: "模板名称",
+            prop: "taskListName",
+          },
+          {
+            label: "创建单位",
+            prop: "deptName",
+          },
+          {
+            label: "创建人",
+            prop: "createName",
+          },
+          {
+            label: "创建时间",
+            prop: "createTime",
+            sortable: "custom",
+            width: 160,
+          },
+          {
+            label: "最后更新人",
+            prop: "updateName",
+          },
+          {
+            label: "最后修改时间",
+            prop: "updateTime",
+            sortable: "custom",
+            width: 160,
+          },
+        ],
+        menu: [
+          {
+            label: "查看",
+            fun: (row) => {
+              this.toView(row);
+            },
+          },
+          {
+            label: "选择",
+            fun: (row) => {
+              this.modelChance(row);
+            },
+          },
+        ],
+        menuWidth: 140,
+      };
+    },
+  },
   data() {
     return {
+      modelDialogVisible: false,
       form: {
         taskListName: "",
         nextLoopType: "",
@@ -512,6 +577,49 @@ export default {
     this.getLiable();
   },
   methods: {
+    fetchListFun(params) {
+      return new Promise((resolve, reject) => {
+        getTemplatePage(params).then(({ data }) => {
+          resolve({
+            records: data.records,
+            page: {
+              total: data.total,
+            },
+          });
+        });
+      });
+    },
+    toSearch(templateName) {
+      this.$refs.hcCrud.refresh(
+        {},
+        {
+          templateName,
+        }
+      );
+    },
+    toView(row) {
+      this.$router.push({
+        path: "/taskTemplate/view/?id=" + row.taskListTemplateId,
+      });
+    },
+    modelChanceDialog(){
+      this.modelDialogVisible = true;
+    },
+    modelChance(item){
+      let taskListTemplateId = item.taskListTemplateId
+      let modelList = []
+      getTemplateDetail({taskListTemplateId}).then(
+        res=>{
+          res.data.taskTemplateList.forEach(item=>{
+            let key = {taskName:item.taskName,keywordTagList:item.keywordTag.split(","),materialType:item.materialType,fileList:item.fileRelationList,pageStatus:"0"}
+            modelList.push(key)
+          })
+          this.form.taskList = modelList;
+          console.log(modelList)
+        }
+      )
+      // this.form.taskList.push(item);
+    },
     subformInitialization() {
       this.subform = {
         taskName: "",

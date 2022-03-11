@@ -36,7 +36,7 @@ export const columns = {
     },
     {
       prop: 'bigEvent',
-      label: '大事件',
+      label: '大事记',
     },
     {
       prop: 'yearBook',

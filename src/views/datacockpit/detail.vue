@@ -5,9 +5,9 @@
         <div class="warp">
           <div class="search-row">
             <el-row class="search" :gutter="20">
-              <el-col :span="10"><el-input v-model="queryParams.unitName" placeholder="请输入单位名称进行检索"></el-input></el-col>
+              <el-col :span="10"><el-input v-model="queryParams.unitName" placeholder="请输入单位名称进行检索" style="width:100%"></el-input></el-col>
               <el-col :span="10">
-                <el-select v-model="queryParams[$route.query.fileType]" placeholder="请选择">
+                <el-select v-model="queryParams[$route.query.fileType]" placeholder="请选择" style="width:100%">
                   <el-option
                     v-for="item in options"
                     :key="item"

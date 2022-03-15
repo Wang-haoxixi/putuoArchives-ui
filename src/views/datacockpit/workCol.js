@@ -4,7 +4,7 @@ export const columns = {
     selectsOpt: ["达标","不达标","全部",]
   },
   bigEvent: {
-    name: '大事件',
+    name: '大事记',
     selectsOpt: [ "已建设", "未建设", "全部" ],
   },
   yearBook: {

@@ -63,7 +63,7 @@ export default {
           keyType: data.keyType,
           status: data.status,
           parent: data.parent,
-          parentName: data.parentName
+          // parentName: data.parentName
         }
         if (data.keyType == 2) {
           this.$nextTick(() => {
@@ -106,8 +106,11 @@ export default {
     submit () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          if(this.formData.keyType == 2 && this.formData.parent == ""){
+            return this.$message.error("关键词类型不能为空")
+          }
           const fun =  this.formData.id ? updateKeyword : addKeyword
-          delete this.formData.parentName
+          // delete this.formData.parentName
           fun(this.formData).then(res => {
             this.$modal.msgSuccess("保存成功！")
             this.$router.back()
@@ -119,14 +122,15 @@ export default {
       this.$router.back()
     },
     changeRadio(){
-      if (this.formData.keyType == 2) {
-        this.$nextTick(() => {
-          this.$refs.parent.initData(this.formData.parent, [{
-            label: this.formData.parentName,
-            value: this.formData.parent
-          }])
-        })
-      }
+      this.formData.parent = ""
+      // if (this.formData.keyType == 2) {
+      //   this.$nextTick(() => {
+      //     this.$refs.parent.initData(this.formData.parent, [{
+      //       label: this.formData.parentName,
+      //       value: this.formData.parent
+      //     }])
+      //   })
+      // }
     }
   },
 };

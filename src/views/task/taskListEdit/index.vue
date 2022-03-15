@@ -398,11 +398,10 @@ import SearchInput from "@/views/components/SearchInput/index";
 
 import { getTemplatePage, getTemplateDetail } from "@/api/task/template";
 import {
-  createTask,
+  updateTaskList,
   getMaterials,
   getLiable,
   getUnit,
-  taskListCreate,
   getTaskListDetail,
   getList,
 } from "@/api/workbench/index";
@@ -466,6 +465,7 @@ export default {
     return {
       modelDialogVisible: false,
       form: {
+        taskListId: "",
         taskListName: "",
         nextLoopType: "",
         nextLoopNum: "",
@@ -589,6 +589,7 @@ export default {
     getTaskListDetail(id) {
       getTaskListDetail({ taskListId: id }).then((res) => {
         this.form = {
+          taskListId: res.data.taskListId,
           taskListName: res.data.taskListName,
           nextLoopType: res.data.nextLoopType,
           nextLoopNum: res.data.nextLoopNum,
@@ -730,7 +731,7 @@ export default {
     submit(saveFlag) {
       if (saveFlag == 1) {
         this.form.saveFlag = saveFlag;
-        taskListCreate(this.form).then((res) => {
+        updateTaskList(this.form).then((res) => {
           if (res.code === 200) {
             this.$message.success("成功");
             this.$router.back();
@@ -740,7 +741,7 @@ export default {
         this.$refs["form"].validate((valid) => {
           if (valid) {
             this.form.saveFlag = saveFlag;
-            taskListCreate(this.form).then((res) => {
+            updateTaskList(this.form).then((res) => {
               if (res.code === 200) {
                 this.$message.success("成功");
                 this.$router.back();
@@ -793,9 +794,6 @@ export default {
         this.fileLoading = false;
         this.fileOptions = res.data.records;
       });
-    },
-    createTask() {
-      createTask();
     },
   },
 };

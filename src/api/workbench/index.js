@@ -47,6 +47,14 @@ export function getArchiveList(query) {
   })
 }
 //制发任务清单
+
+export function createTaskList(data) {
+  return request({
+    url: '/task/list/create',
+    method: 'post',
+    data: data
+  })
+}
 export function createTask(data) {
   return request({
     url: '/task/list/create',
@@ -54,6 +62,15 @@ export function createTask(data) {
     data: data
   })
 }
+//制发任务清单
+export function updateTaskList(data) {
+  return request({
+    url: '/task/list/update',
+    method: 'post',
+    data: data
+  })
+}
+
 //题名自动填充
 export function keywordLike(query) {
   return request({
@@ -83,13 +100,6 @@ export function getUnit(query) {
     url: '/system/dept/get_dept_unit_list',
     method: 'get',
     params: query
-  })
-}
-export function taskListCreate(data) {
-  return request({
-    url: '/task/list/create',
-    method: 'post',
-    data: data
   })
 }
 

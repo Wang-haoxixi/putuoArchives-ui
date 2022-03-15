@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="title">制发任务清单</div>
+    <div class="title">编辑任务清单</div>
     <div class="form">
       <div class="form-title">基本信息</div>
       <el-form ref="form" :model="form" label-position="top" :rules="rules">
@@ -398,11 +398,12 @@ import SearchInput from "@/views/components/SearchInput/index";
 
 import { getTemplatePage, getTemplateDetail } from "@/api/task/template";
 import {
-  createTask,
+  updateTaskList,
   getMaterials,
   getLiable,
   getUnit,
-  taskListCreate,
+  getTaskListDetail,
+  getList,
 } from "@/api/workbench/index";
 import { addTemplate } from "@/api/task/template";
 export default {
@@ -464,6 +465,7 @@ export default {
     return {
       modelDialogVisible: false,
       form: {
+        taskListId: "",
         taskListName: "",
         nextLoopType: "",
         nextLoopNum: "",
@@ -520,7 +522,7 @@ export default {
             type: "number",
             min: 1,
             message: "请输入大于0的整数",
-            trigger: "change",
+            trigger: "blur",
           },
         ],
         startTime: [
@@ -554,11 +556,50 @@ export default {
     };
   },
   created() {
+    this.getTaskListDetail(this.$route.query?.id);
+    this.getTaskList(this.$route.query?.id);
     this.remoteMethod();
     this.unitRemote();
     this.getLiable();
   },
   methods: {
+    getTaskList(id) {
+      getList({ taskListId: id }).then((res) => {
+        // let list = [];
+        // res.data.records.forEach((item) => {
+          
+        // })
+        res.data.records.forEach((item) => {
+          item.keywordTagList = item.keywordTag.split(",");
+          item.fileList = item.fileRelationList;
+          item.perfectUserObj = { label: "", value: undefined };
+          item.liableObj = { label: item.liableName, value: item.liable }
+        })
+        this.form.taskList = res.data.records
+        // let key = {
+        //     taskName: item.taskName,
+        //     materialType: item.materialType,
+        //     fileList: item.fileRelationList,
+        //     perfectUserObj: { label: "", value: undefined },
+        //     liableObj: { label: "", value: undefined },
+        //     pageStatus: "0",
+        //   };;
+      });
+    },
+    getTaskListDetail(id) {
+      getTaskListDetail({ taskListId: id }).then((res) => {
+        this.form = {
+          taskListId: res.data.taskListId,
+          taskListName: res.data.taskListName,
+          nextLoopType: res.data.nextLoopType,
+          nextLoopNum: res.data.nextLoopNum,
+          saveFlag: "",
+          startTime: res.data.startTime,
+          endTime: res.data.endTime,
+          perfectUserId: res.data.perfectUserId,
+        };
+      });
+    },
     fetchListFun(params) {
       return new Promise((resolve, reject) => {
         getTemplatePage(params).then(({ data }) => {
@@ -592,15 +633,15 @@ export default {
       let modelList = [];
       getTemplateDetail({ taskListTemplateId }).then((res) => {
         res.data.taskTemplateList.forEach((item) => {
-                // data.perfectUserObj = { label: "", value: undefined };
-      // data.liableObj = { label: "", value: undefined };
+          // data.perfectUserObj = { label: "", value: undefined };
+          // data.liableObj = { label: "", value: undefined };
           let key = {
             taskName: item.taskName,
             keywordTagList: item.keywordTag.split(","),
             materialType: item.materialType,
             fileList: item.fileRelationList,
             perfectUserObj: { label: "", value: undefined },
-            liableObj : { label: "", value: undefined },
+            liableObj: { label: "", value: undefined },
             pageStatus: "0",
           };
           modelList.push(key);
@@ -690,7 +731,7 @@ export default {
     submit(saveFlag) {
       if (saveFlag == 1) {
         this.form.saveFlag = saveFlag;
-        taskListCreate(this.form).then((res) => {
+        updateTaskList(this.form).then((res) => {
           if (res.code === 200) {
             this.$message.success("成功");
             this.$router.back();
@@ -700,7 +741,7 @@ export default {
         this.$refs["form"].validate((valid) => {
           if (valid) {
             this.form.saveFlag = saveFlag;
-            taskListCreate(this.form).then((res) => {
+            updateTaskList(this.form).then((res) => {
               if (res.code === 200) {
                 this.$message.success("成功");
                 this.$router.back();
@@ -753,9 +794,6 @@ export default {
         this.fileLoading = false;
         this.fileOptions = res.data.records;
       });
-    },
-    createTask() {
-      createTask();
     },
   },
 };

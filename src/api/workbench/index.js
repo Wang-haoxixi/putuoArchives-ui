@@ -6,7 +6,7 @@ export function getNavigation() {
     method: 'get',
   })
 }
-
+//归集员工作台
 export function getList(query) {
   return request({
     url: '/task/page',
@@ -14,6 +14,24 @@ export function getList(query) {
     params: query
   })
 }
+//纯清单
+export function getSingleList(query) {
+  return request({
+    url: '/task/qd/page',
+    method: 'get',
+    params: query
+  })
+}
+//混合清单
+export function getMixList(query) {
+  return request({
+    url: '/task/hun/page',
+    method: 'get',
+    params: query
+  })
+}
+
+
 export function getTaskCount() {
   return request({
     url: '/task/statistics/count',
@@ -29,6 +47,14 @@ export function getArchiveList(query) {
   })
 }
 //制发任务清单
+
+export function createTaskList(data) {
+  return request({
+    url: '/task/list/create',
+    method: 'post',
+    data: data
+  })
+}
 export function createTask(data) {
   return request({
     url: '/task/list/create',
@@ -36,6 +62,15 @@ export function createTask(data) {
     data: data
   })
 }
+//制发任务清单
+export function updateTaskList(data) {
+  return request({
+    url: '/task/list/update',
+    method: 'post',
+    data: data
+  })
+}
+
 //题名自动填充
 export function keywordLike(query) {
   return request({
@@ -65,13 +100,6 @@ export function getUnit(query) {
     url: '/system/dept/get_dept_unit_list',
     method: 'get',
     params: query
-  })
-}
-export function taskListCreate(data) {
-  return request({
-    url: '/task/list/create',
-    method: 'post',
-    data: data
   })
 }
 

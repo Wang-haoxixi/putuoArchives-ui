@@ -65,7 +65,7 @@
         <div class="subtitle">
           当前状态
           <span style="font-size: 20px; padding-left: 16px">{{
-            selectDictLabel(dict.type.task_list_status, data.status)
+            selectDictLabel(dict.type.task_page_status, data.status)
           }}</span
           ><span class="subtitle" style="padding-left: 80px"
             >{{ status.createTime }} </span
@@ -95,8 +95,7 @@
             style="font-size: 14px"
             type="text"
             v-if="
-              (scope.row.pageStatus == 1 || scope.row.pageStatus == 14) &&
-              this.currentWorkbench.identity == 3
+              (scope.row.pageStatus == 1 || scope.row.pageStatus == 14) && currentWorkbench.identity == 3
             "
             @click="sendMessage(scope.row)"
             >提醒
@@ -115,12 +114,14 @@ import {
   exportExcel,
   sendMessage,
 } from "@/api/workbench";
+import { mapGetters } from "vuex";
 import HcCrud from "@/views/components/HcCrud/index";
 
 export default {
   components: { HcCrud },
-  dicts: ["task_material_type", "loop_type", "task_page_status","task_list_status"],
+  dicts: ["task_material_type", "loop_type", "task_page_status"],
   computed: {
+    ...mapGetters(["currentWorkbench"]),
     tableOption() {
       return {
         index: false,
@@ -175,6 +176,7 @@ export default {
   },
   methods: {
     sendMessage(item) {
+      console.log(item)
       //提醒
       let messageFlag;
       if (item.pageStatus == 1) {
@@ -183,7 +185,7 @@ export default {
       if (item.pageStatus == 14) {
         messageFlag = 2;
       }
-      sendMessage({ messageFlag: messageFlag, taskId: item.id }).then((res) => {
+      sendMessage({ messageFlag: messageFlag, taskId: item.taskId }).then((res) => {
         if (res.code === 200) {
           this.$message.success("成功");
         }

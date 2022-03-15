@@ -495,10 +495,10 @@ export default {
         .catch(() => {});
     },
     edit(item) {
-      if(item.taskType == "1"){
-
-      }else{
-      this.$router.push({ path: "taskEdit", query: { id: id } });
+      if (item.taskType == "1") {
+        this.$router.push({ path: "taskListEdit", query: { id: item.taskListId } });
+      } else {
+        this.$router.push({ path: "taskEdit", query: { id: item.taskId } });
       }
     },
     detail(item) {

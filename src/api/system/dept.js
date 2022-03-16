@@ -118,6 +118,13 @@ export function updateQzh(data) {
   })
 }
 
-
+// 非立档单位的列表
+export function notFilingUnits(data) {
+  return request({
+    url: '/system/dept/not_filing/unit',
+    method: 'get',
+    data
+  })
+}
 
 

@@ -55,13 +55,6 @@ export function createTaskList(data) {
     data: data
   })
 }
-export function createTask(data) {
-  return request({
-    url: '/task/list/create',
-    method: 'post',
-    data: data
-  })
-}
 //制发任务清单
 export function updateTaskList(data) {
   return request({

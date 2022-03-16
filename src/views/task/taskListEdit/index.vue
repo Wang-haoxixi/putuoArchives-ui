@@ -108,7 +108,7 @@
           >将本清单添加为模版</el-button
         >
       </div>
-      <el-table :data="form.taskList" style="width: 100%">
+      <el-table :data="form.taskList" style="width: 100%" >
         <el-table-column prop="index" label="子任务">
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
@@ -576,6 +576,7 @@ export default {
           item.liableObj = { label: item.liableName, value: item.liable }
         })
         this.form.taskList = res.data.records
+        this.$forceUpdate();
         // let key = {
         //     taskName: item.taskName,
         //     materialType: item.materialType,

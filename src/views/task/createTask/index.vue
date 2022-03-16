@@ -382,6 +382,8 @@
       <hc-crud ref="hcCrud" :option="tableOption" :fetchListFun="fetchListFun">
       </hc-crud>
     </el-dialog>
+    <el-dialog title="请输入模板名称" :visible.sync="modelNameDialogVisible">
+    </el-dialog>
     <div class="bottom-button">
       <el-button @click="cancel">取消</el-button>
       <el-button type="primary" @click="submit(1)">保存草稿</el-button>
@@ -398,11 +400,10 @@ import SearchInput from "@/views/components/SearchInput/index";
 
 import { getTemplatePage, getTemplateDetail } from "@/api/task/template";
 import {
-  createTask,
   getMaterials,
   getLiable,
   getUnit,
-  taskListCreate,
+  createTaskList,
 } from "@/api/workbench/index";
 import { addTemplate } from "@/api/task/template";
 export default {
@@ -592,15 +593,15 @@ export default {
       let modelList = [];
       getTemplateDetail({ taskListTemplateId }).then((res) => {
         res.data.taskTemplateList.forEach((item) => {
-                // data.perfectUserObj = { label: "", value: undefined };
-      // data.liableObj = { label: "", value: undefined };
+          // data.perfectUserObj = { label: "", value: undefined };
+          // data.liableObj = { label: "", value: undefined };
           let key = {
             taskName: item.taskName,
             keywordTagList: item.keywordTag.split(","),
             materialType: item.materialType,
             fileList: item.fileRelationList,
             perfectUserObj: { label: "", value: undefined },
-            liableObj : { label: "", value: undefined },
+            liableObj: { label: "", value: undefined },
             pageStatus: "0",
           };
           modelList.push(key);
@@ -642,12 +643,21 @@ export default {
     },
     //添加清单模板
     addTemplate() {
-      addTemplate({
-        taskListName: "测试清单模板",
-        taskList: this.form.taskList,
-      }).then((res) => {
-        console.log(res);
-      });
+      this.$prompt("请输入模板名称", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+      })
+        .then(({ value }) => {
+          addTemplate({
+            taskListName: value,
+            taskList: this.form.taskList,
+          }).then((res) => {
+            if(res.code === 200) {
+              this.$message.success("模板创建成功，请在清单模板页面查看");
+            }
+          });
+        })
+        .catch(() => {});
     },
     getLiable() {
       getLiable().then((res) => {
@@ -690,7 +700,7 @@ export default {
     submit(saveFlag) {
       if (saveFlag == 1) {
         this.form.saveFlag = saveFlag;
-        taskListCreate(this.form).then((res) => {
+        createTaskList(this.form).then((res) => {
           if (res.code === 200) {
             this.$message.success("成功");
             this.$router.back();
@@ -700,7 +710,7 @@ export default {
         this.$refs["form"].validate((valid) => {
           if (valid) {
             this.form.saveFlag = saveFlag;
-            taskListCreate(this.form).then((res) => {
+            createTaskList(this.form).then((res) => {
               if (res.code === 200) {
                 this.$message.success("成功");
                 this.$router.back();
@@ -753,9 +763,6 @@ export default {
         this.fileLoading = false;
         this.fileOptions = res.data.records;
       });
-    },
-    createTask() {
-      createTask();
     },
   },
 };

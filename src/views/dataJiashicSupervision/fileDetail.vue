@@ -36,6 +36,12 @@
         </el-row>
         <div style="margin: 0 -20px">
           <el-table :data="tableData" v-loading="loading" style="width: 100%;" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}">
+            <el-table-column type="index" width="50px" label="序号" :index="indexMethod"></el-table-column>
+            <!-- <el-table-column label="序号" width="50px">
+              <template slot-scope="scope">
+                {{scope.$index+1}}
+              </template>
+            </el-table-column> -->
             <el-table-column
               v-for="(item, index) in columnsData"
               :key="index"
@@ -160,6 +166,9 @@ export default {
     this.getFileContent();
   },
   methods: {
+    // indexMethods(index) {//表格序号  index从0(0,1,2,...)开始所以+1     (当前页数 - 1) * 每页多少条数据 + index + 1
+    //   return (this.currentPage - 1) * this.pageSize + index + 1
+    // },
     /* 分页查询文件内容 */
     getFileContent() {
       this.loading = true;

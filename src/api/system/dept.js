@@ -76,6 +76,14 @@ export function getDeptTree() {
   })
 }
 
+// 拥有角色的部门树
+export function getNewDeptTree() {
+  return request({
+    url: '/user/tree/filing_unit?haveRole=0',
+    method: 'get'
+  })
+}
+
 export function getCurrentDeptTree(){
   return request({
     url: '/system/dept/workbench/tree',

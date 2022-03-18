@@ -3,6 +3,7 @@
     <content-box title="归档队伍管理">
       <template v-slot:operations>
         <search-input @search="toSearch"></search-input>
+        <el-button style="margin-left: 10px;" type="primary" @click="dialogCreate = true">新增队伍</el-button>
         <el-button style="margin-left: 10px;" type="primary" @click="toRecords">变更记录</el-button>
       </template>
       <div class="content">
@@ -57,13 +58,42 @@
         <el-button type="primary" @click="modifyRole">确定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 新增队伍对话框 -->
+    <el-dialog
+      title="新增队伍"
+      :visible.sync="dialogCreate"
+      width="30%">
+      <el-form :model="createForm">
+        <el-form-item label="选择用户" prop="">
+          <el-select v-model="createForm.selectObj.label" placeholder="请选择归集档案员">
+            <el-option :value="createForm.selectObj"  style="height: 100%; padding: 0">
+              <el-tree
+                :data="data"
+                :props="defaultCreateProps"
+                @node-click="handleNodeClick"
+              ></el-tree>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属角色">
+          <el-select v-model="createForm.roles" placeholder="请选择角色">
+            <el-option v-for="(item, index) in roleList" :key="index" :label="item.roleName" :value="item.roleId"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogCreate = false">取 消</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
+      </span>
+    </el-dialog>
   </basic-container>
 </template>
 
 <script>
 import { getUserPage, updateUserRole } from "@/api/system/user"
-import { getDeptTree } from "@/api/system/dept";
-import { getRoleList } from "@/api/system/role"
+import { getDeptTree, getNewDeptTree } from "@/api/system/dept";
+import { getRoleList, deleteUser } from "@/api/system/role"
 import HcCrud from "@/views/components/HcCrud/index"
 import ContentBox from "@/views/components/ContentBox/index"
 import SearchInput from "@/views/components/SearchInput/index"
@@ -83,6 +113,19 @@ export default {
       roleSelect: [],
       handleUser: {},
       dialogVisible: false,
+
+      dialogCreate: false, // 新增队伍对话框状态
+      createForm: { // 新增请求参数
+        selectObj: "",
+        deptId: "",
+        userId: "",
+        roles: "",
+      },
+      data: [], // 用户数据
+      defaultCreateProps: { // 配置选项
+        children: "children",
+        label: "label",
+      },
     };
   },
   computed: {
@@ -134,9 +177,16 @@ export default {
               }
               this.roleSelect = roleSelect
             }
+          },
+          {
+            label: "删除",
+            permissions: ["team:role"],
+            fun: (row) => {
+              this.deleteUser(row);
+            }
           }
         ],
-        menuWidth: 100
+        menuWidth: 120,
       }
     }
   },
@@ -144,11 +194,18 @@ export default {
     getDeptTree().then(({ data }) => {
       this.deptTree = data
     });
+    this.getNewDeptTree()
     getRoleList().then(({ data }) => {
       this.roleList = data
     })
   },
   methods: {
+    getNewDeptTree(){
+      // 新增队伍用户树
+      getNewDeptTree().then(({ data }) => {
+        this.data = data;
+      })
+    },
     fetchListFun (params) {
       return new Promise((resolve, reject) => {
         getUserPage({
@@ -173,6 +230,49 @@ export default {
     toRecords (row) {
       this.$router.push({
         path: "/organization/team/records"
+      })
+    },
+    // 节点被点击时的回调
+    handleNodeClick(data, node){
+      if(node.level == 2){ //找到部门节点
+        this.createForm.deptId = data.value;
+      }
+      if(node.isLeaf){ // 找到叶子节点
+        this.createForm.selectObj = data;
+        this.createForm.userId = data.value;
+      }
+    },
+    // 新增确定按钮
+    submit(){
+      let requestData = {
+        deptId: this.createForm.deptId,
+        userId: this.createForm.userId,
+        roles: this.createForm.roles.split(),
+      }
+      if( !this.createForm.deptId || !this.createForm.userId ) return this.$message.error("请选择用户");
+      if( !this.createForm.roles ) return this.$message.error("请选择角色");
+      updateUserRole(requestData).then(({ code })=>{
+        if(code == 200){
+          this.$message.success("新增成功");
+          this.dialogCreate = false;
+          this.createForm.selectObj = "";
+          this.createForm.deptId = "";
+          this.createForm.roles = "";
+          this.$refs.hcCrud.refresh();
+        }
+      })
+    },
+    // 删除：将用户移出归档队伍列表
+    deleteUser (data) {
+      deleteUser({
+        userId: data.userId,
+        deptId: data.deptId,
+      }).then(({ code }) => {
+        if(code == 200){
+          this.$message.success("删除成功");
+          this.getNewDeptTree();
+          this.$refs.hcCrud.refresh();
+        }
       })
     },
     deptClick (data, node) {

@@ -44,7 +44,7 @@
             </el-tab-pane>
             <!-- 数据内容设置与管理 -->
             <el-tab-pane label="数据内容设置与管理" name="second">
-              <p class="p">统计数据上传：</p>
+              <!-- <p class="p">统计数据上传：</p>
               <el-form
                 label-position="left"
                 label-width="140px"
@@ -57,7 +57,7 @@
                 <el-form-item label="建成档案室总数">
                   <el-input-number v-model.trim="absorbAndBuildup.jcdaNum" :min='1' @change="buildup"></el-input-number>
                 </el-form-item>
-              </el-form>
+              </el-form> -->
               <p class="p">统计数据文件上传：</p>
               <el-table :data="statisticsTableData" v-loading="statisticsLoading" style="width: 100%" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}">
                 <el-table-column type="index" width="50" label="序号">
@@ -356,10 +356,10 @@ export default {
   ::v-deep .el-tabs__nav-wrap::after {
     background-color: transparent;
   }
-  .formData {
-    width: 30%;
-    padding-left: 20px;
-  }
+  // .formData {
+  //   width: 30%;
+  //   padding-left: 20px;
+  // }
   .pagination-container{
     margin-top: 0px;
     margin-right: 20px;

@@ -153,6 +153,7 @@ export default {
       return new Promise((resolve, reject) => {
         getUserPage({
           ...params,
+          haveRole: true, // 过滤掉没有角色的数据
           deptId: this.deptId
         }).then(({data}) => {
           resolve({

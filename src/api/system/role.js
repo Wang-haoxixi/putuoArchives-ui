@@ -169,3 +169,12 @@ export function getRoleList(params) {
     params
   })
 }
+
+// 删除：将用户移出归档队伍列表
+export function deleteUser(data) {
+  return request({
+    url: '/role/user/clean',
+    method: 'post',
+    data
+  })
+}

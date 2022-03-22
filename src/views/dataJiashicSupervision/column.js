@@ -2,10 +2,10 @@
 export const columns = {
   // 档案室达标情况表
   COCKPIT_DATA_DBQK: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'unitQzh',
       label: '单位全宗号',
@@ -22,10 +22,10 @@ export const columns = {
   ],
   // 全宗建设情况表
   COCKPIT_DATA_JSQK: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'unitQzh',
       label: '单位全宗号',
@@ -61,10 +61,10 @@ export const columns = {
   ],
   // 队伍人员登记情况表
   COCKPIT_DATA_RYDJ: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'unitQzh',
       label: '单位全宗号',
@@ -80,10 +80,10 @@ export const columns = {
   ],
   // 队伍开展工作情况表
   COCKPIT_DATA_GZQK: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',
@@ -107,10 +107,10 @@ export const columns = {
   ],
   // 归集人员能力表
   COCKPIT_DATA_RYNL: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',
@@ -154,10 +154,10 @@ export const columns = {
   ],
   // 监管数据源头使用表
   COCKPIT_DATA_SJYT: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',
@@ -181,10 +181,10 @@ export const columns = {
   ],
   // 各单位开展情况表
   COCKPIT_DATA_KZQK: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',
@@ -200,10 +200,10 @@ export const columns = {
   ],
   // 专项档案归集各门类总数表
   COCKPIT_DATA_ZXGJML: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',
@@ -227,10 +227,10 @@ export const columns = {
   ],
   // 专项档案归集监管数据源头使用情况表
   COCKPIT_DATA_ZXSJYT: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',
@@ -254,10 +254,10 @@ export const columns = {
   ],
   // 专项档案归集工作开展情况表
   COCKPIT_DATA_ZXGZKZ: [
-    {
-      prop: 'orderNum',
-      label: '序号',
-    },
+    // {
+    //   prop: 'orderNum',
+    //   label: '序号',
+    // },
     {
       prop: 'qzh',
       label: '全宗号',

@@ -1,5 +1,5 @@
 <template>
-  <basic-container>
+  <basic-container style="background-color: #0b1667">
     <el-row :gutter="20" type="flex" style="flex: 1.3">
       <el-col :span="10" style="height: 100%"
         ><div class="content">
@@ -17,10 +17,10 @@
                 style="width: 90%"
                 src="@/assets/images/dataScreen_pyramid@2x.png"
               />
-              <div class="pyramid-num" style="top: -2%; right: 13%">38</div>
-              <div class="pyramid-num" style="top: 10%; left: 10%">76</div>
-              <div class="pyramid-num" style="top: 32%; right: 5%">102</div>
-              <div class="pyramid-num" style="top: 55%; left: 5%">368</div>
+              <div class="pyramid-num" style="top: -5%; right: 13%">38</div>
+              <div class="pyramid-num" style="top: 8%; left: 10%">76</div>
+              <div class="pyramid-num" style="top: 30%; right: 5%">102</div>
+              <div class="pyramid-num" style="top: 52%; left: 5%">368</div>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
             <div class="team-item">
               <div class="item-title">
                 <div class="item-title-text"></div>
-                档案员配置情况
+                归集员配置情况
               </div>
               <div class="item-charts">
                 <PieCharts
@@ -64,7 +64,7 @@
             <div class="team-item">
               <div class="item-title">
                 <div class="item-title-text"></div>
-                档案员配置情况
+                科室归集负责人配置情况
               </div>
               <div class="item-charts">
                 <PieCharts
@@ -80,7 +80,7 @@
             <div class="team-item">
               <div class="item-title">
                 <div class="item-title-text"></div>
-                档案员配置情况
+                分管领导配置情况
               </div>
               <div class="item-charts">
                 <PieCharts
@@ -101,33 +101,49 @@
         ><div class="content">
           <data-screen-title title="归集任务完成情况"></data-screen-title>
           <div style="height: calc(100% - 44px); display: flex">
-            <div style="flex: 1; text-align: center; position: relative">
-              <span
+            <div
+              style="
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div style="position: relative">
+                <img
+                  src="@/assets/images/quanquwenjian_bj@2x.png"
+                  style="width: 90%;margin-left:5%;margin-top:-5%;"
+                />
+                <span
                 style="
                   font-size: 29px;
                   position: absolute;
                   line-height: 34px;
                   font-weight: bold;
                   color: #fff;
-                  top: 40%;
+                  top: 43%;
                   left: 50%;
                   transform: translate(-50%, -50%);
                 "
                 >18960</span
               >
-              <img
-                src="@/assets/images/quanquwenjian_bj@2x.png"
-                style="width: 90%"
-              />
+
               <div
                 style="
+                position: absolute;
                   font-size: 14px;
                   font-weight: 400;
                   line-height: 20px;
                   color: #99cbf9;
+                  width: 140px;
+                  bottom: -20px;
+                  left: 50%;
+                  transform: translate(-50%, 0);
                 "
               >
                 全区当年度应有文件数
+              </div>
               </div>
             </div>
             <div style="flex: 1.6; height: calc(100% - 44px)">
@@ -156,7 +172,7 @@
       <el-col :span="8" style="height: 100%"
         ><div class="content">
           <data-screen-title title="任务完成情况"></data-screen-title>
-          <div style="height: calc(100% - 44px)">
+          <div style="height: calc(100% - 44px);width:100%;">
             <PieCharts
               enum="COCKPIT_DATA_DBQK"
               file-type="isStandard"

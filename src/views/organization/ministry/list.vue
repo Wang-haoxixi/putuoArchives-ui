@@ -30,7 +30,7 @@
           </div>
         </template>
       </hc-crud>
-      <el-dialog title="新 增" :visible.sync="dialogAddVisible">
+      <el-dialog title="新 增" :visible.sync="dialogAddVisible" @close="closeDialog">
         <el-form :model="addForm" label-position="top">
           <el-form-item label="选择单位：">
             <el-select v-model="addForm.deptId" placeholder="请选择单位" filterable @change="changeUnit">
@@ -46,9 +46,9 @@
         </el-form>
         <el-button size="mini" @click="createQzh" :disabled="disableFlag">+ 增加全宗号</el-button>
         <div class="unit-type-box" v-for="item in unitTypes" :key="item.value">
-          <template v-if="item.value == 'unit_type_a'">
+          <!-- <template v-if="item.value == 'unit_type_a'">
             <el-checkbox v-model="addForm.unitTypeA" :disabled="disableFlag">{{ item.label }}</el-checkbox>
-          </template>
+          </template> -->
           <template v-if="item.value == 'unit_type_b'">
             <el-checkbox v-model="addForm.unitTypeB" :disabled="disableFlag">{{ item.label }}</el-checkbox>
           </template>
@@ -191,17 +191,33 @@ export default {
     deleteQzh(index){
       this.addForm.qzhNumber.splice(index, 1);
     },
+    // 关闭弹框触发
+    closeDialog(){
+      this.addForm.deptId= ""
+      this.addForm.qzhNumber= []
+      this.addForm.unitTypeA= false
+      this.addForm.unitTypeB= false
+      this.addForm.unitTypeC= false
+      this.addForm.unitTypeD= false
+    },
     // 保存
     save(){
-      this.saveLoading = true;
+      // this.saveLoading = true;
       let form = JSON.parse(JSON.stringify(this.addForm));
       if(!form.deptId) {
         this.saveLoading = false;
         this.$message.error("请选择单位");
         return
       }
+      let emptyFlag = form.qzhNumber.some(item => {
+        return !item;
+      })
+      if(emptyFlag || form.qzhNumber.length == 0){
+        return this.$message.error("单位全宗号不能为空");
+      }
       form.qzhNumber = form.qzhNumber.join(",");
-      let { deptId, deptName, qzhNumber, unitTypeA, unitTypeB, unitTypeC, unitTypeD } = form
+      form.unitTypeA = true; // 立档单位默认勾选
+      let { deptId, deptName, qzhNumber, unitTypeA, unitTypeB, unitTypeC, unitTypeD } = form;
       updateQzh({
         deptId, deptName, qzhNumber, unitTypeA, unitTypeB, unitTypeC, unitTypeD
       }).then(res => {
@@ -212,12 +228,12 @@ export default {
           this.dialogAddVisible = false;
           this.$refs.hcCrud.refresh();
 
-          this.addForm.deptId= ""
-          this.addForm.qzhNumber= []
-          this.addForm.unitTypeA= false
-          this.addForm.unitTypeB= false
-          this.addForm.unitTypeC= false
-          this.addForm.unitTypeD= false
+          // this.addForm.deptId= ""
+          // this.addForm.qzhNumber= []
+          // this.addForm.unitTypeA= false
+          // this.addForm.unitTypeB= false
+          // this.addForm.unitTypeC= false
+          // this.addForm.unitTypeD= false
         }
       }).catch(()=>{
         this.saveLoading = false;

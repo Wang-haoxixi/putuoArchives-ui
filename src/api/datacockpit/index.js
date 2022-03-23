@@ -4,6 +4,16 @@ import request from '@/utils/request'
 export function getArchives(query) {
   return request({
     url: '/archive/get_cockpit/supervision_object_file_work',
+    // url: '/archive/leader/get_cockpit/dept_team',
+    method: 'get',
+    params: query
+  })
+}
+
+// 前四个数量
+export function getCount(query) {
+  return request({
+    url: '/archive/leader/get_cockpit/dept_team',
     method: 'get',
     params: query
   })

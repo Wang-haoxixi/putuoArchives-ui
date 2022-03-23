@@ -6,7 +6,7 @@
     </div>
     <div class="list">
       <div class="item">
-        <div class="title">监管对象档案工作</div>
+        <div class="title">监管对象档案工作情况</div>
         <el-scrollbar class="content" wrap-class="scrollbar-wrapper">
           <archives></archives>
         </el-scrollbar>

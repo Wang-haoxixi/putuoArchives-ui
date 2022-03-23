@@ -33,7 +33,7 @@
       <el-dialog title="新 增" :visible.sync="dialogAddVisible">
         <el-form :model="addForm" label-position="top">
           <el-form-item label="选择单位：">
-            <el-select v-model="deptId" placeholder="请选择单位" @change="changeUnit">
+            <el-select v-model="addForm.deptId" placeholder="请选择单位" filterable @change="changeUnit">
               <el-option v-for="(item, index) in unitOpts" :key="index" :label="item.deptName" :value="item.deptId"></el-option>
             </el-select>
           </el-form-item>
@@ -96,7 +96,7 @@ export default {
     // 侦听addForm
     addForm(val){
       if(val){
-        this.disableFlag = false;
+        this.disableFlag = false; // 当addForm的值发生变更时，将内容变为可输入
       }
     }
   },
@@ -163,12 +163,16 @@ export default {
     }
   },
   methods: {
-    toCreate(){ this.dialogAddVisible = true; },
+    toCreate(){ this.dialogAddVisible = true; this.getNotFilingUnits() },
     // 获取非立档单位数据
     getNotFilingUnits(){
       notFilingUnits().then(res => {
         res.data.forEach(item => {
-          item.qzhNumber = item.qzhNumber.split(",");
+          if(item.qzhNumber){
+            item.qzhNumber = item.qzhNumber.split(",");
+          } else {
+            item.qzhNumber = [];
+          }
         })
         this.unitOpts = res.data;
       })
@@ -177,7 +181,7 @@ export default {
     changeUnit(data){
       this.unitOpts.forEach(element => {
         if(element.deptId == data){
-          this.addForm = element;
+          this.addForm = JSON.parse(JSON.stringify(element));
         }
       });
     },
@@ -191,6 +195,11 @@ export default {
     save(){
       this.saveLoading = true;
       let form = JSON.parse(JSON.stringify(this.addForm));
+      if(!form.deptId) {
+        this.saveLoading = false;
+        this.$message.error("请选择单位");
+        return
+      }
       form.qzhNumber = form.qzhNumber.join(",");
       let { deptId, deptName, qzhNumber, unitTypeA, unitTypeB, unitTypeC, unitTypeD } = form
       updateQzh({
@@ -202,7 +211,16 @@ export default {
           this.saveLoading = false;
           this.dialogAddVisible = false;
           this.$refs.hcCrud.refresh();
+
+          this.addForm.deptId= ""
+          this.addForm.qzhNumber= []
+          this.addForm.unitTypeA= false
+          this.addForm.unitTypeB= false
+          this.addForm.unitTypeC= false
+          this.addForm.unitTypeD= false
         }
+      }).catch(()=>{
+        this.saveLoading = false;
       })
     },
     fetchListFun (params) {

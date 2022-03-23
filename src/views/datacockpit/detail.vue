@@ -70,7 +70,8 @@ export default {
       value: undefined,
       // 请求表格参数
       queryParams: {
-        enums: this.$route.query.enums,
+        // enums: this.$route.query.enums,
+        enums: "",
         [this.$route.query.fileType]: '',
         unitName: '',
         size: 10,
@@ -86,9 +87,16 @@ export default {
   },
   created(){
     for (const key in columns) {
+      if(key == this.$route.query.archivesRoom){
+        this.options = columns[key].selectsOpt; // 下拉搜索数据项
+        this.labelVal = columns[key].name; // 标题
+        this.queryParams.isType = this.$route.query.archivesRoom;
+        this.queryParams.enums = "COCKPIT_DATA_DBQK";
+      }
       if(key === this.$route.query.fileType){
-        this.options = columns[key].selectsOpt;
-        this.labelVal = columns[key].name;
+        this.options = columns[key].selectsOpt; // 下拉搜索数据项
+        this.labelVal = columns[key].name; // 标题
+        this.queryParams.enums = this.$route.query.enums;
       }
     }
     this.fileContent()

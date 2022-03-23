@@ -15,6 +15,10 @@ export default {
     },
     fileType: {
       type: String,
+    },
+    // 档案室类型
+    archivesRoom: {
+      type: String,
     }
   },
   created() {
@@ -26,6 +30,7 @@ export default {
         query: {
           enums: this.enum,
           fileType: this.fileType,
+          archivesRoom: this.archivesRoom,
         }
       });
     },

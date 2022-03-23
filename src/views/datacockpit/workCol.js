@@ -1,7 +1,15 @@
 export const columns = {
-  isStandard: {
-    name: '档案室达标情况',
-    selectsOpt: ["达标","不达标","全部",]
+  // isStandard: {
+  //   name: '档案室达标情况',
+  //   selectsOpt: ["达标","不达标","全部",]
+  // },
+  GFH: {
+    name: '规范化档案室达标数占比',
+    selectsOpt: ["达标","不达标","全部",],
+  },
+  SZH: {
+    name: '数字档案室达标数占比',
+    selectsOpt: ["达标","不达标","全部",],
   },
   bigEvent: {
     name: '大事记',

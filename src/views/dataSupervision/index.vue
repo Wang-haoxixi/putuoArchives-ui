@@ -10,11 +10,14 @@
       >
         <template v-slot:menu="scope">
           <template v-if="scope.row.type == 1">
-            <el-button type="text" @click="toEditAuthUser(scope.row)">分配用户</el-button>
+            <el-button type="text" @click="toEditAuthUser(scope.row)"
+              >分配用户</el-button
+            >
           </template>
           <template v-if="scope.row.type == 2">
             <el-button type="text" @click="toEdit(scope.row)">修改</el-button>
-            <el-dropdown size="medium"
+            <el-dropdown
+              size="medium"
               @command="(command) => handleCommand(command, scope.row)"
               v-hasPermi="['system:role:edit']"
             >
@@ -25,8 +28,14 @@
                 <el-dropdown-item command="handleDataScope"
                   >数据权限</el-dropdown-item
                 >
-                <el-dropdown-item command="handleAuthUser">分配用户</el-dropdown-item>
-                <el-dropdown-item command="handleDelete" v-if="scope.row.isCustom">删除</el-dropdown-item>
+                <el-dropdown-item command="handleAuthUser"
+                  >分配用户</el-dropdown-item
+                >
+                <el-dropdown-item
+                  command="handleDelete"
+                  v-if="scope.row.isCustom"
+                  >删除</el-dropdown-item
+                >
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -52,32 +61,47 @@ export default {
       searchQuery: [
         {
           label: "归集日期",
-          prop: "creteTime",
+          prop: "collectionTime",
           type: "date",
         },
         {
           label: "归集系统",
-          prop: "system",
+          prop: "userNum",
         },
         {
           label: "归集人",
-          prop: "user",
+          prop: "collectionBy",
         },
         {
           label: "题名",
-          prop: "name",
+          prop: "title",
         },
         {
           label: "系统归档判断",
-          prop: "user",
+          prop: "isArchive",
+          type: "select",
+          dicData: [
+            { label: "应归档", value: "0" },
+            { label: "不归档", value: "1" },
+          ],
         },
         {
           label: "归档状态",
-          prop: "user",
+          prop: "archiveStatus",
+          type: "select",
+          dicData: [
+            { label: "已归档", value: "0" },
+            { label: "未归档", value: "1" },
+          ],
         },
         {
           label: "归档任务",
-          prop: "user",
+          prop: "isTask",
+          type: "select",
+          dicData: [
+            { label: "是", value: "0" },
+            { label: "否", value: "1" },
+          ],
         },
       ],
       operations: [
@@ -91,46 +115,86 @@ export default {
       ],
     };
   },
-  created () {
-  },
+  created() {},
   computed: {
     tableOption() {
       return {
         columns: [
           {
-            label: "流水号",
-            prop: "roleName",
-          },
-          {
             label: "题名",
-            prop: "createTime",
+            prop: "title",
           },
           {
             label: "形成时间",
-            prop: "createByName",
+            prop: "formTime",
           },
           {
-            label: "责任人",
-            prop: "userNum",
+            label: "责任者",
+            prop: "by",
           },
           {
             label: "归集系统",
-            prop: "statusStr",
+            prop: "userNum",
           },
           {
-            label: "归集部门",
-            prop: "updateTime",
+            label: "归集单位",
+            prop: "deptName",
           },
           {
             label: "归集科室",
-            prop: "updateByName",
+            prop: "department",
+          },
+          {
+            label: "归集人",
+            prop: "collectionBy",
+          },
+          {
+            label: "归集日期",
+            prop: "collectionTime",
+          },
+          {
+            label: "系统归档判断",
+            prop: "isArchive",
+            type: "select",
+            dicData: [
+              { label: "应归档", value: "0" },
+              { label: "不归档", value: "1" },
+            ],
+          },
+          {
+            label: "归档状态",
+            prop: "archiveStatus",
+            type: "select",
+            dicData: [
+              { label: "已归档", value: "0" },
+              { label: "未归档", value: "1" },
+            ],
+          },
+          {
+            label: "归档任务",
+            prop: "isTask",
+            type: "select",
+            dicData: [
+              { label: "是", value: "0" },
+              { label: "否", value: "1" },
+            ],
           },
         ],
-        menu: true,
+        menu: [
+          {
+            label: "查看任务",
+            fun: (row) => {
+              this.taskDetail(row);
+            },
+          },
+        ],
       };
     },
   },
   methods: {
+    taskDetail(row) {
+      console.log(row);
+    },
     fetchListFun(params) {
       let createTime = params.createTime;
       if (createTime && createTime.length == 2) {
@@ -179,24 +243,28 @@ export default {
     },
     toEditAuthUser({ roleId }) {
       this.$router.push({
-        path: './role/authUser',
+        path: "./role/authUser",
         query: {
-          roleId
-        }
-      })
+          roleId,
+        },
+      });
     },
     getRoleDeptTreeselect(roleId) {
       return roleDeptTreeselect(roleId).then((response) => {
         return response;
       });
     },
-    toDeleteRole (row) {
-      this.$modal.confirm('是否确认删除该角色？').then(() => {
-        return removeRoleBatch([row.roleId])
-      }).then(() => {
-        this.$modal.msgSuccess("删除成功");
-        this.$refs.hcCrud.refresh();
-      }).catch(() => {});
+    toDeleteRole(row) {
+      this.$modal
+        .confirm("是否确认删除该角色？")
+        .then(() => {
+          return removeRoleBatch([row.roleId]);
+        })
+        .then(() => {
+          this.$modal.msgSuccess("删除成功");
+          this.$refs.hcCrud.refresh();
+        })
+        .catch(() => {});
     },
     // 更多操作触发
     handleCommand(command, row) {

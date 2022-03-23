@@ -16,30 +16,8 @@ export default {
     fileType: {
       type: String,
     },
-    rose: {
-      type: Boolean,
-      default: false,
-    },
   },
-  created() {
-    if (this.rose) {
-      this.option.series[0].roseType = "area";
-      this.option.series[0].radius = ["15%", "80%"];
-      this.option.series[0].label = {
-        show: true,
-        color: "#FFFFFF",
-        formatter: "{c}",
-      };
-      this.option.series[0].labelLine = { length: 20 };
-    } else {
-      this.option.series[0].label = {
-        show: true,
-        color: "#FFFFFF",
-        position: "inner",
-        formatter: "{c}",
-      };
-    }
-  },
+  created() {},
   methods: {
     // handleClick(data) {
     //   this.$router.push({
@@ -54,43 +32,49 @@ export default {
   computed: {
     option() {
       return {
-        color: ["#28EDED", "#2395FC", "#FEC02C", "#ca8622"],
+        color: ["#3EE6E3", "#3BBCD9", "#378BCC", "#345EBF"],
         avoidLabelOverlap: false,
-        legend: {
-          padding: 0,
-          type: "plain",
-          icon: "rect",
-          temGap: 4,
-          itemWidth: 9,
-          itemHeight: 9,
-          borderRadius: 0,
-          borderWidth: 0,
-          selectedMode: true,
-          orient: "vertical",
-          bottom: 10,
-          left: 22,
-          textStyle: {
-            color: "#99CBF9",
-            fontSize: 12,
-          },
-        },
+        // legend: {
+        //   padding: 0,
+        //   type: "plain",
+        //   icon: "rect",
+        //   temGap: 4,
+        //   itemWidth: 9,
+        //   itemHeight: 9,
+        //   borderRadius: 0,
+        //   borderWidth: 0,
+        //   selectedMode: true,
+        //   orient: "vertical",
+        //   bottom: 10,
+        //   left: 22,
+        //   textStyle: {
+        //     color: "#99CBF9",
+        //     fontSize: 12,
+        //   },
+        // },
         tooltip: {
           trigger: "item",
+          formatter(params) {
+              return params.data.name +"："+ params.data.num
+          },
         },
         series: [
           {
             startAngle: 180,
-            type: "pie",
+            type: "funnel",
             left: 0,
-            radius: ["35%", "70%"],
+            sort: "ascending",
             itemStyle: {
-              borderRadius: 5,
-              borderWidth: 5,
               borderColor: "#0b1667",
+            },
+            label: {
+              show: true,
+              color: "#FFFFFF",
+              formatter: "{b}",
             },
             labelLine: {
               show: true,
-              length: 6,
+              length: 20,
               length2: 70,
               lineStyle: {
                 color: "#DDDDDD",

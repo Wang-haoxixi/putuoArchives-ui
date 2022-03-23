@@ -75,7 +75,8 @@ import {
 } from 'echarts/renderers'
 import {
   BarChart,
-  PieChart
+  PieChart,
+  FunnelChart
 } from 'echarts/charts'
 import {
   GridComponent,
@@ -87,6 +88,7 @@ use([
   CanvasRenderer,
   BarChart,
   PieChart,
+  FunnelChart,
   GridComponent,
   TooltipComponent,
   LegendComponent

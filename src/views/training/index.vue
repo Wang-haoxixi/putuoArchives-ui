@@ -33,7 +33,7 @@
               <div class="item-operation">
                 <el-button v-hasPermi="['train:edit']" size="mini" @click="toEdit(row.id)">更新文件</el-button>
                 <el-button v-hasPermi="['train:delete']" size="mini" @click="toDelete(row.id)">删除文件</el-button>
-                <el-button v-if="row.fileType === 'word' || row.fileType === 'excel' || row.fileType === 'pdf'" type="primary" plain size="mini" @click="toPreview(row.fileId)">在线预览</el-button>
+                <el-button type="primary" plain size="mini" @click="toPreview(row.fileId)">在线预览</el-button>
                 <el-button type="primary" size="mini" @click="toDownLoad(row.fileId)">下载文件</el-button>
               </div>
             </div>

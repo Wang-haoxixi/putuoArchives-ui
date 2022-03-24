@@ -63,6 +63,8 @@
     <el-dialog
       title="新增队伍"
       :visible.sync="dialogCreate"
+      @open= "openDialogCreate"
+      @close="closeDialogCreate"
       width="30%">
       <el-form :model="createForm">
         <el-form-item label="选择用户" prop="">
@@ -194,7 +196,6 @@ export default {
     getDeptTree().then(({ data }) => {
       this.deptTree = data
     });
-    this.getNewDeptTree()
     getRoleList().then(({ data }) => {
       this.roleList = data
     })
@@ -234,12 +235,10 @@ export default {
     },
     // 节点被点击时的回调
     handleNodeClick(data, node){
-      if(node.level == 2){ //找到部门节点
-        this.createForm.deptId = data.value;
-      }
-      if(node.isLeaf){ // 找到叶子节点
+      if(node.isLeaf){ // 找到用户的节点
         this.createForm.selectObj = data;
-        this.createForm.userId = data.value;
+        this.createForm.deptId = node.parent.data.value; // 取到用户对应的部门ID
+        this.createForm.userId = data.value; // 取到用户ID
       }
     },
     // 新增确定按钮
@@ -261,6 +260,15 @@ export default {
           this.$refs.hcCrud.refresh();
         }
       })
+    },
+    openDialogCreate(){
+      this.getNewDeptTree();
+    },
+    // 关闭对话框时触发
+    closeDialogCreate(){
+      this.createForm.selectObj = "";
+      this.createForm.deptId = "";
+      this.createForm.roles = "";
     },
     // 删除：将用户移出归档队伍列表
     deleteUser (data) {

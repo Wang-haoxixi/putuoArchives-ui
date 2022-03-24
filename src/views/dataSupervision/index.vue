@@ -9,35 +9,10 @@
         :fetchListFun="fetchListFun"
       >
         <template v-slot:menu="scope">
-          <template v-if="scope.row.type == 1">
-            <el-button type="text" @click="toEditAuthUser(scope.row)"
-              >分配用户</el-button
+          <template v-if="scope.row.taskId">
+            <el-button type="text" @click="taskDetail(scope.row)"
+              >查看任务</el-button
             >
-          </template>
-          <template v-if="scope.row.type == 2">
-            <el-button type="text" @click="toEdit(scope.row)">修改</el-button>
-            <el-dropdown
-              size="medium"
-              @command="(command) => handleCommand(command, scope.row)"
-              v-hasPermi="['system:role:edit']"
-            >
-              <span class="el-dropdown-link">
-                更多<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="handleDataScope"
-                  >数据权限</el-dropdown-item
-                >
-                <el-dropdown-item command="handleAuthUser"
-                  >分配用户</el-dropdown-item
-                >
-                <el-dropdown-item
-                  command="handleDelete"
-                  v-if="scope.row.isCustom"
-                  >删除</el-dropdown-item
-                >
-              </el-dropdown-menu>
-            </el-dropdown>
           </template>
         </template>
       </hc-crud>
@@ -46,7 +21,8 @@
 </template>
 
 <script>
-import { getPage, getRole, removeRoleBatch } from "@/api/system/superLog";
+import { getPage, getRole, removeRoleBatch,superLogExport } from "@/api/system/superLog";
+import { downLoadBlob } from "@/utils/file"
 import { roleMenuTreeselect } from "@/api/system/menu";
 import { roleDeptTreeselect } from "@/api/system/dept";
 import HcCrud from "@/views/components/HcCrud/index";
@@ -62,7 +38,8 @@ export default {
         {
           label: "归集日期",
           prop: "collectionTime",
-          type: "date",
+          type: "daterange",
+          valueFormat: "yyyy-MM-dd",
         },
         {
           label: "归集系统",
@@ -109,8 +86,12 @@ export default {
           type: "primary",
           label: "导出",
           fun: () => {
-            this.toExport();
-          },
+            superLogExport().then(({ headers, data }) => {
+              let disposition = headers['content-disposition']
+              let fileName = decodeURIComponent(disposition.split("fileName=")[1])
+              downLoadBlob(data, fileName)
+            })
+          }
         },
       ],
     };
@@ -179,28 +160,46 @@ export default {
               { label: "否", value: "1" },
             ],
           },
-        ],
-        menu: [
           {
-            label: "查看任务",
-            fun: (row) => {
-              this.taskDetail(row);
-            },
+            label: "操作",
+            prop: "menu",
+            slot: true,
           },
         ],
+        // menu: [
+        //   {
+        //     label: "查看任务",
+        //     fun: (row) => {
+        //       this.taskDetail(row);
+        //     },
+        //   },
+        // ],
       };
     },
   },
   methods: {
+    // toExport () {
+    //   console.log("toExport")
+    //   superLogExport().then(({ headers, data }) => {
+    //     let disposition = headers['content-disposition']
+    //     let fileName = decodeURIComponent(disposition.split("fileName=")[1])
+    //     downLoadBlob(data, fileName)
+    //   })
+    // },
     taskDetail(row) {
       console.log(row);
+      if (row.taskId) {
+        this.$router.push({ path: "/taskDetail", query: { id: row.taskId } });
+      } else {
+        this.$message.error("缺少该任务，无法查看详情");
+      }
     },
     fetchListFun(params) {
-      let createTime = params.createTime;
-      if (createTime && createTime.length == 2) {
-        params.startDate = createTime[0];
-        params.endDate = createTime[1];
-        delete params.createTime;
+      let collectionTime = params.collectionTime;
+      if (collectionTime && collectionTime.length == 2) {
+        params.startTime = collectionTime[0];
+        params.endTime = collectionTime[1];
+        delete params.collectionTime;
       }
       return new Promise((resolve, reject) => {
         getPage(params).then(({ data }) => {
@@ -212,9 +211,6 @@ export default {
           });
         });
       });
-    },
-    toExport() {
-      this.$refs.form.open();
     },
     toEdit({ roleId }) {
       const roleMenu = this.getRoleMenuTreeselect(roleId);

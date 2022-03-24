@@ -6,3 +6,11 @@ export function getPage (params) {
     params
   })
 }
+
+export function superLogExport () {
+  return request({
+    url: "/superLog/export",
+    responseType: "blob",
+    showHeaders: true,
+  })
+}

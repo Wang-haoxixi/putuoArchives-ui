@@ -137,9 +137,9 @@
         <div>
           <div class="sub-title">档案归集各门类总数</div>
           <div class="card-list" v-if="item1.mlzs">
-            <div class="card-item" v-for="(item2,index2) in item1.mlzs.slice(0, 6)" :key="index2">
-              <div class="number">{{ item2.value }}</div>
-              <div class="name">{{ item2.name }}</div>
+            <div class="card-item" v-for="(ele,index) in item1.mlzs.slice(0, 6)" :key="index">
+              <div class="number">{{ ele.value }}</div>
+              <div class="name">{{ ele.name }}</div>
             </div>
             <!-- <div class="card-item">
               <div class="number">654</div>
@@ -167,9 +167,9 @@
         <div>
           <div class="sub-title">监管数据源头使用情况</div>
           <div class="circle-card-list">
-            <div class="card-item" v-for="(item3,index3) in item1.syqk" :key="index3">
-              <div class="number">{{ item3.value }}</div>
-              <div class="name">{{ item3.name }}</div>
+            <div class="card-item" v-for="(ele,index) in item1.syqk" :key="index">
+              <div class="number">{{ ele.value }}</div>
+              <div class="name">{{ ele.name }}</div>
             </div>
             <!-- <div class="card-item">
               <div class="number">654</div>
@@ -185,9 +185,9 @@
         <div>
           <div class="sub-title">归集工作开展情况</div>
           <div class="circle-card-list">
-            <div class="card-item" v-for="(item4,index4) in item1.kzqk" :key="index4">
-              <div class="number">{{ item4.value }}</div>
-              <div class="name" style="color: #ff6b00">{{ item4.name }}</div>
+            <div class="card-item" v-for="(ele,index) in item1.kzqk" :key="index">
+              <div class="number">{{ ele.value }}</div>
+              <div class="name" style="color: #ff6b00">{{ ele.name }}</div>
             </div>
             <!-- <div class="card-item">
               <div class="number">654</div>

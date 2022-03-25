@@ -2,26 +2,23 @@
   <div>
     <basic-container>
       <content-box :title="'归集人员能力：' + labelVal">
-        <div class="warp">
-          <div class="search-row">
-            <el-row class="search" :gutter="20">
-              <el-col :span="10"><el-input v-model="queryParams.userName" placeholder="请输入姓名进行检索"></el-input></el-col>
-              <el-col :span="10">
-                <el-select v-model="queryParams[$route.query.fileType]" placeholder="请选择">
-                  <el-option
-                    v-for="item in options"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="4"><el-button type="primary" @click="search">搜索</el-button></el-col>
-            </el-row>
+        <template v-slot:operations>
+          <div class="search-warp">
+            <el-input clearable style="width:200px" v-model="queryParams.unitName" placeholder="请输入单位名称"></el-input>
+            <el-select clearable style="margin-left: 10px; width: 150px" v-model="queryParams[$route.query.fileType]" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item"
+                :label="item"
+                :value="item"
+              >
+              </el-option>
+            </el-select>
+            <el-button style="margin-left: 10px" type="primary" @click="search">搜索</el-button>
+            <el-button style="margin-left: 10px" @click="$router.back()">返回</el-button>
           </div>
-        </div>
-        <div style="margin: 0 -20px">
+        </template>
+        <div style="margin: 20px -20px 0">
           <el-table :data="tableData" v-loading="loading" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}">
             <el-table-column
               prop="orderNum"
@@ -119,15 +116,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.warp {
-  margin-bottom: 20px;
-  .search-row{
-    display: flex;
-    justify-content: right;
-    .search {
-      width: 50%;
-    }
-  }
+.search-warp{
+  display: flex;
+  float: right;
 }
 .pagination-container{
   margin-top: 0px;

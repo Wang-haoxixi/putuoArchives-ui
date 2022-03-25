@@ -2,6 +2,9 @@
   <div>
     <basic-container>
       <content-box :title="$route.query.title">
+        <template v-slot:operations>
+          <el-button style="margin-left: 10px" @click="$router.back()">返回</el-button>
+        </template>
         <p class="p">文件名称：</p>
         <el-input
           class="title-input"
@@ -36,7 +39,7 @@
         </el-row>
         <div style="margin: 0 -20px">
           <el-table :data="tableData" v-loading="loading" style="width: 100%;" :header-cell-style="{backgroundColor: '#FAFAFA', color: '#333333'}">
-            <el-table-column type="index" width="50px" label="序号" :index="indexMethod"></el-table-column>
+            <el-table-column type="index" width="50px" label="序号"></el-table-column>
             <!-- <el-table-column label="序号" width="50px">
               <template slot-scope="scope">
                 {{scope.$index+1}}

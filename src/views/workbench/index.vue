@@ -169,6 +169,7 @@
       </hc-crud>
     </div>
     <div
+      v-if="this.currentWorkbench.identity != 2"
       style="
         background-color: #ffffff;
         border-radius: 4px;

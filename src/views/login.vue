@@ -94,9 +94,16 @@
     </div>
     <div v-if="loginMode === 'qrcode'">
       <div>
-        <iframe
+        <!-- 测试站 -->
+        <!-- <iframe
           style="width: 400px; height: 400px; border: none; border-radius: 8px;box-shadow: 0px 3px 9px rgba(0, 59, 103, 0.16);"
           src="https://login.dg-work.cn/oauth2/auth.htm?response_type=code&client_id=jgxtsm_dingoa&redirect_uri=http://localhost&scope=get_user_info&authType=QRCODE&embedMode=true"
+        >
+        </iframe> -->
+        <!-- 正式站 -->
+        <iframe
+          style="width: 400px; height: 400px; border: none; border-radius: 8px;box-shadow: 0px 3px 9px rgba(0, 59, 103, 0.16);"
+          src="https://login-pro.ding.zj.gov.cn/oauth2/auth.htm?response_type=code&client_id=jgxtsm_dingoa&redirect_uri=http://localhost&scope=get_user_info&authType=QRCODE&embedMode=true"
         >
         </iframe>
       </div>
@@ -160,8 +167,13 @@ export default {
   },
   created() {
     dd.ready(function () {
+      //测试站
+      // dd.getAuthCode({
+      //   corpId: "50352393",
+      // })
+      //正式站
       dd.getAuthCode({
-        corpId: "50352393",
+        corpId: "196729",
       })
         .then((res) => {
           that.autoLogin(res.auth_code);

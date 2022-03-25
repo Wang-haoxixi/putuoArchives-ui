@@ -21,8 +21,13 @@
 </template>
 
 <script>
-import { getPage, getRole, removeRoleBatch,superLogExport } from "@/api/system/superLog";
-import { downLoadBlob } from "@/utils/file"
+import {
+  getPage,
+  getRole,
+  removeRoleBatch,
+  superLogExport,
+} from "@/api/system/superLog";
+import { downLoadBlob } from "@/utils/file";
 import { roleMenuTreeselect } from "@/api/system/menu";
 import { roleDeptTreeselect } from "@/api/system/dept";
 import HcCrud from "@/views/components/HcCrud/index";
@@ -31,10 +36,30 @@ import ContentBox from "@/views/components/ContentBox/index";
 export default {
   name: "Role",
   components: { HcCrud, ContentBox },
-  dicts: ["sys_oper_type", "sys_common_status"],
+  dicts: ["system_name"],
   data() {
     return {
-      searchQuery: [
+      operations: [
+        {
+          type: "primary",
+          label: "导出",
+          fun: () => {
+            superLogExport().then(({ headers, data }) => {
+              let disposition = headers["content-disposition"];
+              let fileName = decodeURIComponent(
+                disposition.split("fileName=")[1]
+              );
+              downLoadBlob(data, fileName);
+            });
+          },
+        },
+      ],
+    };
+  },
+  created() {},
+  computed: {
+    searchQuery(){
+      return [
         {
           label: "归集日期",
           prop: "collectionTime",
@@ -43,7 +68,9 @@ export default {
         },
         {
           label: "归集系统",
-          prop: "userNum",
+          prop: "systemName",
+          type: "select",
+          dicData: this.dict.type.system_name,
         },
         {
           label: "归集人",
@@ -80,24 +107,8 @@ export default {
             { label: "否", value: "1" },
           ],
         },
-      ],
-      operations: [
-        {
-          type: "primary",
-          label: "导出",
-          fun: () => {
-            superLogExport().then(({ headers, data }) => {
-              let disposition = headers['content-disposition']
-              let fileName = decodeURIComponent(disposition.split("fileName=")[1])
-              downLoadBlob(data, fileName)
-            })
-          }
-        },
-      ],
-    };
-  },
-  created() {},
-  computed: {
+      ]
+    },
     tableOption() {
       return {
         columns: [
@@ -115,7 +126,9 @@ export default {
           },
           {
             label: "归集系统",
-            prop: "userNum",
+            prop: "systemName",
+            type: "select",
+            dicData: this.dict.type.system_name,
           },
           {
             label: "归集单位",

@@ -126,6 +126,7 @@
                   style="width: 90%; margin-left: 5%; margin-top: -5%"
                 />
                 <span
+                  @click="handleClick"
                   style="
                     font-size: 29px;
                     position: absolute;
@@ -135,6 +136,7 @@
                     top: 43%;
                     left: 50%;
                     transform: translate(-50%, -50%);
+                    cursor: pointer;
                   "
                   >{{ taskNum.qnwjNum }}</span
                 >
@@ -158,19 +160,19 @@
             </div>
             <div style="flex: 1.6; height: calc(100% - 44px)">
               <div class="filed">
-                <div class="filed-item">
+                <div class="filed-item" @click="handleClick">
                   <div class="filed-item-num">{{ taskNum.yggdNum }}</div>
                   <div class="filed-item-title">应归档数量</div>
                 </div>
-                <div class="filed-item">
+                <div class="filed-item" @click="handleClick">
                   <div class="filed-item-num">{{ taskNum.yjgdNum }}</div>
                   <div class="filed-item-title">已归档数量</div>
                 </div>
-                <div class="filed-item">
+                <div class="filed-item" @click="handleClick">
                   <div class="filed-item-num">{{ taskNum.wgdNum }}</div>
                   <div class="filed-item-title">未归档数量</div>
                 </div>
-                <div class="filed-item">
+                <div class="filed-item" @click="handleClick">
                   <div class="filed-item-num">{{ taskNum.dqdgdNum }}</div>
                   <div class="filed-item-title">待确定数量</div>
                 </div>
@@ -196,19 +198,19 @@
           <data-screen-title title="OA在线归档情况"> </data-screen-title>
           <div style="height: calc(100% - 44px)">
             <div class="filed">
-              <div class="filed-item">
+              <div class="filed-item" @click="handleClick">
                 <div class="filed-item-num">{{ oaMsg.yingguidang }}</div>
                 <div class="filed-item-title">应归档数量</div>
               </div>
-              <div class="filed-item">
+              <div class="filed-item" @click="handleClick">
                 <div class="filed-item-num">{{ oaMsg.yiguidang }}</div>
                 <div class="filed-item-title">已归档数量</div>
               </div>
-              <div class="filed-item">
+              <div class="filed-item" @click="handleClick">
                 <div class="filed-item-num">{{ oaMsg.weiguidang }}</div>
                 <div class="filed-item-title">未归档数量</div>
               </div>
-              <div class="filed-item">
+              <div class="filed-item" @click="handleClick">
                 <div class="filed-item-num">{{ oaMsg.daiqueding }}</div>
                 <div class="filed-item-title">待确定数量</div>
               </div>
@@ -281,7 +283,13 @@ export default {
     };
   },
   mounted() {},
-  methods: {},
+  methods: {
+    handleClick(){
+      this.$router.push({
+        path: "/dataScreen/taskGroup", // 任务归集完成情况详情页
+      });
+    }
+  },
   created() {
     getDeptTeam().then((res) => {
       if (res.code === 200) {

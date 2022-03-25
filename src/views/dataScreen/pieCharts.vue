@@ -1,5 +1,5 @@
 <template>
-  <v-chart :option="option"></v-chart>
+  <v-chart :option="option" @click="handleClick"></v-chart>
 </template>
 
 <script>
@@ -50,6 +50,12 @@ export default {
     //     },
     //   });
     // },
+    handleClick(data){
+      console.log(222, data);
+      this.$router.push({
+        path: "/dataScreen/teamCreate", // 队伍建设详情页
+      });
+    }
   },
   computed: {
     option() {

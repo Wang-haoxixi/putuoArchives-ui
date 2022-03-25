@@ -1,5 +1,5 @@
 <template>
-  <v-chart :option="option"></v-chart>
+  <v-chart :option="option" @click="handleClick"></v-chart>
 </template>
 
 <script>
@@ -28,6 +28,12 @@ export default {
     //     },
     //   });
     // },
+    handleClick(data){
+      console.log(111,data);
+      this.$router.push({
+        path: "/dataScreen/archivesRoomDetail", // 档案室情况详情页
+      });
+    }
   },
   computed: {
     option() {
